@@ -10,7 +10,7 @@
     "serve": "vite preview",
     "vite:dev": "vite",
     "vite:build": "tsc && NODE_ENV=production vite build --emptyOutDir",
-    "electron:dev": "NODE_ENV=development electron ./dev/electron.js",
+    "electron:dev": "NODE_ENV=development electron ./dev/app.js",
     "electron:build": "node build.js",
     "clean:app": "rimraf app",
     "clean:dist": "rimraf dist",
