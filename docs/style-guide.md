@@ -1,8 +1,10 @@
 # スタイルガイド
-### スタイル管理
-- リセットCSS は [destyle.css](https://github.com/nicolas-cusan/destyle.css) を利用
 
-### コンポーネント設計
+## デザイン
+- リセットCSS は [destyle.css](https://github.com/nicolas-cusan/destyle.css) を利用
+- アイコンは [Octicons](https://primer.style/octicons/) を利用
+
+## コンポーネント設計
 - Functional Component で実装する
 - ビジネスロジックはカスタムフックで分離する
 - Container Component と Presentational Component に分離する
@@ -12,5 +14,5 @@
     - propsだけに依存している状態
 - コンポーネント名はパスカルケース
 
-### その他
+## その他
 - export default は使用しない
