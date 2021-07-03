@@ -4,9 +4,17 @@
   "version": "0.0.0",
   "main": "./dist/app.js",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build --emptyOutDir",
-    "serve": "vite preview"
+    "dev": "pnpm vite:dev & pnpm electron:dev",
+    "build": "pnpm clean && pnpm vite:build && pnpm copy && pnpm electron:build",
+    "clean": "pnpm clean:app & pnpm clean:dist",
+    "serve": "vite preview",
+    "vite:dev": "vite",
+    "vite:build": "tsc && NODE_ENV=production vite build --emptyOutDir",
+    "electron:dev": "NODE_ENV=development electron ./dev/electron.js",
+    "electron:build": "node build.js",
+    "clean:app": "rimraf app",
+    "clean:dist": "rimraf dist",
+    "copy": "cpx dev/app.js dist"
   },
   "dependencies": {
     "react": "^17.0.0",
