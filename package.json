@@ -15,7 +15,7 @@
     "clean:app": "rimraf app",
     "clean:dist": "rimraf dist",
     "copy": "cpx dev/app.js dist",
-    "lint": "eslint . --cache --ext .js,.ts,.tsx,.json",
+    "lint": "eslint . --cache --ext .js,.ts,.tsx",
     "prepare": "husky install",
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\""
   },
@@ -46,7 +46,10 @@
     "vite": "^2.3.5"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,json}": [
+    "*.{json}": [
+      "pnpm format"
+    ],
+    "*.{js,ts,tsx}": [
       "pnpm format",
       "pnpm lint"
     ]

@@ -1,5 +1,5 @@
-const path = require('path')
-const { build } = require('electron-builder')
+const path = require('path');
+const { build } = require('electron-builder');
 
 build({
   config: {
@@ -9,6 +9,6 @@ build({
     appId: 'com.higeOhige.ReviewCat',
     productName: 'ReviewCat',
     copyright: 'higeOhige',
-    files: ['./dist']
-  }
-})
+    files: ['./dist'],
+  },
+});
