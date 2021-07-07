@@ -20,7 +20,7 @@
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
     "test:jest": "jest",
     "test:coverage": "jest --coverage",
-    "test": "npm run test:jest --"
+    "test": "pnpm run test:jest --"
   },
   "dependencies": {
     "react": "^17.0.0",
