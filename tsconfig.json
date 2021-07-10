@@ -17,5 +17,5 @@
     "useUnknownInCatchVariables": true,
     "exactOptionalPropertyTypes": true
   },
-  "include": ["./dev"]
+  "include": ["./renderer"]
 }

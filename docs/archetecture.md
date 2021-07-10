@@ -44,9 +44,10 @@
 ├── .vscode             # VSCode の設定ファイルが入る
 ├── app                 # ビルドされたアプリが入る
 ├── dist                # build された dev のコードが入る
-├── dev                 # 開発ディレクトリ
+├── electron            # Electron 開発ディレクトリ
+├── renderer            # 画面開発ディレクトリ
 │   ├── public          # Vite を通さず参照するファイルが入る
-│   ├── assets      # Vite を通して参照する画像等が入る
+│   ├── assets          # Vite を通して参照する画像等が入る
 │   └── src             # 開発用コードが基本的に入る
 │       ├── lib         # 自作ライブラリなどが入る
 │       ├── hooks       # Custom hook が入る
