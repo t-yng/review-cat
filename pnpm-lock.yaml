@@ -20,6 +20,7 @@ specifiers:
   husky: ^7.0.0
   jest: ^27.0.6
   lint-staged: ^11.0.0
+  node-fetch: ^2.6.1
   prettier: ^2.3.2
   react: ^17.0.0
   react-dom: ^17.0.0
@@ -30,6 +31,7 @@ specifiers:
   vite: ^2.3.5
 
 dependencies:
+  node-fetch: 2.6.1
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
 
@@ -4183,6 +4185,11 @@ packages:
     resolution: {integrity: sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg==}
     dev: true
     optional: true
+
+  /node-fetch/2.6.1:
+    resolution: {integrity: sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==}
+    engines: {node: 4.x || >=6.0.0}
+    dev: false
 
   /node-int64/0.4.0:
     resolution: {integrity: sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs=}

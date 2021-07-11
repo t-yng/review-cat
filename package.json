@@ -23,6 +23,7 @@
     "test": "pnpm run test:jest --"
   },
   "dependencies": {
+    "node-fetch": "^2.6.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
