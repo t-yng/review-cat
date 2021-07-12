@@ -19,6 +19,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.2.0
   husky: ^7.0.0
   jest: ^27.0.6
+  jotai: ^1.1.3
   lint-staged: ^11.0.0
   node-fetch: ^2.6.1
   prettier: ^2.3.2
@@ -31,6 +32,7 @@ specifiers:
   vite: ^2.3.5
 
 dependencies:
+  jotai: 1.1.3_react@17.0.2
   node-fetch: 2.6.1
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -3778,6 +3780,37 @@ packages:
       - ts-node
       - utf-8-validate
     dev: true
+
+  /jotai/1.1.3_react@17.0.2:
+    resolution: {integrity: sha512-7PZs8gHe8Y+7BkC6m32NbfeNGa8ybFMUoy2DbH542YVYrFEJPxqIE4Es/SXaII7f8r/UZGzg29XWNEDq+iCITg==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@urql/core': '*'
+      immer: '*'
+      optics-ts: '*'
+      react: '>=16.8'
+      react-query: '*'
+      valtio: '*'
+      wonka: '*'
+      xstate: '*'
+    peerDependenciesMeta:
+      '@urql/core':
+        optional: true
+      immer:
+        optional: true
+      optics-ts:
+        optional: true
+      react-query:
+        optional: true
+      valtio:
+        optional: true
+      wonka:
+        optional: true
+      xstate:
+        optional: true
+    dependencies:
+      react: 17.0.2
+    dev: false
 
   /js-tokens/4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}

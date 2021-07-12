@@ -15,7 +15,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "useUnknownInCatchVariables": true,
-    "exactOptionalPropertyTypes": true
+    "exactOptionalPropertyTypes": true,
+    "baseUrl": "."
   },
   "include": ["./renderer", "./electron"]
 }
