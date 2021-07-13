@@ -1,5 +1,5 @@
-const path = require('path');
-const { app, BrowserWindow } = require('electron');
+import path from 'path';
+import { app, BrowserWindow } from 'electron';
 
 const isDevelopment = process?.env?.NODE_ENV === 'development';
 
