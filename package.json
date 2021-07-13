@@ -57,7 +57,7 @@
     "vite": "^2.3.5"
   },
   "lint-staged": {
-    "*.{json}": [
+    "*.json": [
       "pnpm format"
     ],
     "*.{js,ts,tsx}": [
