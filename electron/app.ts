@@ -23,12 +23,6 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  // Github認証のキャッシュを削除する
-  // session.defaultSession.clearStorageData();
-  // session.defaultSession.clearAuthCache([], (data) => {
-  //   console.log(data);
-  // });
-
   createWindow();
 
   app.on('activate', () => {
