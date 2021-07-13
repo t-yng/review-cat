@@ -18,5 +18,5 @@
     "exactOptionalPropertyTypes": true,
     "baseUrl": "."
   },
-  "include": ["./renderer", "./electron"]
+  "include": ["./renderer"]
 }
