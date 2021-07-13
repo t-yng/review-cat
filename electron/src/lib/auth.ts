@@ -51,6 +51,9 @@ export const loginWithGithub = async (
     });
   });
 
+  const session = oAuthWindow.webContents.session;
+  session.clearStorageData();
+
   const oAuthUrl = `https://github.com/login/oauth/authorize?client_id=${oAuthOptions.clientId}&scope=${oAuthOptions.scopes}`;
   oAuthWindow.loadURL(oAuthUrl);
   oAuthWindow.show();
