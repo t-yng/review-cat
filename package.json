@@ -19,7 +19,6 @@
     "prepare": "husky install",
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
     "test:jest": "jest",
-    "test:coverage": "jest --coverage",
     "test": "pnpm test:jest"
   },
   "dependencies": {
