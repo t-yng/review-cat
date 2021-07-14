@@ -19,4 +19,4 @@ jobs:
       - run: npm i -g pnpm
       - run: pnpm install
       - run: pnpm lint
-      - run: pnpm test renderer/src
+      - run: pnpm test
