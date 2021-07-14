@@ -6,7 +6,5 @@
     "noEmit": false,
     "esModuleInterop": true
   },
-  "include": [
-    "./electron/*",
-  ]
+  "include": ["./electron/*"]
 }
