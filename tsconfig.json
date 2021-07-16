@@ -16,7 +16,15 @@
     "jsx": "react-jsx",
     "useUnknownInCatchVariables": true,
     "exactOptionalPropertyTypes": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "types": [
+      "jest",
+      "node",
+      "node-fetch",
+      "react/next",
+      "react-dom/next",
+      "testing-library__jest-dom"
+    ]
   },
   "include": ["./renderer"]
 }
