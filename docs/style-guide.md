@@ -1,7 +1,7 @@
 # スタイルガイド
 
 ## デザイン
-- リセットCSS は [destyle.css](https://github.com/nicolas-cusan/destyle.css) を利用
+- リセットCSS は [The New CSS Reset](https://github.com/elad2412/the-new-css-reset) を利用
 - アイコンは [Octicons](https://primer.style/octicons/) を利用
 
 ## コンポーネント設計
