@@ -5,6 +5,7 @@ export const appIconStyle = style({
   aspectRatio: '1 / 1',
   borderRadius: '50%',
   backgroundColor: themeVars.color.white,
+  overflow: 'hidden',
 });
 
 export const appIconSVGStyle = style({
