@@ -1,13 +1,14 @@
 import React from 'react';
 import { BaseLayout } from '../../layouts/BaseLayout';
-import { AppIcon } from '../../components/AppIcon';
-import { LoginButton } from '../../components/LoginButton';
+import { LoginContent } from '../../components/LoginContent';
+import { contentContainerStyle } from './styles.css';
 
 export const LoginPage = () => {
   return (
     <BaseLayout>
-      <AppIcon />
-      <LoginButton />
+      <div className={`${contentContainerStyle}`}>
+        <LoginContent />
+      </div>
     </BaseLayout>
   );
 };
