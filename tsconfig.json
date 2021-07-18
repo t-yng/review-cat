@@ -23,7 +23,8 @@
       "node-fetch",
       "react/next",
       "react-dom/next",
-      "testing-library__jest-dom"
+      "testing-library__jest-dom",
+      "relay-runtime"
     ]
   },
   "include": ["./renderer"]
