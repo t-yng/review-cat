@@ -41,6 +41,7 @@ specifiers:
   relay-runtime: ^11.0.2
   rimraf: ^3.0.2
   ts-jest: ^27.0.3
+  ts-mockito: ^2.6.1
   typescript: ^4.4.0-beta
   vite: ^2.3.5
   vite-plugin-relay: ^1.0.3
@@ -88,6 +89,7 @@ devDependencies:
   relay-compiler-language-typescript: 14.0.0_9cd3a408e53a81332c70e631700d432a
   rimraf: 3.0.2
   ts-jest: 27.0.3_c1e0131ba2fe0821c3a9f65b91a2cd6a
+  ts-mockito: 2.6.1
   typescript: 4.4.0-beta
   vite: 2.3.8
   vite-plugin-relay: 1.0.3_vite@2.3.8
@@ -6012,6 +6014,12 @@ packages:
       semver: 7.3.5
       typescript: 4.4.0-beta
       yargs-parser: 20.2.9
+    dev: true
+
+  /ts-mockito/2.6.1:
+    resolution: {integrity: sha512-qU9m/oEBQrKq5hwfbJ7MgmVN5Gu6lFnIGWvpxSjrqq6YYEVv+RwVFWySbZMBgazsWqv6ctAyVBpo9TmAxnOEKw==}
+    dependencies:
+      lodash: 4.17.21
     dev: true
 
   /tslib/1.14.1:
