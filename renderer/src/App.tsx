@@ -3,6 +3,9 @@ import { Provider, useAtom } from 'jotai';
 import { LoginPage } from './pages/LoginPage';
 import { tokenAtomWithPersistence } from './jotai/auth';
 import { PullRequestListPage } from './pages/PullRequestList';
+import { RelayEnvironmentProvider, loadQuery } from 'react-relay/hooks';
+import RelayEnvironment from './graphql/relay/RelayEnvironment';
+import { SearchPullRequestsQuery } from './graphql/queries/SearchPullRequest';
 
 // TODO: 別コンポーネントファイルに分割する
 //       リファクタ
@@ -12,7 +15,15 @@ const Layout = () => {
   console.log(token);
 
   return token != null ? (
-    <PullRequestListPage />
+    <Suspense fallback="Loading PullRequests...">
+      <PullRequestListPage
+        preloadedQuery={loadQuery(
+          RelayEnvironment,
+          SearchPullRequestsQuery,
+          {}
+        )}
+      />
+    </Suspense>
   ) : (
     <Suspense fallback="Loading...">
       <LoginPage />
@@ -25,11 +36,13 @@ const App = () => {
   console.log(token);
 
   return (
-    <Provider>
-      <div className="App">
-        <Layout />
-      </div>
-    </Provider>
+    <RelayEnvironmentProvider environment={RelayEnvironment}>
+      <Provider>
+        <div className="App">
+          <Layout />
+        </div>
+      </Provider>
+    </RelayEnvironmentProvider>
   );
 };
 

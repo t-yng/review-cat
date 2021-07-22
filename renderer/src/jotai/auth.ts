@@ -1,16 +1,13 @@
 import { atom } from 'jotai';
+import { storage } from '../lib/storage';
 
-const TOKEN_STORAGE_KEY = 'token';
-
-export const tokenAtom = atom<string | null>(
-  localStorage.getItem(TOKEN_STORAGE_KEY)
-);
+export const tokenAtom = atom<string | null>(storage.getGithubAccessToken());
 
 export const tokenAtomWithPersistence = atom<string | null, string>(
   (get) => get(tokenAtom),
   (get, set, newToken) => {
     set(tokenAtom, newToken);
-    localStorage.setItem(TOKEN_STORAGE_KEY, newToken);
+    storage.setGithubAccessToken(newToken);
   }
 );
 
