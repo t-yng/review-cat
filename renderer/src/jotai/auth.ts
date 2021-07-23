@@ -3,6 +3,11 @@ import { storage } from '../lib/storage';
 
 export const tokenAtom = atom<string | null>(storage.getGithubAccessToken());
 
+export const isLoggedInAtom = atom((get) => {
+  const token = get(tokenAtom);
+  return token != null && token !== '';
+});
+
 export const tokenAtomWithPersistence = atom<string | null, string>(
   (get) => get(tokenAtom),
   (get, set, newToken) => {

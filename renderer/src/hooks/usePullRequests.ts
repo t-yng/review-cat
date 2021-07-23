@@ -1,37 +1,35 @@
-import { PreloadedQuery, useFragment, usePreloadedQuery } from 'react-relay';
+import { useAtom } from 'jotai';
+import { PreloadedQuery, usePreloadedQuery } from 'react-relay';
 import { pullRequestMapper } from '../graphql/mapper';
 import {
   SearchPullRequest,
   SearchPullRequestsQuery,
-  SearchPullRequestViewer,
-} from '../graphql/queries/SearchPullRequest';
-import { SearchPullRequest$data } from '../graphql/queries/__generated__/SearchPullRequest.graphql';
+} from '../graphql/queries/SearchPullRequestsQuery';
 import { SearchPullRequestsQuery as SearchPullRequestsQueryType } from '../graphql/queries/__generated__/SearchPullRequestsQuery.graphql';
-import { SearchPullRequestViewer$key } from '../graphql/queries/__generated__/SearchPullRequestViewer.graphql';
+import { userAtom } from '../jotai/user';
 import { PullRequest } from '../models/PullRequest';
+import { User } from '../models/User';
 
 export const usePullRequests = (
   preloadedQuery: PreloadedQuery<SearchPullRequestsQueryType>
 ) => {
+  const [loginUser] = useAtom(userAtom);
+
   const data = usePreloadedQuery<SearchPullRequestsQueryType>(
     SearchPullRequestsQuery,
     preloadedQuery
   );
 
-  const searchPullRequests = useFragment(
-    SearchPullRequest,
-    data.search.nodes
-  ) as Array<SearchPullRequest$data>;
+  const searchPullRequests = (data.search.nodes?.filter(
+    (node) => node != null
+  ) ?? []) as Array<SearchPullRequest>;
 
-  // TODO: ログイン時にログインユーザーの情報は取得してjotaiで管理して、参照する
-  const viewer = useFragment<SearchPullRequestViewer$key>(
-    SearchPullRequestViewer,
-    data.viewer
-  );
-
-  const pullRequests: Array<PullRequest> = searchPullRequests.map((pr) =>
-    pullRequestMapper.toModelFromSearchPullRequest(pr, viewer)
-  );
+  const pullRequests: Array<PullRequest> = searchPullRequests.map((pr) => {
+    return pullRequestMapper.toModelFromSearchPullRequest(
+      pr,
+      loginUser as User
+    );
+  });
 
   return {
     pullRequests,

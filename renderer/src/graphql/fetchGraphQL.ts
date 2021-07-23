@@ -5,12 +5,12 @@ export const fetchGraphQL = async (
   text: string | null | undefined,
   variables: Variables
 ) => {
-  const AUTH_TOKEN = storage.getGithubAccessToken();
+  const oAuthToken = storage.getGithubAccessToken();
 
   const response = await fetch('https://api.github.com/graphql', {
     method: 'POST',
     headers: {
-      Authorization: `bearer ${AUTH_TOKEN}`,
+      Authorization: `bearer ${oAuthToken}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

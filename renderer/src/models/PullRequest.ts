@@ -1,7 +1,4 @@
-interface User {
-  name: string;
-  avatarUrl: string;
-}
+import { User } from './User';
 
 interface Repository {
   nameWithOwner: string;

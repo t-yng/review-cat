@@ -1,28 +1,20 @@
 import React, { Suspense } from 'react';
 import { Provider, useAtom } from 'jotai';
-import { LoginPage } from './pages/LoginPage';
-import { tokenAtomWithPersistence } from './jotai/auth';
-import { PullRequestListPage } from './pages/PullRequestList';
-import { RelayEnvironmentProvider, loadQuery } from 'react-relay/hooks';
+import { RelayEnvironmentProvider } from 'react-relay/hooks';
+import { LoginPage, PullRequestListPage } from './pages';
 import RelayEnvironment from './graphql/relay/RelayEnvironment';
-import { SearchPullRequestsQuery } from './graphql/queries/SearchPullRequest';
+import { isLoggedInAtom } from './jotai';
 
 // TODO: 別コンポーネントファイルに分割する
 //       リファクタ
 // TODO: react-router でルーティングする
-const Layout = () => {
-  const [token] = useAtom(tokenAtomWithPersistence);
-  console.log(token);
+const AppRoute = () => {
+  const [isLoggedIn] = useAtom(isLoggedInAtom);
 
-  return token != null ? (
-    <Suspense fallback="Loading PullRequests...">
-      <PullRequestListPage
-        preloadedQuery={loadQuery(
-          RelayEnvironment,
-          SearchPullRequestsQuery,
-          {}
-        )}
-      />
+  return isLoggedIn != null ? (
+    // TODO: Suspenseを削除するリファクタを実施
+    <Suspense fallback="Loading...">
+      <PullRequestListPage />
     </Suspense>
   ) : (
     <Suspense fallback="Loading...">
@@ -32,14 +24,11 @@ const Layout = () => {
 };
 
 const App = () => {
-  const [token] = useAtom(tokenAtomWithPersistence);
-  console.log(token);
-
   return (
     <RelayEnvironmentProvider environment={RelayEnvironment}>
       <Provider>
         <div className="App">
-          <Layout />
+          <AppRoute />
         </div>
       </Provider>
     </RelayEnvironmentProvider>

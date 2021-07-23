@@ -1,6 +1,6 @@
 import { PullRequest } from 'renderer/src/models/PullRequest';
-import { SearchPullRequest } from '../queries/__generated__/SearchPullRequest.graphql';
-import { SearchPullRequestViewer } from '../queries/__generated__/SearchPullRequestViewer.graphql';
+import { User } from 'renderer/src/models/User';
+import { SearchPullRequest } from '../queries/SearchPullRequestsQuery';
 
 // レビュー待ちのプルリクエスト: requestedReviewer に自分が含まれている
 // 承認済みのプルリクエスト: 自分の state: APPROVED のレビューが存在する
@@ -8,17 +8,17 @@ import { SearchPullRequestViewer } from '../queries/__generated__/SearchPullRequ
 
 export const getPullRequestStatus = (
   pr: SearchPullRequest,
-  viewer: SearchPullRequestViewer
+  loginUser: User
 ): PullRequest['status'] => {
-  const isRequestedReview = pr?.reviewRequests?.nodes?.some(
-    (node) => node?.requestedReviewer?.login === viewer.login
+  const isRequestedReview = pr.reviewRequests?.nodes?.some(
+    (node) => node?.requestedReviewer?.login === loginUser.name
   );
 
   if (isRequestedReview) {
     return 'requestedReview';
   }
 
-  const totalCount = pr?.reviews?.totalCount ?? 0;
+  const totalCount = pr.reviews?.totalCount ?? 0;
   const isApproved = totalCount > 0;
   if (isApproved) {
     return 'approved';
@@ -29,22 +29,22 @@ export const getPullRequestStatus = (
 
 const toModelFromSearchPullRequest = (
   pr: SearchPullRequest,
-  viewer: SearchPullRequestViewer
+  loginUser: User
 ): PullRequest => {
   const basePullRequest: Omit<PullRequest, 'status'> = {
-    title: pr?.title ?? '',
+    title: pr.title ?? '',
     repository: {
-      nameWithOwner: pr?.repository?.nameWithOwner ?? '',
+      nameWithOwner: pr.repository?.nameWithOwner ?? '',
     },
     author: {
-      name: pr?.author?.login ?? '',
-      avatarUrl: (pr?.author?.avatarUrl as string) ?? '',
+      name: pr.author?.login ?? '',
+      avatarUrl: (pr.author?.avatarUrl as string) ?? '',
     },
   };
 
   return {
     ...basePullRequest,
-    status: getPullRequestStatus(pr, viewer),
+    status: getPullRequestStatus(pr, loginUser),
   };
 };
 
