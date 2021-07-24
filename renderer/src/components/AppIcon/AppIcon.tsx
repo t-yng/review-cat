@@ -3,7 +3,7 @@ import { appIconStyle, appIconSVGStyle } from './styles.css';
 
 export const AppIcon: React.FC = () => {
   return (
-    <div className={`${appIconStyle}`}>
+    <div className={appIconStyle}>
       <svg
         className={`${appIconSVGStyle}`}
         viewBox="0 0 24 24"
