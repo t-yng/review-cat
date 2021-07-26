@@ -1,10 +1,18 @@
 import { style } from '@vanilla-extract/css';
+import { space } from '../../themeStyleHelper';
 
-export const baseLayoutStyle = style({
+export const rootStyle = style({
   display: 'grid',
-  gridTemplateColumns: '64px 1fr',
+  gridTemplateColumns: `${space(8)} 1fr`,
   gridTemplateRows: '1fr',
   width: '100%',
-  height: '100vh',
+  minHeight: '100vh',
   backgroundColor: '#fff',
+});
+
+export const navContainerStyle = style({
+  position: 'sticky',
+  top: '0',
+  left: '0',
+  height: '100vh',
 });
