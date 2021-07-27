@@ -1,6 +1,6 @@
+import { User } from 'renderer/src/models';
 import { mock, when, instance } from 'ts-mockito';
-import { SearchPullRequest } from '../queries/__generated__/SearchPullRequest.graphql';
-import { SearchPullRequestViewer } from '../queries/__generated__/SearchPullRequestViewer.graphql';
+import { SearchPullRequest } from '../queries/SearchPullRequestsQuery';
 import { pullRequestMapper } from './pullRequest';
 
 describe('mapper/pullRequest', () => {
@@ -9,13 +9,13 @@ describe('mapper/pullRequest', () => {
       pullRequestMapper.toModelFromSearchPullRequest;
 
     describe('ステータスの設定', () => {
-      const loginUser = 'test';
+      const userName = 'test';
       let mockPullRequest: SearchPullRequest;
-      let mockViewer: SearchPullRequestViewer;
+      let mockUser: User;
 
       beforeAll(() => {
-        mockViewer = mock<SearchPullRequestViewer>();
-        when(mockViewer.login).thenReturn(loginUser);
+        mockUser = mock<User>();
+        when(mockUser.name).thenReturn(userName);
       });
 
       beforeEach(() => {
@@ -25,12 +25,12 @@ describe('mapper/pullRequest', () => {
       it('requestedReviewer に自分が含まれているときに requestedReview の status を設定すること', () => {
         when(mockPullRequest.reviewRequests).thenReturn({
           totalCount: 1,
-          nodes: [{ requestedReviewer: { login: loginUser } }],
+          nodes: [{ requestedReviewer: { login: userName } }],
         });
 
         const pullRequest = toModelFromSearchPullRequest(
           instance(mockPullRequest),
-          instance(mockViewer)
+          instance(mockUser)
         );
 
         expect(pullRequest.status).toBe('requestedReview');
@@ -43,7 +43,7 @@ describe('mapper/pullRequest', () => {
 
         const pullRequest = toModelFromSearchPullRequest(
           instance(mockPullRequest),
-          instance(mockViewer)
+          instance(mockUser)
         );
 
         expect(pullRequest.status).toBe('approved');
@@ -52,7 +52,7 @@ describe('mapper/pullRequest', () => {
       it('上記以外の場合は reviewing の status を設定すること', () => {
         const pullRequest = toModelFromSearchPullRequest(
           instance(mockPullRequest),
-          instance(mockViewer)
+          instance(mockUser)
         );
 
         expect(pullRequest.status).toBe('reviewing');
