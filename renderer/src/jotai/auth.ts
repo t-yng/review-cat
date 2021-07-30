@@ -16,8 +16,14 @@ export const tokenAtomWithPersistence = atom<string | null, string>(
   }
 );
 
-export const signInAtom = atom(null, async (get, set) => {
-  const code = await window.ipc.loginWithGithub();
-  const token = await window.ipc.getAccessToken(code);
-  set(tokenAtomWithPersistence, token);
-});
+export const signInAtom = atom<null, (() => void) | undefined>(
+  null,
+  async (get, set, callback) => {
+    const code = await window.ipc.loginWithGithub();
+    const token = await window.ipc.getAccessToken(code);
+    set(tokenAtomWithPersistence, token);
+    if (callback != null) {
+      callback();
+    }
+  }
+);
