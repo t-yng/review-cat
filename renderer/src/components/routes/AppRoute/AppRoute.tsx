@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { LoginPage, PullRequestListPage } from '../../../pages';
-import { PrivateRoute } from '../PrivateRoute/PrivateRoute';
+import { PrivateRoute } from '../PrivateRoute';
 
 export const AppRoute = () => {
   return (

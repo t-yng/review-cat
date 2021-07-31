@@ -2,7 +2,7 @@ import React, { FC, ReactNode, Suspense } from 'react';
 import { Route, RouteProps, Redirect } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { isLoggedInAtom } from '../../../jotai';
-import { AuthProvider } from '../../AuthProvider/AuthProvider';
+import { AuthProvider } from '../../AuthProvider';
 
 type PrivateRouteProps = RouteProps & {
   children?: ReactNode;
