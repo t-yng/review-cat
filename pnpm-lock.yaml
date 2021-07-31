@@ -32,8 +32,8 @@ specifiers:
   lint-staged: ^11.0.0
   node-fetch: ^2.6.1
   prettier: ^2.3.2
-  react: ^18.0.0-alpha-d5de45820-20210714
-  react-dom: ^18.0.0-alpha-d5de45820-20210714
+  react: ^17.0.2
+  react-dom: ^17.0.2
   react-relay: ^11.0.2
   react-test-renderer: ^17.0.2
   relay-compiler: ^11.0.2
@@ -49,16 +49,16 @@ specifiers:
 dependencies:
   '@vanilla-extract/css': 1.1.1
   destyle.css: 2.0.2
-  jotai: 1.1.3_0681c0255aa41acb25a82827b152efd6
+  jotai: 1.1.3_react@17.0.2
   node-fetch: 2.6.1
-  react: 18.0.0-alpha-d5de45820-20210714
-  react-dom: 18.0.0-alpha-d5de45820-20210714_0681c0255aa41acb25a82827b152efd6
-  react-relay: 11.0.2_0681c0255aa41acb25a82827b152efd6
+  react: 17.0.2
+  react-dom: 17.0.2_react@17.0.2
+  react-relay: 11.0.2_react@17.0.2
   relay-runtime: 11.0.2
 
 devDependencies:
   '@testing-library/jest-dom': 5.14.1
-  '@testing-library/react': 12.0.0_eece9722472c0ae8189ab3d703c22d26
+  '@testing-library/react': 12.0.0_react-dom@17.0.2+react@17.0.2
   '@types/jest': 26.0.24
   '@types/node': 16.0.0
   '@types/node-fetch': 2.5.11
@@ -84,7 +84,7 @@ devDependencies:
   jest: 27.0.6
   lint-staged: 11.0.0
   prettier: 2.3.2
-  react-test-renderer: 17.0.2_0681c0255aa41acb25a82827b152efd6
+  react-test-renderer: 17.0.2_react@17.0.2
   relay-compiler: 11.0.2_graphql@15.5.1
   relay-compiler-language-typescript: 14.0.0_9cd3a408e53a81332c70e631700d432a
   rimraf: 3.0.2
@@ -1177,7 +1177,7 @@ packages:
       redent: 3.0.0
     dev: true
 
-  /@testing-library/react/12.0.0_eece9722472c0ae8189ab3d703c22d26:
+  /@testing-library/react/12.0.0_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-sh3jhFgEshFyJ/0IxGltRhwZv2kFKfJ3fN1vTZ6hhMXzz9ZbbcTgmDYM4e+zJv+oiVKKEWZPyqPAh4MQBI65gA==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -1186,8 +1186,8 @@ packages:
     dependencies:
       '@babel/runtime': 7.14.6
       '@testing-library/dom': 8.1.0
-      react: 18.0.0-alpha-d5de45820-20210714
-      react-dom: 18.0.0-alpha-d5de45820-20210714_0681c0255aa41acb25a82827b152efd6
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: true
 
   /@tootallnate/once/1.1.2:
@@ -4371,7 +4371,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /jotai/1.1.3_0681c0255aa41acb25a82827b152efd6:
+  /jotai/1.1.3_react@17.0.2:
     resolution: {integrity: sha512-7PZs8gHe8Y+7BkC6m32NbfeNGa8ybFMUoy2DbH542YVYrFEJPxqIE4Es/SXaII7f8r/UZGzg29XWNEDq+iCITg==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -4399,7 +4399,7 @@ packages:
       xstate:
         optional: true
     dependencies:
-      react: 18.0.0-alpha-d5de45820-20210714
+      react: 17.0.2
     dev: false
 
   /js-tokens/4.0.0:
@@ -5226,15 +5226,15 @@ packages:
       strip-json-comments: 2.0.1
     dev: true
 
-  /react-dom/18.0.0-alpha-d5de45820-20210714_0681c0255aa41acb25a82827b152efd6:
-    resolution: {integrity: sha512-6ZIlPQMxyFe6ovnpKT7HGe4gwm7eloJcx+cYhbzdq8mSTDNcLmVm3IPcvwaysWyXH6KbS83s2VmdYV90eFCpBQ==}
+  /react-dom/17.0.2_react@17.0.2:
+    resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
     peerDependencies:
-      react: 18.0.0-alpha-d5de45820-20210714
+      react: 17.0.2
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-      react: 18.0.0-alpha-d5de45820-20210714
-      scheduler: 0.21.0-alpha-d5de45820-20210714
+      react: 17.0.2
+      scheduler: 0.20.2
     dev: false
 
   /react-is/16.13.1:
@@ -5250,7 +5250,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /react-relay/11.0.2_0681c0255aa41acb25a82827b152efd6:
+  /react-relay/11.0.2_react@17.0.2:
     resolution: {integrity: sha512-RxtLBl8nxbaP26RcNDtKMrUBuJB5kFCCI4aZxnZByoncgovDgtewAsMiwcI8aDA8FjmXWRAtAAckh8DkMsMp7Q==}
     peerDependencies:
       react: ^16.9.0 || ^17
@@ -5259,34 +5259,34 @@ packages:
       fbjs: 3.0.0
       invariant: 2.2.4
       nullthrows: 1.1.1
-      react: 18.0.0-alpha-d5de45820-20210714
+      react: 17.0.2
       relay-runtime: 11.0.2
     dev: false
 
-  /react-shallow-renderer/16.14.1_0681c0255aa41acb25a82827b152efd6:
+  /react-shallow-renderer/16.14.1_react@17.0.2:
     resolution: {integrity: sha512-rkIMcQi01/+kxiTE9D3fdS959U1g7gs+/rborw++42m1O9FAQiNI/UNRZExVUoAOprn4umcXf+pFRou8i4zuBg==}
     peerDependencies:
       react: ^16.0.0 || ^17.0.0
     dependencies:
       object-assign: 4.1.1
-      react: 18.0.0-alpha-d5de45820-20210714
+      react: 17.0.2
       react-is: 17.0.2
     dev: true
 
-  /react-test-renderer/17.0.2_0681c0255aa41acb25a82827b152efd6:
+  /react-test-renderer/17.0.2_react@17.0.2:
     resolution: {integrity: sha512-yaQ9cB89c17PUb0x6UfWRs7kQCorVdHlutU1boVPEsB8IDZH6n9tHxMacc3y0JoXOJUsZb/t/Mb8FUWMKaM7iQ==}
     peerDependencies:
       react: 17.0.2
     dependencies:
       object-assign: 4.1.1
-      react: 18.0.0-alpha-d5de45820-20210714
+      react: 17.0.2
       react-is: 17.0.2
-      react-shallow-renderer: 16.14.1_0681c0255aa41acb25a82827b152efd6
+      react-shallow-renderer: 16.14.1_react@17.0.2
       scheduler: 0.20.2
     dev: true
 
-  /react/18.0.0-alpha-d5de45820-20210714:
-    resolution: {integrity: sha512-oXiT7EUNy63LXR2xYBL9IZlnxk5BVf7IWEQZ7Ek0y/dHr2x4oPahpm+MfzlctloztPmRFPVAQncrI6Xy4iQmdA==}
+  /react/17.0.2:
+    resolution: {integrity: sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==}
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
@@ -5546,14 +5546,6 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-    dev: true
-
-  /scheduler/0.21.0-alpha-d5de45820-20210714:
-    resolution: {integrity: sha512-wVd2aFWJlcIySCLmR4+sRr2EdcLt8IxgLTcOggzwSvVVI73hnhPqc5falHM/s6qMrXKKKnsa72Gl6Ovqohc3Zw==}
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-    dev: false
 
   /semver-compare/1.0.0:
     resolution: {integrity: sha1-De4hahyUGrN+nvsXiPavxf9VN/w=}
