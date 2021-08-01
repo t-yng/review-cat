@@ -3,7 +3,7 @@
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
-    "skipLibCheck": false,
+    "skipLibCheck": true, // @types/react がバージョン違いで Duplicate identifier が発生するので true に設定
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
