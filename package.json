@@ -21,9 +21,9 @@
     "test:jest": "jest",
     "test": "pnpm test:jest",
     "relay": "relay-compiler --src ./renderer/src --schema ./schema.github.graphql --extensions ts tsx --eagerESModules --language typescript",
-    "tsc:check": "pnpm tsc:check:renderer & pnpm tsc:check:electron",
-    "tsc:check:renderer": "tsc --noEmit",
-    "tsc:check:electron": "tsc -p tsconfig.electron.json --noEmit"
+    "type-check": "pnpm type-check:renderer & pnpm type-check:electron",
+    "type-check:renderer": "tsc --noEmit",
+    "type-check:electron": "tsc -p tsconfig.electron.json --noEmit"
   },
   "dependencies": {
     "@vanilla-extract/css": "^1.1.1",
