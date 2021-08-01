@@ -3,7 +3,7 @@ import { themeVars } from '../../theme.css';
 import { space } from '../../themeStyleHelper';
 
 export const buttonStyle = style({
-  padding: `${space()} ${space(2)}`,
+  padding: `${space(1)} ${space(2)}`,
   backgroundColor: themeVars.color.accent,
   borderRadius: `${space(0.5)}`,
   color: themeVars.color.white,
