@@ -20,5 +20,5 @@ jobs:
       - run: pnpm install
       - run: pnpm relay
       - run: pnpm lint
-      - run: pnpm tsc:check
+      - run: pnpm type-check
       - run: pnpm test
