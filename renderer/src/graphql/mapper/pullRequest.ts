@@ -33,6 +33,7 @@ const toModelFromSearchPullRequest = (
 ): PullRequest => {
   const basePullRequest: Omit<PullRequest, 'status'> = {
     title: pr.title ?? '',
+    url: pr.url ?? '',
     repository: {
       nameWithOwner: pr.repository?.nameWithOwner ?? '',
     },

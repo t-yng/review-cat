@@ -19,6 +19,7 @@ export const SearchPullRequestsQuery = graphql`
         ... on PullRequest {
           headRefName
           title
+          url
           author {
             avatarUrl
             login
