@@ -20,7 +20,7 @@
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
     "test:jest": "jest",
     "test": "pnpm test:jest",
-    "relay": "relay-compiler --src ./renderer/src --schema ./schema.github.graphql --extensions ts tsx --eagerESModules --language typescript",
+    "relay": "relay-compiler",
     "type-check": "pnpm type-check:renderer & pnpm type-check:electron",
     "type-check:renderer": "tsc --noEmit",
     "type-check:electron": "tsc -p tsconfig.electron.json --noEmit"
