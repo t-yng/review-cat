@@ -20,7 +20,7 @@
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
     "test:jest": "jest",
     "test": "pnpm test:jest",
-    "relay": "relay-compiler --src ./renderer/src --schema ./schema.github.graphql --extensions ts tsx --eagerESModules --language typescript",
+    "relay": "relay-compiler",
     "type-check": "pnpm type-check:renderer & pnpm type-check:electron",
     "type-check:renderer": "tsc --noEmit",
     "type-check:electron": "tsc -p tsconfig.electron.json --noEmit"
@@ -68,6 +68,7 @@
     "react-test-renderer": "^17.0.2",
     "relay-compiler": "^11.0.2",
     "relay-compiler-language-typescript": "^14.0.0",
+    "relay-config": "^11.0.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.3",
     "ts-mockito": "^2.6.1",
