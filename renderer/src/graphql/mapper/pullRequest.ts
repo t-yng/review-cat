@@ -38,7 +38,7 @@ const toModelFromSearchPullRequest = (
     },
     author: {
       name: pr.author?.login ?? '',
-      avatarUrl: (pr.author?.avatarUrl as string) ?? '',
+      avatarUrl: pr.author?.avatarUrl ?? '',
     },
   };
 
