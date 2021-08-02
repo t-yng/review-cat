@@ -4,4 +4,7 @@ module.exports = {
   language: 'typescript',
   extensions: ['ts', 'tsx'],
   eagerESModules: true,
+  customScalars: {
+    URI: 'String',
+  },
 };
