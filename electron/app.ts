@@ -1,5 +1,5 @@
 import path from 'path';
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { auth } from './src/lib';
 import { oAuthOptions } from './src/constants/auth';
 
@@ -16,9 +16,18 @@ function createWindow() {
     },
   });
 
+  mainWindow.webContents.setWindowOpenHandler((details) => {
+    shell.openExternal(details.url);
+
+    return {
+      action: 'deny',
+    };
+  });
+
   const indexUrl = isDevelopment
     ? 'http://localhost:3000/'
     : `file://${path.resolve(__dirname, './index.html')}`;
+
   mainWindow.loadURL(indexUrl);
 }
 
