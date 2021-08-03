@@ -1,19 +1,12 @@
-import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
-import { Provider } from 'jotai';
-import { FC } from 'react';
 import { useSettings } from './useSettings';
 
 jest.mock('../lib/storage');
 
 describe('useSettings', () => {
-  const wrapper: FC = ({ children }) => {
-    return <Provider>{children}</Provider>;
-  };
-
   describe('updateNotifyReviewRequested', () => {
     it('レビューリクエストの通知設定が更新されること', () => {
-      const { result } = renderHook(() => useSettings(), { wrapper });
+      const { result } = renderHook(() => useSettings());
 
       const updated = !result.current.settings.notifyReviewRequested;
       act(() => {
@@ -26,7 +19,7 @@ describe('useSettings', () => {
 
   describe('updateShowsPR', () => {
     it('PRの表示設定が更新されること', () => {
-      const { result } = renderHook(() => useSettings(), { wrapper });
+      const { result } = renderHook(() => useSettings());
       const settings = result.current.settings;
 
       const updatedRequestedReview = !settings.showsRequestedReviewPR;
@@ -50,7 +43,7 @@ describe('useSettings', () => {
 
   describe('updateSubscribedPRList', () => {
     it('PRの監視するリポジトリの一覧が更新されること', () => {
-      const { result } = renderHook(() => useSettings(), { wrapper });
+      const { result } = renderHook(() => useSettings());
 
       const prList = ['test/test1', 'test/test2'];
       act(() => {
