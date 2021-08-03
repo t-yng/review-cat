@@ -14,6 +14,6 @@ export const themeVars = createGlobalTheme(':root', {
 
 export const themeFocusVisibleOutline = style({
   ':focus-visible': {
-    boxShadow: '0 0 0 3px rgba(0, 110, 255, 0.8)',
+    outlineColor: 'rgba(0, 110, 255, 0.8)',
   },
 });
