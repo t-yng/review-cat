@@ -19,7 +19,7 @@ export const PullRequestItem: React.FC<Props> = (props) => {
         <GitHubAvatar
           {...{
             src: author.avatarUrl,
-            alt: author.name,
+            alt: `author is ${author.name}`,
             loading: 'lazy',
           }}
         />
