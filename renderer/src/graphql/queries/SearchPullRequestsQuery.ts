@@ -26,6 +26,7 @@ export const SearchPullRequestsQuery = graphql`
           }
           repository {
             nameWithOwner
+            openGraphImageUrl
           }
           reviews(author: $login_user_name, states: [APPROVED], last: 100) {
             totalCount

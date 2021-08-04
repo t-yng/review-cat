@@ -36,6 +36,7 @@ const toModelFromSearchPullRequest = (
     url: pr.url ?? '',
     repository: {
       nameWithOwner: pr.repository?.nameWithOwner ?? '',
+      openGraphImageUrl: pr.repository?.openGraphImageUrl ?? '',
     },
     author: {
       name: pr.author?.login ?? '',

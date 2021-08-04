@@ -2,6 +2,7 @@ import { User } from './User';
 
 interface Repository {
   nameWithOwner: string;
+  openGraphImageUrl: string;
 }
 
 type PullRequestStatus = 'requestedReview' | 'reviewing' | 'approved';
