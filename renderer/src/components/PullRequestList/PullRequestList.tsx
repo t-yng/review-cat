@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { PullRequest } from 'renderer/src/models';
-import { PullRequestListItem } from '../PullRequestListItem';
+import { RepositorySection } from '../RepositorySection';
 
 type Props = {
   pullRequests: PullRequest[];
@@ -8,13 +8,10 @@ type Props = {
 
 export const PullRequestList: FC<Props> = ({ pullRequests }: Props) => {
   return (
-    <ul>
+    <React.Fragment>
       {pullRequests.map((pr, i) => (
-        <li key={pr.title ?? i}>
-          <h1>{pr.repository.nameWithOwner}</h1>
-          <PullRequestListItem {...pr} />
-        </li>
+        <RepositorySection pullRequest={pr} key={pr.title ?? i} />
       ))}
-    </ul>
+    </React.Fragment>
   );
 };
