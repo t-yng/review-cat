@@ -3,7 +3,7 @@ import { Repository } from '../../models/PullRequest';
 import { GitHubAvatar } from '../GitHubAvatar';
 import { styles } from './styles.css';
 
-export const PullRequestListHeadingContent: React.FC<Repository> = ({
+export const RepositorySectionHeadingContent: React.FC<Repository> = ({
   nameWithOwner,
   openGraphImageUrl,
 }) => {

@@ -5,7 +5,7 @@ import { styles } from './styles.css';
 
 type Props = PullRequest;
 
-export const PullRequestListItem: React.FC<Props> = (props) => {
+export const PullRequestItem: React.FC<Props> = (props) => {
   const { author, url, title, status } = props;
 
   return (
