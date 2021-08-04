@@ -1,6 +1,6 @@
 import { User } from './User';
 
-interface Repository {
+export interface Repository {
   nameWithOwner: string;
   openGraphImageUrl: string;
 }
