@@ -50,7 +50,7 @@ describe('lib/storage', () => {
     });
 
     describe('setGithubAccessToken', () => {
-      it('localStorageからアクセストークンがセットできること', () => {
+      it('localStorageにアクセストークンがセットできること', () => {
         const token = 'token';
         const mockSetItem = mockLocalStorageSetItem();
 
@@ -84,7 +84,7 @@ describe('lib/storage', () => {
     });
 
     describe('setSettings', () => {
-      it('localStorageからアクセストークンがセットできること', () => {
+      it('localStorageに設定情報をセットできること', () => {
         const mockSetItem = mockLocalStorageSetItem();
 
         storage.setSettings(settings);

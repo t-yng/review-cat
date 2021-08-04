@@ -42,7 +42,7 @@ describe('useSettings', () => {
   });
 
   describe('updateSubscribedPRList', () => {
-    it('PRの監視するリポジトリの一覧が更新されること', () => {
+    it('PRを監視するリポジトリの一覧が更新されること', () => {
       const { result } = renderHook(() => useSettings());
 
       const prList = ['test/test1', 'test/test2'];
