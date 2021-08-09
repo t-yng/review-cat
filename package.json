@@ -26,6 +26,7 @@
     "type-check:electron": "tsc -p tsconfig.electron.json --noEmit"
   },
   "dependencies": {
+    "@primer/octicons-react": "^15.0.0",
     "@vanilla-extract/css": "^1.1.1",
     "destyle.css": "^2.0.2",
     "jotai": "^1.1.3",
@@ -40,6 +41,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^7.0.1",
+    "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.0.0",
     "@types/node-fetch": "^2.5.11",
