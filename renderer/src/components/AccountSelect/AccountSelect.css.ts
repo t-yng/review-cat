@@ -4,6 +4,7 @@ import { space } from '../../themeStyleHelper';
 
 export const rootStyle = style({
   position: 'relative',
+  width: '100%',
 });
 
 export const selectStyle = style({
