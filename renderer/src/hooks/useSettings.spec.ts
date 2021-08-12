@@ -41,18 +41,42 @@ describe('useSettings', () => {
     });
   });
 
-  describe('updateSubscribedRepositories', () => {
-    it('PRを監視するリポジトリの一覧が更新されること', () => {
+  describe('addSubscribedRepositories', () => {
+    it('PRを監視するリポジトリを追加できること', () => {
       const { result } = renderHook(() => useSettings());
 
       const repositories = ['test/test1', 'test/test2'];
       act(() => {
-        result.current.updateSubscribedRepositories(repositories);
+        result.current.addSubscribedRepository(repositories[0]);
+      });
+      act(() => {
+        result.current.addSubscribedRepository(repositories[1]);
       });
 
       expect(result.current.settings.subscribedRepositories).toEqual(
         repositories
       );
+    });
+  });
+
+  describe('removeSubscribedRepositories', () => {
+    it('PRを監視するリポジトリを削除できること', () => {
+      const { result } = renderHook(() => useSettings());
+
+      const repositories = ['test/test1', 'test/test2'];
+      act(() => {
+        result.current.addSubscribedRepository(repositories[0]);
+      });
+      act(() => {
+        result.current.addSubscribedRepository(repositories[1]);
+      });
+      act(() => {
+        result.current.removeSubscribedRepository(repositories[0]);
+      });
+
+      expect(result.current.settings.subscribedRepositories).toEqual([
+        repositories[1],
+      ]);
     });
   });
 });
