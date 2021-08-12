@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import React, { useState } from 'react';
+import React, { FC, memo, useState } from 'react';
 import { ChevronDownIcon } from '@primer/octicons-react';
 import {
   chevronDownIconStyle,
@@ -10,7 +11,11 @@ import {
   selectStyle,
 } from './AccountSelect.css';
 
-export const AccountSelect = () => {
+export type AccountSelectProps = {
+  onSelect: (account: string) => void;
+};
+
+export const AccountSelect: FC<AccountSelectProps> = memo(({ onSelect }) => {
   const [openedSelectMenu, setOpenedSelectMenu] = useState(false);
 
   return (
@@ -27,9 +32,9 @@ export const AccountSelect = () => {
       </div>
       {openedSelectMenu && (
         <ul className={selectMenuStyle} role="listbox">
-          <li>higeOhige</li>
+          <li onClick={() => onSelect('higeOhige')}>higeOhige</li>
         </ul>
       )}
     </div>
   );
-};
+});
