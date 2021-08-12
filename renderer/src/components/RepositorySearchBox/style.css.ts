@@ -6,11 +6,14 @@ export const rootStyle = style({
   width: '100%',
   border: `1px solid ${themeVars.color.gray100}`,
   borderRadius: '2px',
-  color: themeVars.color.gray300,
   padding: space(1),
   display: 'flex',
   alignItems: 'center',
   fontSize: '1.2rem',
+});
+
+export const iconStyle = style({
+  color: themeVars.color.gray300,
 });
 
 export const inputStyle = style({
