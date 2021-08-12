@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo, useState, useCallback, useEffect } from 'react';
 import { ChevronDownIcon } from '@primer/octicons-react';
 import {
   chevronDownIconStyle,
@@ -18,11 +18,24 @@ export type AccountSelectProps = {
 export const AccountSelect: FC<AccountSelectProps> = memo(({ onSelect }) => {
   const [openedSelectMenu, setOpenedSelectMenu] = useState(false);
 
+  const bodyClickEventListener = useCallback(() => {
+    setOpenedSelectMenu(false);
+  }, []);
+
+  useEffect(() => {
+    document.body.addEventListener('click', bodyClickEventListener);
+
+    return () => {
+      document.body.addEventListener('click', bodyClickEventListener);
+    };
+  }, [bodyClickEventListener]);
+
   return (
     <div className={rootStyle}>
       <div
         className={selectStyle}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           setOpenedSelectMenu((opened) => !opened);
         }}
         data-testid="account-select-box"
@@ -32,7 +45,14 @@ export const AccountSelect: FC<AccountSelectProps> = memo(({ onSelect }) => {
       </div>
       {openedSelectMenu && (
         <ul className={selectMenuStyle} role="listbox">
-          <li onClick={() => onSelect('higeOhige')}>higeOhige</li>
+          <li
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect('higeOhige');
+            }}
+          >
+            higeOhige
+          </li>
         </ul>
       )}
     </div>
