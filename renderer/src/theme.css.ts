@@ -9,6 +9,7 @@ export const themeVars = createGlobalTheme(':root', {
     gray700: '#555',
     gray900: '#333',
     accent: '#f2b24e',
+    green: '#0A9710',
   },
 });
 

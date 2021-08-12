@@ -25,9 +25,21 @@ export const repositoryListStyle = style({
 });
 
 export const repositoryListItemStyle = style({
+  display: 'flex',
+  justifyContent: 'space-between',
   selectors: {
     '&:not(:last-child)': {
       marginBottom: space(1),
     },
   },
+});
+
+export const iconButtonStyle = style({
+  ':hover': {
+    cursor: 'pointer',
+  },
+});
+
+export const iconStyle = style({
+  color: themeVars.color.green,
 });
