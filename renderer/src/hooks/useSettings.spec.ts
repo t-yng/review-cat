@@ -41,16 +41,18 @@ describe('useSettings', () => {
     });
   });
 
-  describe('updateSubscribedPRList', () => {
+  describe('updateSubscribedRepositories', () => {
     it('PRを監視するリポジトリの一覧が更新されること', () => {
       const { result } = renderHook(() => useSettings());
 
-      const prList = ['test/test1', 'test/test2'];
+      const repositories = ['test/test1', 'test/test2'];
       act(() => {
-        result.current.updateSubscribedPRList(prList);
+        result.current.updateSubscribedRepositories(repositories);
       });
 
-      expect(result.current.settings.subscribedPRList).toEqual(prList);
+      expect(result.current.settings.subscribedRepositories).toEqual(
+        repositories
+      );
     });
   });
 });

@@ -39,12 +39,12 @@ export const useSettings = () => {
     [dispatch]
   );
 
-  const updateSubscribedPRList = useCallback(
-    (prList: string[]) => {
+  const updateSubscribedRepositories = useCallback(
+    (repositories: string[]) => {
       dispatch({
         type: UPDATE_ACTION,
         payload: {
-          subscribedPRList: prList,
+          subscribedRepositories: repositories,
         },
       });
     },
@@ -55,6 +55,6 @@ export const useSettings = () => {
     settings,
     updateNotifyReviewRequested,
     updateShowsPR,
-    updateSubscribedPRList,
+    updateSubscribedRepositories,
   };
 };

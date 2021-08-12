@@ -16,7 +16,7 @@ const defaultSettings: Settings = {
   showsRequestedReviewPR: true,
   showsInReviewPR: true,
   showsApprovedPR: true,
-  subscribedPRList: [],
+  subscribedRepositories: [],
 };
 
 const initialSettings = storage.getSettings() ?? defaultSettings;

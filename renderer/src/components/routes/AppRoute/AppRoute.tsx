@@ -25,7 +25,7 @@ export const AppRoute = () => {
           <SelectRepositoriesPage />
         </PrivateRoute>
         <PrivateRoute path="/">
-          {settings.subscribedPRList.length === 0 ? (
+          {settings.subscribedRepositories.length === 0 ? (
             <Redirect to="/select-repositories" />
           ) : (
             <PullRequestListPage />
