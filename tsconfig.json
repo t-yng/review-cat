@@ -17,5 +17,6 @@
     "useUnknownInCatchVariables": true,
     "exactOptionalPropertyTypes": true
   },
-  "include": ["./renderer"]
+  "include": ["./renderer"],
+  "exclude": ["node_modules"]
 }
