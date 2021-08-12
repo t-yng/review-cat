@@ -10,6 +10,7 @@ export const rootStyle = style({
   padding: space(1),
   display: 'flex',
   alignItems: 'center',
+  fontSize: '1.2rem',
 });
 
 export const inputStyle = style({

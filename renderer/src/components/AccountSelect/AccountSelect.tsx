@@ -7,6 +7,7 @@ import { ChevronDownIcon } from '@primer/octicons-react';
 import {
   chevronDownIconStyle,
   rootStyle,
+  selectMenuItemStyle,
   selectMenuStyle,
   selectStyle,
 } from './AccountSelect.css';
@@ -50,6 +51,7 @@ export const AccountSelect: FC<AccountSelectProps> = memo(({ onSelect }) => {
               e.stopPropagation();
               onSelect('higeOhige');
             }}
+            className={selectMenuItemStyle}
           >
             higeOhige
           </li>

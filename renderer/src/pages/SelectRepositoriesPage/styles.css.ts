@@ -21,6 +21,7 @@ export const searchContainerStyle = style({
 export const repositoryListStyle = style({
   marginTop: space(2),
   padding: `${space(2)} 0`,
+  fontSize: '1.4rem',
 });
 
 export const repositoryListItemStyle = style({

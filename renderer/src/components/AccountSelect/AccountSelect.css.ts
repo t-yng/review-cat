@@ -5,6 +5,7 @@ import { space } from '../../themeStyleHelper';
 export const rootStyle = style({
   position: 'relative',
   width: '100%',
+  fontSize: '1.2rem',
 });
 
 export const selectStyle = style({
@@ -32,4 +33,10 @@ export const selectMenuStyle = style({
   marginTop: space(1),
   boxShadow: '0 8px 24px rgb(149 157 165 / 20%)',
   width: '100%',
+});
+
+export const selectMenuItemStyle = style({
+  ':hover': {
+    cursor: 'pointer',
+  },
 });
