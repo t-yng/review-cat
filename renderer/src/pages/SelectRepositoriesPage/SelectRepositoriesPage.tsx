@@ -14,6 +14,12 @@ import {
   titleStyle,
 } from './styles.css';
 
+/**
+ * TODO: 完了ボタンの追加
+ * TODO: 完了ボタンが押された時にPR一覧に遷移
+ * TODO: リポジトリが一つも選択されていなかったらアラートを表示（リポジトリを最低一つは選択してください。）
+ */
+
 export const SelectRepositoriesPage = () => {
   const [account, setAccount] = useState<string | null>(null);
   const [repositories, setRepositories] = useState<string[]>([]);
