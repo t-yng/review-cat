@@ -1,14 +1,21 @@
 import { createGlobalTheme, style } from '@vanilla-extract/css';
 
+const colors = {
+  white: '#fff',
+  gray100: '#ccc',
+  gray300: '#999',
+  gray500: '#777',
+  gray700: '#555',
+  gray900: '#333',
+  accent: '#f2b24e',
+};
+
 export const themeVars = createGlobalTheme(':root', {
   color: {
-    white: '#fff',
-    gray100: '#ccc',
-    gray300: '#999',
-    gray500: '#777',
-    gray700: '#555',
-    gray900: '#333',
-    accent: '#f2b24e',
+    ...colors,
+  },
+  border: {
+    style: `1px solid ${colors.gray100}`,
   },
 });
 
