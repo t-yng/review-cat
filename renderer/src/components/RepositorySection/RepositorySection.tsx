@@ -17,7 +17,7 @@ export const RepositorySection: React.FC<Props> = ({ pullRequest }) => {
 
       <ul>
         <li className={styles.listItemStyle}>
-          <PullRequestItem {...pullRequest} />
+          <PullRequestItem pullRequest={pullRequest} />
         </li>
       </ul>
     </section>

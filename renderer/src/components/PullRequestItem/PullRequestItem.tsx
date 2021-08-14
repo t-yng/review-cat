@@ -3,10 +3,12 @@ import { PullRequest } from 'renderer/src/models';
 import { GitHubAvatar } from '../GitHubAvatar';
 import { styles } from './styles.css';
 
-type Props = PullRequest;
+interface Props {
+  pullRequest: PullRequest;
+}
 
-export const PullRequestItem: React.FC<Props> = (props) => {
-  const { author, url, title, status } = props;
+export const PullRequestItem: React.FC<Props> = ({ pullRequest }) => {
+  const { author, url, title, status } = pullRequest;
 
   return (
     <a
