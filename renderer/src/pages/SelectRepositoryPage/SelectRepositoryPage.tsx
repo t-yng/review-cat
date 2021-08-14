@@ -1,9 +1,11 @@
 import React, { memo, useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { PlusCircleIcon, CheckCircleFillIcon } from '@primer/octicons-react';
-import { SearchRepository } from '../../components';
+import { SearchRepository, Button } from '../../components';
 import { useSettings } from '../../hooks';
 import { BaseLayout } from '../../layouts/BaseLayout';
 import {
+  completeButtonStyle,
   containerStyle,
   iconButtonStyle,
   iconStyle,
@@ -12,13 +14,8 @@ import {
   titleStyle,
 } from './styles.css';
 
-/**
- * TODO: 完了ボタンの追加
- * TODO: 完了ボタンが押された時にPR一覧に遷移
- * TODO: リポジトリが一つも選択されていなかったらアラートを表示（リポジトリを最低一つは選択してください。）
- */
-
 export const SelectRepositoryPage = () => {
+  const history = useHistory();
   const [repositories, setRepositories] = useState<string[]>([]);
   const { settings, addSubscribedRepository, removeSubscribedRepository } =
     useSettings();
@@ -27,17 +24,30 @@ export const SelectRepositoryPage = () => {
     setRepositories(repositories);
   }, []);
 
+  const handleClick = useCallback(() => {
+    if (settings.subscribedRepositories.length === 0) {
+      alert('レビュー対象のリポジトリを1つ以上選択してください。');
+    } else {
+      history.replace('/');
+    }
+  }, [settings, history]);
+
   return (
     <BaseLayout>
       <div className={containerStyle}>
         <h1 className={titleStyle}>リポジトリを選択</h1>
         <SearchRepository onSearch={handleSearch} />
-        <RepositoryList
-          repositories={repositories}
-          subscribedRepositories={settings.subscribedRepositories}
-          addRepository={addSubscribedRepository}
-          removeRepository={removeSubscribedRepository}
-        />
+        {repositories.length > 0 && (
+          <RepositoryList
+            repositories={repositories}
+            subscribedRepositories={settings.subscribedRepositories}
+            addRepository={addSubscribedRepository}
+            removeRepository={removeSubscribedRepository}
+          />
+        )}
+        <Button className={completeButtonStyle} onClick={handleClick}>
+          完了
+        </Button>
       </div>
     </BaseLayout>
   );

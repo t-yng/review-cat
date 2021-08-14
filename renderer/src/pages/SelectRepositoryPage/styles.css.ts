@@ -13,17 +13,16 @@ export const titleStyle = style({
 
 export const repositoryListStyle = style({
   marginTop: space(2),
-  padding: `${space(2)} 0`,
   fontSize: '1.4rem',
 });
 
 export const repositoryListItemStyle = style({
   display: 'flex',
   justifyContent: 'space-between',
-  selectors: {
-    '&:not(:last-child)': {
-      marginBottom: space(1),
-    },
+  alignItems: 'center',
+  padding: `${space(0.5)} 0`,
+  ':first-child': {
+    paddingTop: 0,
   },
 });
 
@@ -35,4 +34,10 @@ export const iconButtonStyle = style({
 
 export const iconStyle = style({
   color: themeVars.color.green,
+});
+
+export const completeButtonStyle = style({
+  display: 'block',
+  margin: 'auto',
+  marginTop: space(2),
 });
