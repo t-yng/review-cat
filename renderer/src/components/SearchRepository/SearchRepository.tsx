@@ -1,5 +1,4 @@
-import { useEffect } from '.pnpm/@types+react@17.0.15/node_modules/@types/react';
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { useCallback, useState, FC } from 'react';
 import { AccountSelect, RepositorySearchBox } from '..';
 import { searchRepositories } from '../../lib/searchRepositories';

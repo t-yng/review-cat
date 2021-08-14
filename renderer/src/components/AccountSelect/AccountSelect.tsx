@@ -26,6 +26,12 @@ export const AccountSelect: FC<AccountSelectProps> = memo(
       setOpenedSelectMenu(false);
     }, []);
 
+    // NOTE: useStateの初期値は最初のレンダリングの時だけ反映される
+    //       propsが更新されたタイミングでは初期値は反映されない
+    useEffect(() => {
+      setAccount(accounts[0]);
+    }, [accounts]);
+
     useEffect(() => {
       document.body.addEventListener('click', bodyClickEventListener);
 
