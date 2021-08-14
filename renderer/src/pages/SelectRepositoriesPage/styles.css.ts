@@ -11,13 +11,6 @@ export const titleStyle = style({
   borderBottom: `1px solid ${themeVars.color.gray100}`,
 });
 
-export const searchContainerStyle = style({
-  marginTop: space(4),
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-  columnGap: space(1),
-});
-
 export const repositoryListStyle = style({
   marginTop: space(2),
   padding: `${space(2)} 0`,
