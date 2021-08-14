@@ -18,7 +18,7 @@ import {
  * TODO: リポジトリが一つも選択されていなかったらアラートを表示（リポジトリを最低一つは選択してください。）
  */
 
-export const SelectRepositoriesPage = () => {
+export const SelectRepositoryPage = () => {
   const [repositories, setRepositories] = useState<string[]>([]);
   const { settings, addSubscribedRepository, removeSubscribedRepository } =
     useSettings();

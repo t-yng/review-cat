@@ -9,7 +9,7 @@ import { useSettings } from '../../../hooks/useSettings';
 import {
   LoginPage,
   PullRequestListPage,
-  SelectRepositoriesPage,
+  SelectRepositoryPage,
 } from '../../../pages';
 import { PrivateRoute } from '../PrivateRoute';
 
@@ -21,12 +21,12 @@ export const AppRoute = () => {
         <Route path="/login">
           <LoginPage />
         </Route>
-        <PrivateRoute path="/select-repositories">
-          <SelectRepositoriesPage />
+        <PrivateRoute path="/select-repository">
+          <SelectRepositoryPage />
         </PrivateRoute>
         <PrivateRoute path="/">
           {settings.subscribedRepositories.length === 0 ? (
-            <Redirect to="/select-repositories" />
+            <Redirect to="/select-repository" />
           ) : (
             <PullRequestListPage />
           )}

@@ -1,3 +1,3 @@
 export * from './LoginPage';
 export * from './PullRequestListPage';
-export * from './SelectRepositoriesPage';
+export * from './SelectRepositoryPage';
