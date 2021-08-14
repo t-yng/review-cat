@@ -15,6 +15,7 @@ export const SearchRepository: FC<SearchRepositoryProps> = memo(
     const [accounts, setAccounts] = useState<string[]>([]);
 
     useEffect(() => {
+      // TODO: サクッとアカウントの一覧をAPIで取得する
       const accounts = ['higeOhige'];
       setAccounts(accounts);
     }, []);

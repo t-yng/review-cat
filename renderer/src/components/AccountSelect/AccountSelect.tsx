@@ -13,50 +13,58 @@ import {
 } from './AccountSelect.css';
 
 export type AccountSelectProps = {
+  accounts: string[];
   onSelect: (account: string) => void;
 };
 
-export const AccountSelect: FC<AccountSelectProps> = memo(({ onSelect }) => {
-  const [openedSelectMenu, setOpenedSelectMenu] = useState(false);
+export const AccountSelect: FC<AccountSelectProps> = memo(
+  ({ accounts, onSelect }) => {
+    const [account, setAccount] = useState(accounts[0]);
+    const [openedSelectMenu, setOpenedSelectMenu] = useState(false);
 
-  const bodyClickEventListener = useCallback(() => {
-    setOpenedSelectMenu(false);
-  }, []);
+    const bodyClickEventListener = useCallback(() => {
+      setOpenedSelectMenu(false);
+    }, []);
 
-  useEffect(() => {
-    document.body.addEventListener('click', bodyClickEventListener);
-
-    return () => {
+    useEffect(() => {
       document.body.addEventListener('click', bodyClickEventListener);
-    };
-  }, [bodyClickEventListener]);
 
-  return (
-    <div className={rootStyle}>
-      <div
-        className={selectStyle}
-        onClick={(e) => {
-          e.stopPropagation();
-          setOpenedSelectMenu((opened) => !opened);
-        }}
-        data-testid="account-select-box"
-      >
-        <span>higeOhige</span>
-        <ChevronDownIcon className={chevronDownIconStyle} />
+      return () => {
+        document.body.addEventListener('click', bodyClickEventListener);
+      };
+    }, [bodyClickEventListener]);
+
+    return (
+      <div className={rootStyle}>
+        <div
+          className={selectStyle}
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpenedSelectMenu((opened) => !opened);
+          }}
+          data-testid="account-select-box"
+        >
+          <span>{account}</span>
+          <ChevronDownIcon className={chevronDownIconStyle} />
+        </div>
+        {openedSelectMenu && (
+          <ul className={selectMenuStyle} role="listbox">
+            {accounts.map((account) => (
+              <li
+                key={account}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setAccount(account);
+                  onSelect(account);
+                }}
+                className={selectMenuItemStyle}
+              >
+                {account}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-      {openedSelectMenu && (
-        <ul className={selectMenuStyle} role="listbox">
-          <li
-            onClick={(e) => {
-              e.stopPropagation();
-              onSelect('higeOhige');
-            }}
-            className={selectMenuItemStyle}
-          >
-            higeOhige
-          </li>
-        </ul>
-      )}
-    </div>
-  );
-});
+    );
+  }
+);
