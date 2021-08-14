@@ -1,4 +1,4 @@
-import { PullRequest } from 'renderer/src/models/PullRequest';
+import { PullRequest, RepositoryMap } from 'renderer/src/models/PullRequest';
 import { User } from 'renderer/src/models/User';
 import { SearchPullRequest } from '../queries/SearchPullRequestsQuery';
 
@@ -25,6 +25,29 @@ export const getPullRequestStatus = (
   }
 
   return 'reviewing';
+};
+
+export const foo = (pullRequests: Array<PullRequest>): RepositoryMap => {
+  return pullRequests.reduce(
+    (repositoryMap: RepositoryMap, pullRequest: PullRequest) => {
+      const { repository, ...pullRequestOthers } = pullRequest;
+      const { nameWithOwner, ...repositoryOthers } = repository;
+
+      if (!repositoryMap.has(nameWithOwner)) {
+        repositoryMap.set(nameWithOwner, {
+          ...repositoryOthers,
+          pullRequests: [],
+        });
+      }
+
+      repositoryMap
+        .get(nameWithOwner)
+        ?.pullRequests.push({ ...pullRequestOthers });
+
+      return repositoryMap;
+    },
+    new Map()
+  );
 };
 
 const toModelFromSearchPullRequest = (
