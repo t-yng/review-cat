@@ -34,7 +34,6 @@ export const checkIconStyle = style({
 
 export const listBoxStyle = style({
   position: 'absolute',
-  // border: `1px solid ${themeVars.color.gray100}`,
   borderRadius: '2px',
   backgroundColor: themeVars.color.white,
   marginTop: space(0.5),
