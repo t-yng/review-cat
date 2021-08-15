@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@headlessui/react': ^1.4.0
   '@primer/octicons-react': ^15.0.0
   '@testing-library/jest-dom': ^5.14.1
   '@testing-library/react': ^12.0.0
@@ -55,6 +56,7 @@ specifiers:
   vite-plugin-relay: ^1.0.3
 
 dependencies:
+  '@headlessui/react': 1.4.0_react-dom@17.0.2+react@17.0.2
   '@primer/octicons-react': 15.0.0_react@17.0.2
   '@vanilla-extract/css': 1.1.1
   classnames: 2.3.1
@@ -863,6 +865,17 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@headlessui/react/1.4.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-C+FmBVF6YGvqcEI5fa2dfVbEaXr2RGR6Kw1E5HXIISIZEfsrH/yuCgsjWw5nlRF9vbCxmQ/EKs64GAdKeb8gCw==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+      react-dom: ^16 || ^17 || ^18
+    dependencies:
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
 
   /@humanwhocodes/config-array/0.5.0:
     resolution: {integrity: sha512-FagtKFz74XrTl7y6HCzQpwDfXP0yhxe9lHLD1UZxjvZIcbyRz8zTFF/yYNfSfzU414eDwZ1SrO0Qvtyf+wFMQg==}

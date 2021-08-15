@@ -15,8 +15,8 @@ describe('AccountSelect', () => {
       />
     );
 
-    const selectBox = screen.getByTestId('account-select-box');
-    userEvent.click(selectBox);
+    const selectButton = screen.getByRole('button');
+    userEvent.click(selectButton);
     const listbox = screen.getByRole('listbox');
     expect(queryByText(listbox, accounts[0])).toBeInTheDocument();
     expect(queryByText(listbox, accounts[1])).toBeInTheDocument();
@@ -42,12 +42,12 @@ describe('AccountSelect', () => {
       const onSelectMock = jest.fn();
       render(<AccountSelect accounts={accounts} onSelect={onSelectMock} />);
 
-      const selectBox = screen.getByTestId('account-select-box');
-      userEvent.click(selectBox);
-      const listItems = screen.getAllByRole('listitem');
+      const selectButton = screen.getByRole('button');
+      userEvent.click(selectButton);
+      const listItems = screen.getAllByRole('option');
       userEvent.click(listItems[1]);
 
-      expect(queryByText(selectBox, accounts[1])).toBeInTheDocument();
+      expect(queryByText(selectButton, accounts[1])).toBeInTheDocument();
     });
   });
 
@@ -57,9 +57,9 @@ describe('AccountSelect', () => {
       const onSelectMock = jest.fn();
       render(<AccountSelect accounts={accounts} onSelect={onSelectMock} />);
 
-      const selectBox = screen.getByTestId('account-select-box');
-      userEvent.click(selectBox);
-      const listItems = screen.getAllByRole('listitem');
+      const selectButton = screen.getByRole('button');
+      userEvent.click(selectButton);
+      const listItems = screen.getAllByRole('option');
       userEvent.click(listItems[1]);
 
       expect(onSelectMock).toBeCalledWith(accounts[1]);

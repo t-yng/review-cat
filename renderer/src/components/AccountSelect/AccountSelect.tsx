@@ -1,16 +1,14 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-
-import React, { FC, memo, useState, useCallback, useEffect } from 'react';
-import { ChevronDownIcon } from '@primer/octicons-react';
+import React, { FC, memo, useState, useEffect } from 'react';
+import { ChevronDownIcon, CheckIcon } from '@primer/octicons-react';
 import {
   chevronDownIconStyle,
   rootStyle,
-  selectMenuItemStyle,
-  selectMenuStyle,
-  selectStyle,
-} from './AccountSelect.css';
+  listBoxStyle,
+  listBoxItemStyle,
+  selectButtonStyle,
+  checkIconStyle,
+} from './style.css';
+import { Listbox } from '@headlessui/react';
 
 export type AccountSelectProps = {
   accounts: string[];
@@ -19,57 +17,41 @@ export type AccountSelectProps = {
 
 export const AccountSelect: FC<AccountSelectProps> = memo(
   ({ accounts, onSelect }) => {
-    const [account, setAccount] = useState(accounts[0]);
-    const [openedSelectMenu, setOpenedSelectMenu] = useState(false);
-
-    const bodyClickEventListener = useCallback(() => {
-      setOpenedSelectMenu(false);
-    }, []);
+    const [selectedAccount, setSelectedAccount] = useState(accounts[0]);
 
     // NOTE: useStateの初期値は最初のレンダリングの時だけ反映される
     //       propsが更新されたタイミングでは初期値は反映されない
     useEffect(() => {
-      setAccount(accounts[0]);
+      setSelectedAccount(accounts[0]);
     }, [accounts]);
 
-    useEffect(() => {
-      document.body.addEventListener('click', bodyClickEventListener);
-
-      return () => {
-        document.body.addEventListener('click', bodyClickEventListener);
-      };
-    }, [bodyClickEventListener]);
+    const handleSelect = (account: string) => {
+      setSelectedAccount(account);
+      onSelect(account);
+    };
 
     return (
       <div className={rootStyle}>
-        <div
-          className={selectStyle}
-          onClick={(e) => {
-            e.stopPropagation();
-            setOpenedSelectMenu((opened) => !opened);
-          }}
-          data-testid="account-select-box"
-        >
-          <span>{account}</span>
-          <ChevronDownIcon className={chevronDownIconStyle} />
-        </div>
-        {openedSelectMenu && (
-          <ul className={selectMenuStyle} role="listbox">
+        <Listbox value={selectedAccount} onChange={handleSelect}>
+          <Listbox.Button className={selectButtonStyle}>
+            <span>{selectedAccount}</span>
+            <ChevronDownIcon className={chevronDownIconStyle} />
+          </Listbox.Button>
+          <Listbox.Options className={listBoxStyle}>
             {accounts.map((account) => (
-              <li
+              <Listbox.Option
                 key={account}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAccount(account);
-                  onSelect(account);
-                }}
-                className={selectMenuItemStyle}
+                value={account}
+                className={listBoxItemStyle}
               >
+                {account === selectedAccount && (
+                  <CheckIcon size={16} className={checkIconStyle} />
+                )}
                 {account}
-              </li>
+              </Listbox.Option>
             ))}
-          </ul>
-        )}
+          </Listbox.Options>
+        </Listbox>
       </div>
     );
   }

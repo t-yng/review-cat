@@ -11,6 +11,9 @@ export const themeVars = createGlobalTheme(':root', {
     accent: '#f2b24e',
     green: '#0A9710',
   },
+  bgColor: {
+    hoverAccent: 'rgba(242, 179, 78, 0.08)',
+  },
 });
 
 export const themeFocusVisibleOutline = style({

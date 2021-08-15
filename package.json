@@ -26,6 +26,7 @@
     "type-check:electron": "tsc -p tsconfig.electron.json --noEmit"
   },
   "dependencies": {
+    "@headlessui/react": "^1.4.0",
     "@primer/octicons-react": "^15.0.0",
     "@vanilla-extract/css": "^1.1.1",
     "classnames": "^2.3.1",
