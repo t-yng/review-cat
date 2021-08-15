@@ -23,7 +23,7 @@ export const themeFocusVisibleOutline = style({
 });
 
 globalStyle('html', {
-  fontSize: '10px',
+  fontSize: '0.625rem', // 16px * 0.625 = 10px
 });
 
 globalStyle('body', {
