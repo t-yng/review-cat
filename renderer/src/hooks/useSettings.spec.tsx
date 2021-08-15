@@ -1,12 +1,21 @@
+import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
+import { Provider } from 'jotai';
 import { useSettings } from './useSettings';
 
 jest.mock('../lib/storage');
 
 describe('useSettings', () => {
+  const renderUseSettings = () => {
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+      <Provider>{children}</Provider>
+    );
+    return renderHook(() => useSettings(), { wrapper });
+  };
+
   describe('updateNotifyReviewRequested', () => {
-    it('レビューリクエストの通知設定が更新されること', () => {
-      const { result } = renderHook(() => useSettings());
+    it('レビューリクエストの通知設定を更新すること', () => {
+      const { result } = renderUseSettings();
 
       const updated = !result.current.settings.notifyReviewRequested;
       act(() => {
@@ -18,8 +27,8 @@ describe('useSettings', () => {
   });
 
   describe('updateShowsPR', () => {
-    it('PRの表示設定が更新されること', () => {
-      const { result } = renderHook(() => useSettings());
+    it('PRの表示設定を更新すること', () => {
+      const { result } = renderUseSettings();
       const settings = result.current.settings;
 
       const updatedRequestedReview = !settings.showsRequestedReviewPR;
@@ -42,8 +51,8 @@ describe('useSettings', () => {
   });
 
   describe('addSubscribedRepositories', () => {
-    it('PRを監視するリポジトリを追加できること', () => {
-      const { result } = renderHook(() => useSettings());
+    it('PRを監視するリポジトリを追加すること', () => {
+      const { result } = renderUseSettings();
 
       const repositories = ['test/test1', 'test/test2'];
       act(() => {
@@ -60,8 +69,8 @@ describe('useSettings', () => {
   });
 
   describe('removeSubscribedRepositories', () => {
-    it('PRを監視するリポジトリを削除できること', () => {
-      const { result } = renderHook(() => useSettings());
+    it('PRを監視するリポジトリを削除すること', () => {
+      const { result } = renderUseSettings();
 
       const repositories = ['test/test1', 'test/test2'];
       act(() => {
