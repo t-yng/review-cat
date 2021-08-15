@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { PullRequest } from 'renderer/src/models';
+import { PullRequest } from '../../models';
 
 type Props = {
   pullRequests: PullRequest[];

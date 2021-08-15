@@ -1,4 +1,4 @@
-import { User } from 'renderer/src/models';
+import { User } from '../../models';
 import { mock, when, instance } from 'ts-mockito';
 import { SearchPullRequest } from '../queries/SearchPullRequestsQuery';
 import { pullRequestMapper } from './pullRequest';
