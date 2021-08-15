@@ -78,11 +78,10 @@
     "vite-plugin-relay": "^1.0.3"
   },
   "lint-staged": {
-    "*.json": [
+    "*.{js,ts,tsx,json}": [
       "pnpm format"
     ],
     "*.{js,ts,tsx}": [
-      "pnpm format",
       "pnpm lint"
     ]
   }
