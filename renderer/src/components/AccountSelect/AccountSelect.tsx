@@ -1,4 +1,5 @@
 import React, { FC, memo, useState, useEffect } from 'react';
+import classNames from 'classnames';
 import { ChevronDownIcon, CheckIcon } from '@primer/octicons-react';
 import {
   chevronDownIconStyle,
@@ -9,6 +10,7 @@ import {
   checkIconStyle,
 } from './style.css';
 import { Listbox } from '@headlessui/react';
+import { themeFocusVisibleOutline } from '../../theme.css';
 
 export type AccountSelectProps = {
   accounts: string[];
@@ -33,7 +35,9 @@ export const AccountSelect: FC<AccountSelectProps> = memo(
     return (
       <div className={rootStyle}>
         <Listbox value={selectedAccount} onChange={handleSelect}>
-          <Listbox.Button className={selectButtonStyle}>
+          <Listbox.Button
+            className={classNames(selectButtonStyle, themeFocusVisibleOutline)}
+          >
             <span>{selectedAccount}</span>
             <ChevronDownIcon className={chevronDownIconStyle} />
           </Listbox.Button>
