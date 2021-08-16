@@ -11,6 +11,7 @@ export const rootStyle = style({
 export const selectButtonStyle = style({
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   width: '100%',
   color: themeVars.color.gray700,
   padding: space(1),
