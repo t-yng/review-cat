@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 import { PlusCircleIcon, CheckCircleFillIcon } from '@primer/octicons-react';
 import { SearchRepository, Button } from '../../components';
 import { useSettings } from '../../hooks';
@@ -13,6 +14,7 @@ import {
   repositoryListStyle,
   titleStyle,
 } from './styles.css';
+import { themeFocusVisibleOutline } from '../../theme.css';
 
 export const SelectRepositoryPage = () => {
   const history = useHistory();
@@ -75,14 +77,20 @@ const RepositoryList = memo<RepositoryListProps>(
             {subscribedRepositories.includes(repository) ? (
               <button
                 onClick={() => removeRepository(repository)}
-                className={iconButtonStyle}
+                className={classNames(
+                  iconButtonStyle,
+                  themeFocusVisibleOutline
+                )}
               >
                 <CheckCircleFillIcon className={iconStyle} size={24} />
               </button>
             ) : (
               <button
                 onClick={() => addRepository(repository)}
-                className={iconButtonStyle}
+                className={classNames(
+                  iconButtonStyle,
+                  themeFocusVisibleOutline
+                )}
               >
                 <PlusCircleIcon className={iconStyle} size={24} />
               </button>
