@@ -21,7 +21,7 @@
     "test:jest": "jest",
     "test": "pnpm test:jest",
     "relay": "relay-compiler",
-    "type-check": "pnpm type-check:renderer & pnpm type-check:electron",
+    "type-check": "pnpm type-check:renderer && pnpm type-check:electron",
     "type-check:renderer": "tsc --noEmit",
     "type-check:electron": "tsc -p tsconfig.electron.json --noEmit"
   },
@@ -39,6 +39,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
+    "@testing-library/react-hooks": "^7.0.1",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.0.0",
     "@types/node-fetch": "^2.5.11",
@@ -78,11 +79,10 @@
     "vite-plugin-relay": "^1.0.3"
   },
   "lint-staged": {
-    "*.json": [
+    "*.{js,ts,tsx,json}": [
       "pnpm format"
     ],
     "*.{js,ts,tsx}": [
-      "pnpm format",
       "pnpm lint"
     ]
   }
