@@ -8,6 +8,7 @@ import {
   listBoxItemStyle,
   selectButtonStyle,
   checkIconStyle,
+  activeListBoxItemStyle,
 } from './style.css';
 import { Listbox } from '@headlessui/react';
 import { themeFocusVisibleOutline } from '../../theme.css';
@@ -46,12 +47,20 @@ export const AccountSelect: FC<AccountSelectProps> = memo(
               <Listbox.Option
                 key={account}
                 value={account}
-                className={listBoxItemStyle}
+                className={({ active }) =>
+                  classNames(listBoxItemStyle, {
+                    [activeListBoxItemStyle]: active,
+                  })
+                }
               >
-                {account === selectedAccount && (
-                  <CheckIcon size={16} className={checkIconStyle} />
+                {({ selected }) => (
+                  <>
+                    {selected && (
+                      <CheckIcon size={16} className={checkIconStyle} />
+                    )}
+                    {account}
+                  </>
                 )}
-                {account}
               </Listbox.Option>
             ))}
           </Listbox.Options>

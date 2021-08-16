@@ -40,6 +40,9 @@ export const listBoxStyle = style({
   marginTop: space(0.5),
   boxShadow: '0 8px 24px rgb(149 157 165 / 20%)',
   width: '100%',
+  ':focus': {
+    outline: 'none',
+  },
 });
 
 export const listBoxItemStyle = style({
@@ -51,4 +54,8 @@ export const listBoxItemStyle = style({
     backgroundColor: themeVars.bgColor.hoverAccent,
     cursor: 'pointer',
   },
+});
+
+export const activeListBoxItemStyle = style({
+  backgroundColor: themeVars.bgColor.hoverAccent,
 });
