@@ -23,7 +23,7 @@ describe('AccountSelect', () => {
   });
 
   describe('accounts', () => {
-    it('配列先頭のアカウントが初期表示すること', () => {
+    it('配列先頭のアカウントを初期表示すること', () => {
       const accounts = ['test1', 'test2'];
       render(
         <AccountSelect
