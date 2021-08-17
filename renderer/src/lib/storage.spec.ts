@@ -66,7 +66,7 @@ describe('lib/storage', () => {
       showsRequestedReviewPR: true,
       showsInReviewPR: true,
       showsApprovedPR: true,
-      subscribedPRList: ['test/test'],
+      subscribedRepositories: ['test/test'],
     };
 
     describe('getSettings', () => {

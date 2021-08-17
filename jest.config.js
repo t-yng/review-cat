@@ -6,5 +6,6 @@ module.exports = {
   setupFilesAfterEnv: ['./test/setup.ts'],
   moduleNameMapper: {
     electron: '<rootDir>/electron/src/__mocks__/electron.ts',
+    '\\.css$': 'identity-obj-proxy',
   },
 };

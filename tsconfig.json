@@ -15,8 +15,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "useUnknownInCatchVariables": true,
-    "exactOptionalPropertyTypes": true,
-    "baseUrl": "."
+    "exactOptionalPropertyTypes": true
   },
   "include": ["./renderer"]
 }

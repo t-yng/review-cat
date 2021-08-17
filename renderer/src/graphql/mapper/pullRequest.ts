@@ -1,5 +1,5 @@
-import { PullRequest } from 'renderer/src/models/PullRequest';
-import { User } from 'renderer/src/models/User';
+import { PullRequest } from '../../models/PullRequest';
+import { User } from '../../models/User';
 import { SearchPullRequest } from '../queries/SearchPullRequestsQuery';
 
 // レビュー待ちのプルリクエスト: requestedReviewer に自分が含まれている
