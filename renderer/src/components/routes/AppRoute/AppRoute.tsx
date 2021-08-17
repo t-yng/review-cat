@@ -1,17 +1,35 @@
 import React from 'react';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import { LoginPage, PullRequestListPage } from '../../../pages';
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
+import { useSettings } from '../../../hooks/useSettings';
+import {
+  LoginPage,
+  PullRequestListPage,
+  SelectRepositoryPage,
+} from '../../../pages';
 import { PrivateRoute } from '../PrivateRoute';
 
 export const AppRoute = () => {
+  const { settings } = useSettings();
   return (
     <Router>
       <Switch>
         <Route path="/login">
           <LoginPage />
         </Route>
+        <PrivateRoute path="/select-repository">
+          <SelectRepositoryPage />
+        </PrivateRoute>
         <PrivateRoute path="/">
-          <PullRequestListPage />
+          {settings.subscribedRepositories.length === 0 ? (
+            <Redirect to="/select-repository" />
+          ) : (
+            <PullRequestListPage />
+          )}
         </PrivateRoute>
       </Switch>
     </Router>

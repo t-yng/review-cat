@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { PullRequest } from 'renderer/src/models';
+import { PullRequest } from '../../models';
 import { RepositorySection } from '../RepositorySection';
 
 type Props = {

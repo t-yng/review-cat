@@ -39,22 +39,39 @@ export const useSettings = () => {
     [dispatch]
   );
 
-  const updateSubscribedPRList = useCallback(
-    (prList: string[]) => {
+  const addSubscribedRepository = useCallback(
+    (repository: string) => {
+      const repositories = [...settings.subscribedRepositories, repository];
       dispatch({
         type: UPDATE_ACTION,
         payload: {
-          subscribedPRList: prList,
+          subscribedRepositories: repositories,
         },
       });
     },
-    [dispatch]
+    [dispatch, settings]
+  );
+
+  const removeSubscribedRepository = useCallback(
+    (repository: string) => {
+      const repositories = settings.subscribedRepositories.filter(
+        (r) => r !== repository
+      );
+      dispatch({
+        type: UPDATE_ACTION,
+        payload: {
+          subscribedRepositories: repositories,
+        },
+      });
+    },
+    [dispatch, settings]
   );
 
   return {
     settings,
     updateNotifyReviewRequested,
     updateShowsPR,
-    updateSubscribedPRList,
+    addSubscribedRepository,
+    removeSubscribedRepository,
   };
 };
