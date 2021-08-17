@@ -81,7 +81,7 @@ const RepositoryList = memo<RepositoryListProps>(
                   iconButtonStyle,
                   themeFocusVisibleOutline
                 )}
-                title={`${repository}を設定に追加する`}
+                title={`${repository}を設定から削除する`}
               >
                 <CheckCircleFillIcon className={iconStyle} size={24} />
               </button>
@@ -92,7 +92,7 @@ const RepositoryList = memo<RepositoryListProps>(
                   iconButtonStyle,
                   themeFocusVisibleOutline
                 )}
-                title={`${repository}を設定から削除する`}
+                title={`${repository}を設定に追加する`}
               >
                 <PlusCircleIcon className={iconStyle} size={24} />
               </button>
