@@ -1,14 +1,19 @@
+import { useAtom } from 'jotai';
 import React, { memo, useEffect } from 'react';
 import { useCallback, useState, FC } from 'react';
 import { useRelayEnvironment, fetchQuery } from 'react-relay';
 import { graphql } from 'relay-runtime';
-import { AccountSelect, RepositorySearchBox } from '../';
-import { searchRepositories } from '../../lib/searchRepositories';
+import { AccountSelect, RepositorySearchBox } from '..';
+import {
+  Repository,
+  useSearchRepository,
+} from '../../hooks/useSearchRepository';
+import { loginUserAtom } from '../../jotai';
 import { rootStyle } from './style.css';
 import type { SearchRepositoryAccountsQuery as SearchRepositoryAccountsQueryType } from './__generated__/SearchRepositoryAccountsQuery.graphql';
 
 type SearchRepositoryProps = {
-  onSearch: (repositories: string[]) => void;
+  onSearch: (repositories: Repository[]) => void;
 };
 
 export const SearchRepositoryAccountsQuery = graphql`
@@ -28,8 +33,10 @@ export const SearchRepositoryAccountsQuery = graphql`
 export const SearchRepository: FC<SearchRepositoryProps> = memo(
   ({ onSearch }) => {
     const environment = useRelayEnvironment();
+    const [user] = useAtom(loginUserAtom);
     const [account, setAccount] = useState<string | null>(null);
     const [accounts, setAccounts] = useState<string[]>([]);
+    const { search } = useSearchRepository();
 
     useEffect(() => {
       fetchQuery<SearchRepositoryAccountsQueryType>(
@@ -44,16 +51,22 @@ export const SearchRepository: FC<SearchRepositoryProps> = memo(
             .map((node) => node?.login)
             .filter((org) => org != null) as string[];
           setAccounts([data.viewer.login, ...accounts]);
+          setAccount(accounts[0]);
         },
       });
     }, [environment]);
 
     const handleSearch = useCallback(
       async (keyword: string) => {
-        const repositories = await searchRepositories(account ?? '', keyword);
+        if (account == null) {
+          alert('アカウントを選択してください');
+          return;
+        }
+        const isOrganization = account !== user?.name;
+        const repositories = await search({ account, keyword, isOrganization });
         onSearch(repositories);
       },
-      [account, onSearch]
+      [account, onSearch, search, user]
     );
 
     const handleAccountSelect = useCallback((account: string) => {

@@ -10,19 +10,21 @@ import {
   containerStyle,
   iconButtonStyle,
   iconStyle,
+  repositoryLinkStyle,
   repositoryListItemStyle,
   repositoryListStyle,
   titleStyle,
 } from './styles.css';
 import { themeFocusVisibleOutline } from '../../theme.css';
+import { Repository } from '../../hooks/useSearchRepository';
 
 export const SelectRepositoryPage = () => {
   const history = useHistory();
-  const [repositories, setRepositories] = useState<string[]>([]);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
   const { settings, addSubscribedRepository, removeSubscribedRepository } =
     useSettings();
 
-  const handleSearch = useCallback(async (repositories: string[]) => {
+  const handleSearch = useCallback(async (repositories: Repository[]) => {
     setRepositories(repositories);
   }, []);
 
@@ -56,7 +58,7 @@ export const SelectRepositoryPage = () => {
 };
 
 type RepositoryListProps = {
-  repositories: string[];
+  repositories: Repository[];
   subscribedRepositories: string[];
   addRepository: (repository: string) => void;
   removeRepository: (repository: string) => void;
@@ -72,11 +74,18 @@ const RepositoryList = memo<RepositoryListProps>(
     return (
       <ul className={repositoryListStyle}>
         {repositories.map((repository) => (
-          <li key={repository} className={repositoryListItemStyle}>
-            <div>{repository}</div>
-            {subscribedRepositories.includes(repository) ? (
+          <li key={repository.name} className={repositoryListItemStyle}>
+            <a
+              href={repository.url}
+              target="_blank"
+              rel="noopner noreferrer"
+              className={repositoryLinkStyle}
+            >
+              {repository.name}
+            </a>
+            {subscribedRepositories.includes(repository.name) ? (
               <button
-                onClick={() => removeRepository(repository)}
+                onClick={() => removeRepository(repository.name)}
                 className={classNames(
                   iconButtonStyle,
                   themeFocusVisibleOutline
@@ -87,7 +96,7 @@ const RepositoryList = memo<RepositoryListProps>(
               </button>
             ) : (
               <button
-                onClick={() => addRepository(repository)}
+                onClick={() => addRepository(repository.name)}
                 className={classNames(
                   iconButtonStyle,
                   themeFocusVisibleOutline
