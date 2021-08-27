@@ -1,6 +1,6 @@
 import React from 'react';
+import { Button } from '../Button';
 import { AppIcon } from '../AppIcon';
-import { LoginButton } from '../LoginButton';
 import {
   rootStyle,
   iconContainerStyle,
@@ -26,7 +26,7 @@ export const LoginContent: React.FC = () => {
         <AppIcon />
       </div>
       <div className={`${buttonContainerStyle}`}>
-        <LoginButton onClick={handleClick} />
+        <Button onClick={handleClick}>Login To GitHub</Button>
       </div>
     </div>
   );
