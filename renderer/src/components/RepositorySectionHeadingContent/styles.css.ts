@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
-import { themeVars } from 'renderer/src/theme.css';
-import { space } from 'renderer/src/themeStyleHelper';
+import { themeVars } from '../../theme.css';
+import { space } from '../../themeStyleHelper';
 
 export const rootStyle = style({
   display: 'grid',

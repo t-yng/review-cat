@@ -15,10 +15,8 @@ export interface PullRequest {
   status: PullRequestStatus;
 }
 
-export type PullRequests = Array<Omit<PullRequest, 'repository'>>;
-
-export interface RepositoryData extends Omit<Repository, 'nameWithOwner'> {
-  pullRequests: PullRequests;
+export interface RepositoryData extends Repository {
+  pullRequests: Array<PullRequest>;
 }
 
-export type RepositoryMap = Map<string, RepositoryData>;
+export type Repositories = Array<RepositoryData>;

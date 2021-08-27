@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
 import { PreloadedQuery, usePreloadedQuery } from 'react-relay';
-import { pullRequestMapper, foo } from '../graphql/mapper';
+import { pullRequestMapper } from '../graphql/mapper';
 import {
   SearchPullRequest,
   SearchPullRequestsQuery,
@@ -30,8 +30,6 @@ export const usePullRequests = (
       loginUser as User
     );
   });
-
-  console.log(foo(pullRequests));
 
   return {
     pullRequests,

@@ -1,4 +1,4 @@
-import { PullRequest, RepositoryMap } from '../../models/PullRequest';
+import { PullRequest, Repositories } from '../../models/PullRequest';
 import { User } from '../../models/User';
 import { SearchPullRequest } from '../queries/SearchPullRequestsQuery';
 
@@ -27,26 +27,38 @@ export const getPullRequestStatus = (
   return 'reviewing';
 };
 
-export const foo = (pullRequests: Array<PullRequest>): RepositoryMap => {
+/**
+ * プルリクエストをリポジトリ毎にまとめる
+ */
+export const groupByRepository = (
+  pullRequests: Array<PullRequest>
+): Repositories => {
   return pullRequests.reduce(
-    (repositoryMap: RepositoryMap, pullRequest: PullRequest) => {
-      const { repository, ...pullRequestOthers } = pullRequest;
-      const { nameWithOwner, ...repositoryOthers } = repository;
+    (repositories: Repositories, pullRequest: PullRequest) => {
+      const { repository, author, title, url, status } = pullRequest;
+      const existsRepository = repositories.find(
+        (data) => data.nameWithOwner === repository.nameWithOwner
+      );
+      const addPullRequestData = {
+        author: { ...author },
+        repository: { ...repository },
+        title,
+        url,
+        status,
+      };
 
-      if (!repositoryMap.has(nameWithOwner)) {
-        repositoryMap.set(nameWithOwner, {
-          ...repositoryOthers,
-          pullRequests: [],
+      if (existsRepository != undefined) {
+        existsRepository.pullRequests.push(addPullRequestData);
+      } else {
+        repositories.push({
+          ...repository,
+          pullRequests: [addPullRequestData],
         });
       }
 
-      repositoryMap
-        .get(nameWithOwner)
-        ?.pullRequests.push({ ...pullRequestOthers });
-
-      return repositoryMap;
+      return repositories;
     },
-    new Map()
+    []
   );
 };
 
