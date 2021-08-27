@@ -26,6 +26,14 @@ export const repositoryListItemStyle = style({
   },
 });
 
+export const repositoryLinkStyle = style({
+  transition: 'opacity 0.1s ease-in',
+  width: '100%',
+  ':hover': {
+    opacity: 0.7,
+  },
+});
+
 export const iconButtonStyle = style({
   ':hover': {
     cursor: 'pointer',
