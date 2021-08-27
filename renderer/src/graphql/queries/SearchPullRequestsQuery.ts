@@ -19,12 +19,14 @@ export const SearchPullRequestsQuery = graphql`
         ... on PullRequest {
           headRefName
           title
+          url
           author {
             avatarUrl
             login
           }
           repository {
             nameWithOwner
+            openGraphImageUrl
           }
           reviews(author: $login_user_name, states: [APPROVED], last: 100) {
             totalCount

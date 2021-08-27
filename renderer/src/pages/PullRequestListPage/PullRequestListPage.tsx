@@ -24,6 +24,7 @@ export const PullRequestListPage: FC = () => {
             search_query: buildSearchPullRequestsQuery([
               't-yng/blog',
               'higeOhige/review-cat',
+              'higeOhige/review-cat-test-repo',
             ]),
           })}
         />

@@ -1,4 +1,4 @@
-import { PullRequest } from '../../models/PullRequest';
+import { PullRequest, Repositories } from '../../models/PullRequest';
 import { User } from '../../models/User';
 import { SearchPullRequest } from '../queries/SearchPullRequestsQuery';
 
@@ -27,14 +27,51 @@ export const getPullRequestStatus = (
   return 'reviewing';
 };
 
+/**
+ * プルリクエストをリポジトリ毎にまとめる
+ */
+export const groupByRepository = (
+  pullRequests: Array<PullRequest>
+): Repositories => {
+  return pullRequests.reduce(
+    (repositories: Repositories, pullRequest: PullRequest) => {
+      const { repository, author, title, url, status } = pullRequest;
+      const existsRepository = repositories.find(
+        (data) => data.nameWithOwner === repository.nameWithOwner
+      );
+      const addPullRequestData = {
+        author: { ...author },
+        repository: { ...repository },
+        title,
+        url,
+        status,
+      };
+
+      if (existsRepository != undefined) {
+        existsRepository.pullRequests.push(addPullRequestData);
+      } else {
+        repositories.push({
+          ...repository,
+          pullRequests: [addPullRequestData],
+        });
+      }
+
+      return repositories;
+    },
+    []
+  );
+};
+
 const toModelFromSearchPullRequest = (
   pr: SearchPullRequest,
   loginUser: User
 ): PullRequest => {
   const basePullRequest: Omit<PullRequest, 'status'> = {
     title: pr.title ?? '',
+    url: pr.url ?? '',
     repository: {
       nameWithOwner: pr.repository?.nameWithOwner ?? '',
+      openGraphImageUrl: pr.repository?.openGraphImageUrl ?? '',
     },
     author: {
       name: pr.author?.login ?? '',
