@@ -74,18 +74,21 @@ const RepositoryList = memo<RepositoryListProps>(
     return (
       <ul className={repositoryListStyle}>
         {repositories.map((repository) => (
-          <li key={repository.name} className={repositoryListItemStyle}>
+          <li
+            key={repository.nameWithOwner}
+            className={repositoryListItemStyle}
+          >
             <a
               href={repository.url}
               target="_blank"
               rel="noopner noreferrer"
               className={repositoryLinkStyle}
             >
-              {repository.name}
+              {repository.nameWithOwner}
             </a>
-            {subscribedRepositories.includes(repository.name) ? (
+            {subscribedRepositories.includes(repository.nameWithOwner) ? (
               <button
-                onClick={() => removeRepository(repository.name)}
+                onClick={() => removeRepository(repository.nameWithOwner)}
                 className={classNames(
                   iconButtonStyle,
                   themeFocusVisibleOutline
@@ -96,7 +99,7 @@ const RepositoryList = memo<RepositoryListProps>(
               </button>
             ) : (
               <button
-                onClick={() => addRepository(repository.name)}
+                onClick={() => addRepository(repository.nameWithOwner)}
                 className={classNames(
                   iconButtonStyle,
                   themeFocusVisibleOutline

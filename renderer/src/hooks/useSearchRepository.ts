@@ -4,7 +4,7 @@ import { graphql } from 'relay-runtime';
 import type { useSearchRepositoryQuery } from './__generated__/useSearchRepositoryQuery.graphql';
 
 export type Repository = {
-  name: string;
+  nameWithOwner: string;
   url: string;
 };
 
@@ -13,7 +13,7 @@ const SearchRepositoryQuery = graphql`
     search(type: REPOSITORY, query: $query, last: 100) {
       nodes {
         ... on Repository {
-          name
+          nameWithOwner
           url
         }
       }
@@ -29,7 +29,7 @@ export const useSearchRepository = () => {
       account: string;
       keyword: string;
       isOrganization: boolean;
-    }): Promise<{ name: string; url: string }[]> => {
+    }): Promise<Repository[]> => {
       return new Promise((resolve) => {
         const accountModifier = options.isOrganization ? 'org' : 'user';
         const query = `${options.keyword} ${accountModifier}:${options.account}`;
