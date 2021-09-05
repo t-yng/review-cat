@@ -1,15 +1,23 @@
 import { useCallback } from 'react';
-import { useRelayEnvironment, fetchQuery } from 'react-relay';
-import { graphql } from 'relay-runtime';
-import type { useSearchRepositoryQuery } from './__generated__/useSearchRepositoryQuery.graphql';
+import { gql } from '@apollo/client';
+import { client } from '../lib/apollo';
 
 export type Repository = {
   nameWithOwner: string;
   url: string;
 };
 
-const SearchRepositoryQuery = graphql`
-  query useSearchRepositoryQuery($query: String!) {
+type SearchRepositoryQueryResponse = {
+  readonly search: {
+    readonly nodes: ReadonlyArray<{
+      readonly nameWithOwner?: string;
+      readonly url?: string;
+    } | null> | null;
+  };
+};
+
+const SearchRepositoryQuery = gql`
+  query SearchRepositoryQuery($query: String!) {
     search(type: REPOSITORY, query: $query, last: 100) {
       nodes {
         ... on Repository {
@@ -22,8 +30,6 @@ const SearchRepositoryQuery = graphql`
 `;
 
 export const useSearchRepository = () => {
-  const environment = useRelayEnvironment();
-
   const search = useCallback(
     async (options: {
       account: string;
@@ -33,19 +39,19 @@ export const useSearchRepository = () => {
       return new Promise((resolve) => {
         const accountModifier = options.isOrganization ? 'org' : 'user';
         const query = `${options.keyword} ${accountModifier}:${options.account}`;
-        fetchQuery<useSearchRepositoryQuery>(
-          environment,
-          SearchRepositoryQuery,
-          { query: query }
-        ).subscribe({
-          next: (data) => {
-            const repositories = data.search.nodes;
+        client
+          .query<SearchRepositoryQueryResponse>({
+            query: SearchRepositoryQuery,
+            variables: { query },
+            fetchPolicy: 'network-only',
+          })
+          .then((res) => {
+            const repositories = res.data.search.nodes;
             resolve(repositories as Repository[]);
-          },
-        });
+          });
       });
     },
-    [environment]
+    []
   );
 
   return {
