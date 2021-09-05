@@ -5,9 +5,13 @@ import {
   HttpLink,
   InMemoryCache,
 } from '@apollo/client';
+import fetch from 'cross-fetch';
 import { storage } from '../storage';
 
-const httpLink = new HttpLink({ uri: 'https://api.github.com/graphql' });
+const httpLink = new HttpLink({
+  uri: 'https://api.github.com/graphql',
+  fetch,
+});
 
 const authMiddleWare = new ApolloLink((operation, forward) => {
   const oAuthToken = storage.getGithubAccessToken();

@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { gql, useQuery } from '@apollo/client';
-import { pullRequestMapper } from '../graphql/mapper';
 import { userAtom } from '../jotai/user';
 import { PullRequest } from '../models/PullRequest';
 import { User } from '../models/User';
@@ -39,7 +39,7 @@ type SearchPullRequestsQueryResponse = {
   };
 };
 
-type SearchPullRequest = Exclude<
+export type SearchPullRequest = Exclude<
   ExtractGenerics<SearchPullRequestsQueryResponse['search']['nodes']>,
   null
 >;
@@ -82,9 +82,62 @@ export const SearchPullRequestsQuery = gql`
   }
 `;
 
+/**
+ * プルリクエストのステータス文字列を生成する
+ *
+ * ステータス:
+ *   requestedReview(レビュー待ち): requestedReviewer に自分が含まれている
+ *   approved(承認済み): 自分の state: APPROVED のレビューが存在する
+ *   reviewing(レビュー中): 上記以外のプルリクエスト
+ */
+export const getPullRequestStatus = (
+  pr: SearchPullRequest,
+  loginUser: User
+): PullRequest['status'] => {
+  const isRequestedReview = pr.reviewRequests?.nodes?.some(
+    (node) => node?.requestedReviewer?.login === loginUser.name
+  );
+
+  if (isRequestedReview) {
+    return 'requestedReview';
+  }
+
+  const totalCount = pr.reviews?.totalCount ?? 0;
+  const isApproved = totalCount > 0;
+  if (isApproved) {
+    return 'approved';
+  }
+
+  return 'reviewing';
+};
+
+const toModelFromSearchPullRequest = (
+  pr: SearchPullRequest,
+  loginUser: User
+): PullRequest => {
+  const basePullRequest: Omit<PullRequest, 'status'> = {
+    title: pr.title ?? '',
+    url: pr.url ?? '',
+    repository: {
+      nameWithOwner: pr.repository?.nameWithOwner ?? '',
+      openGraphImageUrl: pr.repository?.openGraphImageUrl ?? '',
+    },
+    author: {
+      name: pr.author?.login ?? '',
+      avatarUrl: pr.author?.avatarUrl ?? '',
+    },
+  };
+
+  return {
+    ...basePullRequest,
+    status: getPullRequestStatus(pr, loginUser),
+  };
+};
+
 export const usePullRequests = ({
   fetchInterval = 0,
 }: { fetchInterval?: number } = {}) => {
+  const [pullRequests, setPullRequests] = useState<PullRequest[]>([]);
   const [loginUser] = useAtom(userAtom);
   const { settings } = useSettings();
 
@@ -102,16 +155,19 @@ export const usePullRequests = ({
     }
   );
 
-  const searchPullRequests = (data?.search.nodes?.filter(
-    (node) => node != null
-  ) ?? []) as Array<SearchPullRequest>;
+  useEffect(() => {
+    if (data == null) return;
 
-  const pullRequests: Array<PullRequest> = searchPullRequests.map((pr) => {
-    return pullRequestMapper.toModelFromSearchPullRequest(
-      pr,
-      loginUser as User
-    );
-  });
+    const searchPullRequests = (data?.search.nodes?.filter(
+      (node) => node != null
+    ) ?? []) as Array<SearchPullRequest>;
+
+    const pullRequests: Array<PullRequest> = searchPullRequests.map((pr) => {
+      return toModelFromSearchPullRequest(pr, loginUser as User);
+    });
+
+    setPullRequests(pullRequests);
+  }, [data, loginUser]);
 
   return {
     loading,
