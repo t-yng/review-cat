@@ -5,7 +5,7 @@ import { userAtom } from '../jotai/user';
 import { PullRequest } from '../models/PullRequest';
 import { User } from '../models/User';
 import { useSettings } from './useSettings';
-import { buildSearchPullRequestsQuery } from '../graphql/queries/builder';
+import { buildSearchPullRequestsQuery } from '../lib';
 
 type TypeWithGenerics<T> = T[] | ReadonlyArray<T>;
 type ExtractGenerics<T> = T extends TypeWithGenerics<infer X> ? X : never;

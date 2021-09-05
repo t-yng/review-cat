@@ -1,6 +1,6 @@
-import { buildSearchPullRequestsQuery } from './builder';
+import { buildSearchPullRequestsQuery } from './queryBuilder';
 
-describe('builder', () => {
+describe('queryBuilder', () => {
   describe('buildSearchPullRequestsQuery', () => {
     it('リポジトリの一覧を含めた検索クエリが生成されること', () => {
       const repositories = ['test/repositoryA', 'test/repositoryB'];
