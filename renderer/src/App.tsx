@@ -1,16 +1,16 @@
 import React from 'react';
 import { Provider } from 'jotai';
-import { RelayEnvironmentProvider } from 'react-relay/hooks';
-import RelayEnvironment from './graphql/relay/RelayEnvironment';
+import { ApolloProvider } from '@apollo/client';
 import { AppRoute } from './components/routes';
+import { client } from './lib/apollo';
 
 const App = () => {
   return (
-    <RelayEnvironmentProvider environment={RelayEnvironment}>
+    <ApolloProvider client={client}>
       <Provider>
         <AppRoute />
       </Provider>
-    </RelayEnvironmentProvider>
+    </ApolloProvider>
   );
 };
 

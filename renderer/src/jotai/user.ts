@@ -1,9 +1,16 @@
 import { atom } from 'jotai';
-import { fetchQuery } from 'relay-runtime';
-import { LoginUserQuery } from '../graphql/queries/LoginUserQuery';
-import { LoginUserQuery as LoginUserQueryType } from '../graphql/queries/__generated__/LoginUserQuery.graphql';
-import RelayEnvironment from '../graphql/relay/RelayEnvironment';
+import { gql } from '@apollo/client';
+import { client } from '../lib/apollo';
 import { User } from '../models';
+
+export const LoginUserQuery = gql`
+  query LoginUserQuery {
+    viewer {
+      login
+      avatarUrl
+    }
+  }
+`;
 
 export const userAtom = atom<User | null>(null);
 
@@ -21,18 +28,25 @@ export const loginUserAtom = atom(
 );
 
 const fetchUser = async (): Promise<User | null> => {
-  const response = await fetchQuery<LoginUserQueryType>(
-    RelayEnvironment,
-    LoginUserQuery,
-    {}
-  ).toPromise();
+  const response = await new Promise<User>((resolve, reject) => {
+    client
+      .query<{
+        viewer: { login: string; avatarUrl: string };
+      }>({ query: LoginUserQuery })
+      .then((response) => {
+        resolve({
+          name: response.data.viewer.login,
+          avatarUrl: response.data.viewer.avatarUrl as string,
+        });
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 
   if (response == null) {
     return null;
   }
 
-  return {
-    name: response.viewer.login,
-    avatarUrl: response.viewer.avatarUrl as string,
-  };
+  return response;
 };
