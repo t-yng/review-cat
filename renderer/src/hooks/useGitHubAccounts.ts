@@ -34,12 +34,19 @@ export const useGitHubAccounts = () => {
   );
 
   useEffect(() => {
-    const nodes = data?.viewer.organizations.nodes;
-    if (nodes == null) return;
+    const accounts = [];
 
-    const accounts = nodes
-      .map((node) => node?.login)
-      .filter((org) => org != null) as string[];
+    const user = data?.viewer.login;
+    if (user) {
+      accounts.push(user);
+    }
+
+    const organizations = data?.viewer.organizations.nodes ?? [];
+    for (const org of organizations) {
+      if (org?.login) {
+        accounts.push(org?.login);
+      }
+    }
 
     setAccounts(accounts);
   }, [data]);
