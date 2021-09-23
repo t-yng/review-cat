@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 
-type SearchGitHubAccountsQueryResponse = {
+export type SearchGitHubAccountsQueryResponse = {
   readonly viewer: {
     readonly login: string;
     readonly organizations: {
