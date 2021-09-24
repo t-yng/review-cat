@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { SignOutIcon } from '@primer/octicons-react';
 import { User } from '../../models';
 import {
@@ -15,7 +15,7 @@ export type UserMenuProps = {
   onClickSignOut: () => void;
 };
 
-export const UserMenu: FC<UserMenuProps> = ({ user, onClickSignOut }) => {
+export const UserMenu: FC<UserMenuProps> = memo(({ user, onClickSignOut }) => {
   return (
     <div className={userMenuStyle}>
       <div className={`${listItemStyle} ${userNameStyle}`}>{user.name}</div>
@@ -28,4 +28,4 @@ export const UserMenu: FC<UserMenuProps> = ({ user, onClickSignOut }) => {
       </button>
     </div>
   );
-};
+});
