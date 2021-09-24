@@ -1,5 +1,5 @@
-import { useAtom } from 'jotai';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useAtom } from 'jotai';
 import { loginUserAtom } from '../../jotai';
 import { GitHubAvatar } from '../GitHubAvatar';
 import { UserMenu } from '../UserMenu';
