@@ -20,6 +20,7 @@ export const themeVars = createGlobalTheme(':root', {
   },
   bgColor: {
     hoverAccent: 'rgba(242, 179, 78, 0.2)',
+    base: colors.white,
   },
 });
 
