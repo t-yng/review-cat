@@ -1,10 +1,10 @@
 import { style } from '@vanilla-extract/css';
 import { space } from '../../themeStyleHelper';
 
-export const contentContainerStyle = style({
+export const rootStyle = style({
   display: 'flex',
   minHeight: '100%',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: `${space(2)}`,
+  paddingTop: space(14),
 });
