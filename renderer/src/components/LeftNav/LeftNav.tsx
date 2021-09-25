@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useAtom } from 'jotai';
-import { loginUserAtom } from '../../jotai';
+import { useHistory } from 'react-router';
+import { loginUserAtom, signOutAtom } from '../../jotai';
 import { GitHubAvatar } from '../GitHubAvatar';
 import { UserMenu } from '../UserMenu';
 import { navStyle, userIconStyle } from './styles.css';
 
 export const LeftNav: React.FC = () => {
+  const history = useHistory();
   const avatarRef = useRef<HTMLElement>(null);
   const [user] = useAtom(loginUserAtom);
+  const [, signOut] = useAtom(signOutAtom);
   const [visibleUserMenu, setVisibleUserMenu] = useState(false);
 
   useEffect(() => {
@@ -31,8 +34,10 @@ export const LeftNav: React.FC = () => {
   }, []);
 
   const handleSignOut = useCallback(() => {
-    alert('サインアウトを実装してください');
-  }, []);
+    signOut(() => {
+      history.replace('/login');
+    });
+  }, [signOut, history]);
 
   return (
     <nav className={navStyle} ref={avatarRef}>
