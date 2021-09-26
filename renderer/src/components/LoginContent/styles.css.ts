@@ -11,5 +11,5 @@ export const iconContainerStyle = style({
 });
 
 export const buttonContainerStyle = style({
-  marginTop: `${space(12)}`,
+  marginTop: `${space(8)}`,
 });
