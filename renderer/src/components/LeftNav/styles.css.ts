@@ -7,3 +7,9 @@ export const navStyle = style({
   padding: `${space(4)} ${space(2)}`,
   backgroundColor: themeVars.color.gray900,
 });
+
+export const userIconStyle = style({
+  ':hover': {
+    cursor: 'pointer',
+  },
+});
