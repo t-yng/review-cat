@@ -27,3 +27,15 @@ export const signInAtom = atom<null, (() => void) | undefined>(
     }
   }
 );
+
+export const signOutAtom = atom<null, () => void | undefined>(
+  null,
+  (_, set, callback) => {
+    set(tokenAtom, null);
+    storage.removeGitHubAccessToken();
+    storage.removeSettings();
+    if (callback != null) {
+      callback();
+    }
+  }
+);
