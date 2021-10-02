@@ -19,13 +19,13 @@ export const useSettings = () => {
 
   const updateShowsPR = useCallback(
     ({
-      requestedReview,
-      inReview,
-      approved,
+      requestedReview = settings.showsRequestedReviewPR,
+      inReview = settings.showsInReviewPR,
+      approved = settings.showsApprovedPR,
     }: {
-      requestedReview: boolean;
-      inReview: boolean;
-      approved: boolean;
+      requestedReview?: boolean;
+      inReview?: boolean;
+      approved?: boolean;
     }) => {
       dispatch({
         type: UPDATE_ACTION,
@@ -36,7 +36,7 @@ export const useSettings = () => {
         },
       });
     },
-    [dispatch]
+    [dispatch, settings]
   );
 
   const addSubscribedRepository = useCallback(

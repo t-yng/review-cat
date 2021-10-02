@@ -9,6 +9,7 @@ const colors = {
   gray900: '#333',
   accent: '#f2b24e',
   green: '#0A9710',
+  red: '#EB5757',
 };
 
 export const themeVars = createGlobalTheme(':root', {
