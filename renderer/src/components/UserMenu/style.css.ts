@@ -3,6 +3,8 @@ import { themeVars } from '../../theme.css';
 import { space } from '../../themeStyleHelper';
 
 export const userMenuStyle = style({
+  display: 'flex',
+  flexDirection: 'column',
   left: space(1),
   marginTop: space(0.5),
   width: 'max-content',
@@ -15,6 +17,8 @@ export const userMenuStyle = style({
 });
 
 export const listItemStyle = style({
+  display: 'flex',
+  alignItems: 'center',
   padding: `${space(1)} ${space(2)}`,
   lineHeight: '1.5',
   selectors: {
@@ -29,7 +33,8 @@ export const actionIconStyle = style({
 });
 
 export const actionLabelStyle = style({
-  marginLeft: space(0.5),
+  marginLeft: space(1),
+  lineHeight: 1.2,
 });
 
 export const userNameStyle = style({

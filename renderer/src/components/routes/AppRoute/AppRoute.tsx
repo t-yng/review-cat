@@ -11,10 +11,12 @@ import {
   PullRequestListPage,
   SelectRepositoryPage,
 } from '../../../pages';
+import { SettingsPage } from '../../../pages/SettingsPage';
 import { PrivateRoute } from '../PrivateRoute';
 
 export const AppRoute = () => {
   const { settings } = useSettings();
+
   return (
     <Router>
       <Switch>
@@ -23,6 +25,9 @@ export const AppRoute = () => {
         </Route>
         <PrivateRoute path="/select-repository">
           <SelectRepositoryPage />
+        </PrivateRoute>
+        <PrivateRoute path="/settings">
+          <SettingsPage />
         </PrivateRoute>
         <PrivateRoute path="/">
           {settings.subscribedRepositories.length === 0 ? (

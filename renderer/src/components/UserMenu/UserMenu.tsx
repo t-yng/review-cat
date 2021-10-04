@@ -1,5 +1,6 @@
 import React, { FC, memo } from 'react';
-import { SignOutIcon } from '@primer/octicons-react';
+import { SignOutIcon, GearIcon } from '@primer/octicons-react';
+import { Link } from 'react-router-dom';
 import { User } from '../../models';
 import {
   listItemStyle,
@@ -19,6 +20,10 @@ export const UserMenu: FC<UserMenuProps> = memo(({ user, onClickSignOut }) => {
   return (
     <div className={userMenuStyle}>
       <div className={`${listItemStyle} ${userNameStyle}`}>{user.name}</div>
+      <Link to="/settings" className={`${listItemStyle} ${actionItemStyle}`}>
+        <GearIcon className={actionIconStyle} />
+        <span className={actionLabelStyle}>設定</span>
+      </Link>
       <button
         className={`${listItemStyle} ${actionItemStyle}`}
         onClick={onClickSignOut}
