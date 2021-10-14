@@ -2,8 +2,13 @@ import { style } from '@vanilla-extract/css';
 import { themeVars } from '../../theme.css';
 import { space } from '../../themeStyleHelper';
 
-export const repositoryListStyle = style({
+export const repositoryListWrapperStyle = style({
   marginTop: space(2),
+  maxHeight: 280,
+  overflowY: 'scroll',
+});
+
+export const repositoryListStyle = style({
   fontSize: '1.4rem',
 });
 

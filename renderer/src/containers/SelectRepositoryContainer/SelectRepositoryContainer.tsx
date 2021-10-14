@@ -3,6 +3,7 @@ import { SelectRepositoryList } from './SelectRepositoryList';
 import { SearchRepository } from '../../components';
 import { Repository } from '../../hooks/useSearchRepository';
 import { useSettings } from '../../hooks';
+import { repositoryListWrapperStyle } from './style.css';
 
 export const SelectRepositoryContainer = memo(() => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
@@ -17,12 +18,14 @@ export const SelectRepositoryContainer = memo(() => {
     <div>
       <SearchRepository onSearch={handleSearch} />
       {repositories.length > 0 && (
-        <SelectRepositoryList
-          repositories={repositories}
-          subscribedRepositories={settings.subscribedRepositories}
-          addRepository={addSubscribedRepository}
-          removeRepository={removeSubscribedRepository}
-        />
+        <div className={repositoryListWrapperStyle}>
+          <SelectRepositoryList
+            repositories={repositories}
+            subscribedRepositories={settings.subscribedRepositories}
+            addRepository={addSubscribedRepository}
+            removeRepository={removeSubscribedRepository}
+          />
+        </div>
       )}
     </div>
   );
