@@ -33,6 +33,8 @@ export const themeFocusVisibleOutline = style({
 
 globalStyle('html', {
   fontSize: '0.625rem', // 16px * 0.625 = 10px
+  fontFamily:
+    "'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif",
 });
 
 globalStyle('body', {
