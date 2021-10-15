@@ -1,6 +1,5 @@
 import { style } from '@vanilla-extract/css';
 import { themeVars } from '../../theme.css';
-import { space } from '../../themeStyleHelper';
 
 export const dialogStyle = style({
   display: 'flex',
