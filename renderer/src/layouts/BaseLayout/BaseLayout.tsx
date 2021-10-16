@@ -8,8 +8,8 @@ interface Props {
 
 export const BaseLayout: React.FC<Props> = (props: Props) => {
   return (
-    <main className={`${rootStyle}`}>
-      <div className={`${navContainerStyle}`}>
+    <main className={rootStyle}>
+      <div className={navContainerStyle}>
         <LeftNav />
       </div>
       <div>{props.children}</div>

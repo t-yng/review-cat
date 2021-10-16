@@ -1,5 +1,4 @@
-import React, { ChangeEvent, FC } from 'react';
-import { Link } from 'react-router-dom';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { XCircleFillIcon } from '@primer/octicons-react';
 import { useSettings } from '../../hooks';
 import {
@@ -10,8 +9,13 @@ import {
   settingItemListStyle,
   deleteIconStyle,
   repositoryListItemStyle,
+  addRepositoryStyle,
+  deleteButtonStyle,
+  repositoryListStyle,
+  ellipsisStyle,
 } from './style.css';
 import { Settings as SettingsModel } from '../../models';
+import { SelectRepositoryModal } from '../../components/SelectRepositoryModal';
 
 type SettingsProps = {
   settings: SettingsModel;
@@ -24,100 +28,118 @@ type SettingsProps = {
   onClickDeleteRepository: (repository: string) => void;
 };
 
-const Settings: FC<SettingsProps> = ({
-  settings,
-  onChangeNotifyReviewRequested,
-  onChangeShowsRequestedReviewPr,
-  onChangedShowsInReviewPr,
-  onChangedShowsApprovedPr,
-  onClickDeleteRepository,
-}) => {
-  return (
-    <>
-      <div className={settingSectionStyle}>
-        <h2 className={settingSectionTitleStyle}>通知</h2>
-        <div className={settingItemListStyle}>
-          <div className={settingItemStyle}>
-            <input
-              type="checkbox"
-              id="notify-review-requested"
-              onChange={onChangeNotifyReviewRequested}
-              defaultChecked={settings.notifyReviewRequested}
-            />
-            <label
-              htmlFor="notify-review-requested"
-              className={settingItemLabelStyle}
-            >
-              レビューリクエスト時に通知を受け取る
-            </label>
+const Settings: FC<SettingsProps> = React.memo(
+  ({
+    settings,
+    onChangeNotifyReviewRequested,
+    onChangeShowsRequestedReviewPr,
+    onChangedShowsInReviewPr,
+    onChangedShowsApprovedPr,
+    onClickDeleteRepository,
+  }) => {
+    const [isOpenModal, setIsOpenModal] = useState(false);
+
+    return (
+      <>
+        <div className={settingSectionStyle}>
+          <h2 className={settingSectionTitleStyle}>通知</h2>
+          <div className={settingItemListStyle}>
+            <div className={settingItemStyle}>
+              <input
+                type="checkbox"
+                id="notify-review-requested"
+                onChange={onChangeNotifyReviewRequested}
+                defaultChecked={settings.notifyReviewRequested}
+              />
+              <label
+                htmlFor="notify-review-requested"
+                className={settingItemLabelStyle}
+              >
+                レビューリクエスト時に通知を受け取る
+              </label>
+            </div>
           </div>
         </div>
-      </div>
-      <div className={settingSectionStyle}>
-        <h2 className={settingSectionTitleStyle}>PRの表示</h2>
-        <div className={settingItemListStyle}>
-          <div className={settingItemStyle}>
-            <input
-              type="checkbox"
-              id="shows-requested-review-pr"
-              onChange={onChangeShowsRequestedReviewPr}
-              defaultChecked={settings.showsRequestedReviewPR}
-            />
-            <label
-              htmlFor="shows-requested-review-pr"
-              className={settingItemLabelStyle}
-            >
-              レビュー待ちのPRを表示
-            </label>
-          </div>
-          <div className={settingItemStyle}>
-            <input
-              type="checkbox"
-              id="shows-in-review-pr"
-              onChange={onChangedShowsInReviewPr}
-              defaultChecked={settings.showsInReviewPR}
-            />
-            <label
-              htmlFor="shows-in-review-pr"
-              className={settingItemLabelStyle}
-            >
-              レビュー中のPRを表示
-            </label>
-          </div>
-          <div className={settingItemStyle}>
-            <input
-              type="checkbox"
-              id="shows-approved-pr"
-              onChange={onChangedShowsApprovedPr}
-              defaultChecked={settings.showsApprovedPR}
-            />
-            <label
-              htmlFor="shows-approved-pr"
-              className={settingItemLabelStyle}
-            >
-              承認済みのPRを表示
-            </label>
+        <div className={settingSectionStyle}>
+          <h2 className={settingSectionTitleStyle}>PRの表示</h2>
+          <div className={settingItemListStyle}>
+            <div className={settingItemStyle}>
+              <input
+                type="checkbox"
+                id="shows-requested-review-pr"
+                onChange={onChangeShowsRequestedReviewPr}
+                defaultChecked={settings.showsRequestedReviewPR}
+              />
+              <label
+                htmlFor="shows-requested-review-pr"
+                className={settingItemLabelStyle}
+              >
+                レビュー待ちのPRを表示
+              </label>
+            </div>
+            <div className={settingItemStyle}>
+              <input
+                type="checkbox"
+                id="shows-in-review-pr"
+                onChange={onChangedShowsInReviewPr}
+                defaultChecked={settings.showsInReviewPR}
+              />
+              <label
+                htmlFor="shows-in-review-pr"
+                className={settingItemLabelStyle}
+              >
+                レビュー中のPRを表示
+              </label>
+            </div>
+            <div className={settingItemStyle}>
+              <input
+                type="checkbox"
+                id="shows-approved-pr"
+                onChange={onChangedShowsApprovedPr}
+                defaultChecked={settings.showsApprovedPR}
+              />
+              <label
+                htmlFor="shows-approved-pr"
+                className={settingItemLabelStyle}
+              >
+                承認済みのPRを表示
+              </label>
+            </div>
           </div>
         </div>
-      </div>
-      <div className={settingSectionStyle}>
-        <h2 className={settingSectionTitleStyle}>リポジトリ一覧</h2>
-        {settings.subscribedRepositories.map((repository) => (
-          <div className={repositoryListItemStyle} key={repository}>
-            <span>{repository}</span>
+        <div className={settingSectionStyle}>
+          <h2 className={settingSectionTitleStyle}>リポジトリ一覧</h2>
+          <div className={`${settingItemListStyle} ${repositoryListStyle}`}>
+            {settings.subscribedRepositories.map((repository) => (
+              <div className={repositoryListItemStyle} key={repository}>
+                <span className={ellipsisStyle}>{repository}</span>
+                <button
+                  aria-label="リポジトリを削除"
+                  onClick={() => onClickDeleteRepository(repository)}
+                  className={deleteButtonStyle}
+                >
+                  <XCircleFillIcon className={deleteIconStyle} size={16} />
+                </button>
+              </div>
+            ))}
             <button
-              aria-label="リポジトリを削除"
-              onClick={() => onClickDeleteRepository(repository)}
+              onClick={() => {
+                setIsOpenModal(true);
+              }}
+              className={addRepositoryStyle}
             >
-              <XCircleFillIcon className={deleteIconStyle} size={16} />
+              + 追加
             </button>
+            <SelectRepositoryModal
+              isOpen={isOpenModal}
+              onClose={() => setIsOpenModal(false)}
+            />
           </div>
-        ))}
-        <Link to="/select-repository">+ 追加</Link>
-      </div>
-    </>
-  );
-};
+        </div>
+      </>
+    );
+  }
+);
 
 export const SettingsContainer = () => {
   const {

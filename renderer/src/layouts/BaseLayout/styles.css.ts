@@ -15,5 +15,5 @@ export const navContainerStyle = style({
   top: '0',
   left: '0',
   height: '100vh',
-  zIndex: 100,
+  zIndex: 10,
 });
