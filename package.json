@@ -12,7 +12,7 @@
     "vite:build": "tsc && vite build",
     "electron:dev": "pnpm electron:tsc && pnpm electron:copy && NODE_ENV=development electron --require dotenv/config ./dist/app.js",
     "electron:build": "pnpm electron:tsc && pnpm electron:copy && env-cmd -f \".env.production\" babel dist/src --out-dir dist/src && node build.js",
-    "electron:copy": "cpx electron/images/** dist/images",
+    "electron:copy": "cpx 'electron/assets/images/**' dist/assets/images",
     "electron:tsc": "tsc -p tsconfig.electron.json",
     "clean:app": "rimraf app",
     "clean:dist": "rimraf dist",

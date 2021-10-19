@@ -7,7 +7,8 @@ const isDevelopment = process?.env?.NODE_ENV === 'development';
 
 function createWindow() {
   if (process.platform === 'darwin') {
-    app.dock.setIcon(`${__dirname}/images/appIcon.png`);
+    const appIcon = path.join(__dirname, 'assets', 'images', 'app-icon.png');
+    app.dock.setIcon(appIcon);
   }
 
   const mainWindow = new BrowserWindow({
