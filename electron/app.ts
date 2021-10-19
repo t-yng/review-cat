@@ -6,6 +6,10 @@ import { oAuthOptions } from './src/constants/auth';
 const isDevelopment = process?.env?.NODE_ENV === 'development';
 
 function createWindow() {
+  if (process.platform === 'darwin') {
+    app.dock.setIcon(`${__dirname}/images/appIcon.png`);
+  }
+
   const mainWindow = new BrowserWindow({
     width: 530,
     height: 496,
