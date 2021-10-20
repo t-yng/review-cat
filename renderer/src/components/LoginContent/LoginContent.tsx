@@ -1,11 +1,7 @@
 import React from 'react';
 import { Button } from '../Button';
 import { AppIcon } from '../AppIcon';
-import {
-  rootStyle,
-  iconContainerStyle,
-  buttonContainerStyle,
-} from './styles.css';
+import { rootStyle, buttonContainerStyle } from './styles.css';
 import { useAtom } from 'jotai';
 import { signInAtom } from '../../jotai/auth';
 import { useHistory } from 'react-router-dom';
@@ -21,11 +17,9 @@ export const LoginContent: React.FC = () => {
   };
 
   return (
-    <div className={`${rootStyle}`}>
-      <div className={`${iconContainerStyle}`}>
-        <AppIcon />
-      </div>
-      <div className={`${buttonContainerStyle}`}>
+    <div className={rootStyle}>
+      <AppIcon />
+      <div className={buttonContainerStyle}>
         <Button onClick={handleClick}>Login To GitHub</Button>
       </div>
     </div>

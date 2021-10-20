@@ -10,5 +10,8 @@ build({
     productName: 'ReviewCat',
     copyright: 'higeOhige',
     files: ['./dist'],
+    mac: {
+      icon: 'dist/assets/images/app-icon.png',
+    },
   },
 });
