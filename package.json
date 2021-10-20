@@ -1,7 +1,7 @@
 {
   "name": "review-cat",
   "license": "MIT",
-  "version": "1.0.0-alpha",
+  "version": "0.6.0",
   "main": "./dist/app.js",
   "scripts": {
     "dev": "pnpm vite:dev & pnpm electron:dev",
