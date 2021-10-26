@@ -23,7 +23,7 @@ export const LeftNav: React.FC = () => {
   const [user] = useAtom(loginUserAtom);
   const [, signOut] = useAtom(signOutAtom);
   const [visibleUserMenu, setVisibleUserMenu] = useState(false);
-  const { pullRequests, loading } = usePullRequests();
+  const { pullRequests, firstLoading } = usePullRequests();
 
   const requestedReviewPullRequests = (pullRequests: PullRequest[]) => {
     return pullRequests.filter((pr) => pr.status === 'requestedReview');
@@ -73,7 +73,7 @@ export const LeftNav: React.FC = () => {
             className={iconStyle}
             aria-label="プルリクエスト一覧へ移動"
           />
-          {!loading && (
+          {!firstLoading && (
             <span role="status" className={statusCountBadge}>
               {requestedReviewPullRequests(pullRequests).length}
             </span>
