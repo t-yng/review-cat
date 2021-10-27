@@ -74,7 +74,11 @@ export const LeftNav: React.FC = () => {
             aria-label="プルリクエスト一覧へ移動"
           />
           {!firstLoading && (
-            <span role="status" className={statusCountBadge}>
+            <span
+              aria-label="PRが3個あります"
+              className={statusCountBadge}
+              data-testid="pr-count-badge"
+            >
               {requestedReviewPullRequests(pullRequests).length}
             </span>
           )}

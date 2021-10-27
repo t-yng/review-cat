@@ -49,7 +49,7 @@ describe('LeftNav', () => {
       // 描画
       renderLeftNav();
       // ステータスバッジの取得
-      const badge = screen.getByRole('status');
+      const badge = screen.getByTestId('pr-count-badge');
       // プルリク数が表示されている
       expect(badge).toHaveTextContent('2');
     });
