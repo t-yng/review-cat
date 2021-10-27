@@ -3,7 +3,7 @@ import { Provider } from 'jotai';
 import { ApolloProvider } from '@apollo/client';
 import { AppRoute } from './components/routes';
 import { client } from './lib/apollo';
-import { AppProvider } from './components/AppProvider/AppProvider';
+import { AppProvider } from './components/AppProvider';
 
 const App = () => {
   return (
