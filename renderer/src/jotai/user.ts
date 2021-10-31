@@ -32,7 +32,7 @@ const fetchUser = async (): Promise<User | null> => {
     client
       .query<{
         viewer: { login: string; avatarUrl: string };
-      }>({ query: LoginUserQuery })
+      }>({ query: LoginUserQuery, fetchPolicy: 'cache-first' })
       .then((response) => {
         resolve({
           name: response.data.viewer.login,
