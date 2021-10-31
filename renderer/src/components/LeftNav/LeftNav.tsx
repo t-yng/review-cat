@@ -14,7 +14,6 @@ import {
 import { GitPullRequestIcon } from '@primer/octicons-react';
 import { Link } from 'react-router-dom';
 import { usePullRequests } from '../../hooks';
-import { PullRequest } from '../../models';
 
 export const LeftNav: React.FC = () => {
   usePullRequests;
@@ -25,9 +24,9 @@ export const LeftNav: React.FC = () => {
   const [visibleUserMenu, setVisibleUserMenu] = useState(false);
   const { pullRequests, firstLoading } = usePullRequests();
 
-  const requestedReviewPullRequests = (pullRequests: PullRequest[]) => {
-    return pullRequests.filter((pr) => pr.status === 'requestedReview');
-  };
+  const requestedReviewPullRequests = pullRequests.filter(
+    (pr) => pr.status === 'requestedReview'
+  );
 
   useEffect(() => {
     const handleClickBody = (event: MouseEvent) => {
@@ -75,11 +74,11 @@ export const LeftNav: React.FC = () => {
           />
           {!firstLoading && (
             <span
-              aria-label="PRが3個あります"
+              aria-label={`PRが${requestedReviewPullRequests.length}個あります`}
               className={statusCountBadge}
               data-testid="pr-count-badge"
             >
-              {requestedReviewPullRequests(pullRequests).length}
+              {requestedReviewPullRequests.length}
             </span>
           )}
         </Link>
