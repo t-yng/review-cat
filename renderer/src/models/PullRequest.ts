@@ -5,7 +5,7 @@ export interface Repository {
   openGraphImageUrl: string;
 }
 
-type PullRequestStatus = 'requestedReview' | 'reviewing' | 'approved';
+export type PullRequestStatus = 'requestedReview' | 'reviewing' | 'approved';
 
 export interface PullRequest {
   title: string;
