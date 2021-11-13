@@ -19,8 +19,7 @@
     "lint": "eslint . --cache --ext .js,.ts,.tsx",
     "prepare": "husky install",
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
-    "test:jest": "jest",
-    "test": "pnpm test:jest",
+    "test": "jest",
     "type-check": "pnpm type-check:renderer && pnpm type-check:electron",
     "type-check:renderer": "tsc --noEmit",
     "type-check:electron": "tsc -p tsconfig.electron.json --noEmit"

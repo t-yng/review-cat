@@ -11,7 +11,7 @@ module.exports = {
     electron: '<rootDir>/electron/src/__mocks__/electron.ts',
     '\\.css$': 'identity-obj-proxy',
   },
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: ['renderer/**/*.{ts,tsx}', 'electron/**/*.ts'],
   coverageProvider: 'v8',
 };
