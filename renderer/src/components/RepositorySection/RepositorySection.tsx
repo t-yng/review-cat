@@ -1,5 +1,9 @@
 import React from 'react';
-import { RepositoryData } from '../../models/PullRequest';
+import {
+  PullRequest,
+  PullRequestStatus,
+  RepositoryData,
+} from '../../models/PullRequest';
 import { RepositorySectionHeadingContent } from '../RepositorySectionHeadingContent';
 import { PullRequestItem } from '../PullRequestItem';
 import { styles } from './styles.css';
@@ -9,6 +13,18 @@ interface Props {
 }
 
 export const RepositorySection: React.FC<Props> = ({ repository }) => {
+  const sortPullRequests = (pullRequests: PullRequest[]) => {
+    const priority: { [key in PullRequestStatus]: number } = {
+      requestedReview: 1,
+      reviewing: 2,
+      approved: 3,
+    };
+
+    return [...pullRequests].sort((a, b) => {
+      return priority[a.status] - priority[b.status];
+    });
+  };
+
   return (
     <section>
       <h1>
@@ -16,7 +32,7 @@ export const RepositorySection: React.FC<Props> = ({ repository }) => {
       </h1>
 
       <ul>
-        {repository.pullRequests.map((pullRequest, i) => (
+        {sortPullRequests(repository.pullRequests).map((pullRequest, i) => (
           <li
             key={pullRequest.url ?? pullRequest.title ?? i}
             className={styles.listItemStyle}
