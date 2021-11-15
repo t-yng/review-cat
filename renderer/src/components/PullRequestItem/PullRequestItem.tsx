@@ -1,5 +1,5 @@
 import React from 'react';
-import { PullRequest } from '../../models';
+import { PullRequest, PullRequestStatus } from '../../models';
 import { GitHubAvatar } from '../GitHubAvatar';
 import { styles } from './styles.css';
 
@@ -9,6 +9,12 @@ interface Props {
 
 export const PullRequestItem: React.FC<Props> = ({ pullRequest }) => {
   const { author, url, title, status } = pullRequest;
+
+  const statusLabel: { [key in PullRequestStatus]: string } = {
+    requestedReview: 'レビュー待ち',
+    reviewing: 'レビュー中',
+    approved: '承認済',
+  };
 
   return (
     <a
@@ -27,7 +33,7 @@ export const PullRequestItem: React.FC<Props> = ({ pullRequest }) => {
         />
       </span>
       <span className={styles.prAuthorNameStyle}>{title}</span>
-      <span className={styles.prStatusTextStyle}>{status}</span>
+      <span className={styles.prStatusTextStyle}>{statusLabel[status]}</span>
     </a>
   );
 };
