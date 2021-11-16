@@ -10,7 +10,13 @@ import {
 } from '../../models';
 
 describe('RepositorySection', () => {
-  const createPullRequest = ({ status }: { status: PullRequestStatus }) => {
+  const createPullRequest = ({
+    status,
+    url,
+  }: {
+    status: PullRequestStatus;
+    url: string;
+  }) => {
     const authorMock = mock<User>();
     when(authorMock.avatarUrl).thenReturn(
       'https://example.com/images/avatar.jpg'
@@ -18,9 +24,7 @@ describe('RepositorySection', () => {
     when(authorMock.name).thenReturn('test');
     const pullRequestMock = mock<PullRequest>();
     when(pullRequestMock.status).thenReturn(status);
-    when(pullRequestMock.url).thenReturn(
-      'https://github.com/higeOhige/review-cat/pull/84'
-    );
+    when(pullRequestMock.url).thenReturn(url);
     when(pullRequestMock.author).thenReturn(instance(authorMock));
     when(pullRequestMock.title).thenReturn('test');
 
@@ -28,12 +32,15 @@ describe('RepositorySection', () => {
   };
 
   describe('sortPullRequests', () => {
-    it('ステータスに応じてプルリクの一覧がソートをする', () => {
+    it('ステータスに応じてプルリクの一覧をソートする', () => {
       const pullRequests = [
         'approved' as const,
         'requestedReview' as const,
         'reviewing' as const,
-      ].map((status) => createPullRequest({ status }));
+      ].map((status, i) => {
+        const url = `https://github.com/higeOhige/review-cat/pull/${i}`;
+        return createPullRequest({ status, url });
+      });
 
       const repositoryMock = mock<RepositoryData>();
       when(repositoryMock.pullRequests).thenReturn(pullRequests);
