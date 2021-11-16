@@ -49,9 +49,9 @@ describe('RepositorySection', () => {
       render(<RepositorySection repository={repository} />);
       const pullRequestItems = screen.getAllByRole('listitem');
 
-      expect(pullRequestItems[0]).toHaveTextContent('requestedReview');
-      expect(pullRequestItems[1]).toHaveTextContent('reviewing');
-      expect(pullRequestItems[2]).toHaveTextContent('approved');
+      expect(pullRequestItems[0]).toHaveTextContent('レビュー待ち');
+      expect(pullRequestItems[1]).toHaveTextContent('レビュー中');
+      expect(pullRequestItems[2]).toHaveTextContent('承認済');
     });
   });
 });
