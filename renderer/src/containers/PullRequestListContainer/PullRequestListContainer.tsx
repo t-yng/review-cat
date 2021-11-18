@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { usePullRequests } from '../../hooks/usePullRequests';
 import { RepositorySection } from '../../components/RepositorySection';
-import { PullRequest, Repositories } from '../../models';
+import { PullRequest, Repositories, Settings } from '../../models';
+import { useSettings } from '../../hooks';
 
 /**
  * プルリクエストをリポジトリ毎にまとめる
@@ -36,9 +37,27 @@ const groupByRepository = (pullRequests: Array<PullRequest>): Repositories => {
   );
 };
 
+const filterPullRequests = (
+  pullRequests: PullRequest[],
+  settings: Settings
+) => {
+  return pullRequests.filter((pr) => {
+    switch (pr.status) {
+      case 'requestedReview':
+        return settings.showsRequestedReviewPR;
+      case 'reviewing':
+        return settings.showsInReviewPR;
+      case 'approved':
+        return settings.showsApprovedPR;
+    }
+  });
+};
+
 export const PullRequestListContainer: FC = () => {
   const { pullRequests, firstLoading } = usePullRequests();
-  const repositories = groupByRepository(pullRequests);
+  const { settings } = useSettings();
+  const filteredPullRequests = filterPullRequests(pullRequests, settings);
+  const repositories = groupByRepository(filteredPullRequests);
 
   if (firstLoading) {
     return <h1>Loading...</h1>;
