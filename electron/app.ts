@@ -1,5 +1,5 @@
 import path from 'path';
-import { app, ipcMain } from 'electron';
+import { app, ipcMain, shell } from 'electron';
 import { menubar } from 'menubar';
 import { auth } from './src/lib';
 import { oAuthOptions } from './src/constants/auth';
@@ -52,5 +52,18 @@ menubarApp.on('ready', () => {
 
   ipcMain.handle('getAccessToken', async (event, code: string) => {
     return auth.getGithubOAuthToken(oAuthOptions, code);
+  });
+});
+
+menubarApp.on('after-create-window', () => {
+  // 外部リンクに遷移するときに新しいウィンドウを表示せずにデフォルトのブラウザで表示する
+  menubarApp.window?.webContents.setWindowOpenHandler(({ url }) => {
+    // NOTE: 外部リンクを開く時にウィンドウを閉じないようにブラウザにフォーカスを当てないようにする
+    //       ただし、Chromeの場合はバグでフォーカスが当たってしまうので注意
+    // @see: vhttps://github.com/electron/electron/issues/12492
+    if (url.startsWith('https:')) {
+      shell.openExternal(url, { activate: false });
+    }
+    return { action: 'deny' };
   });
 });
