@@ -33,6 +33,7 @@
     "cross-fetch": "^3.1.4",
     "destyle.css": "^2.0.2",
     "jotai": "^1.1.3",
+    "menubar": "^9.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0"
