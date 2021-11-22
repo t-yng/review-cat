@@ -33,19 +33,13 @@ const menubarApp = menubar({
   preloadWindow: true,
 });
 
-const delayedHideAppIcon = () => {
+const hideDockIcon = () => {
   if (app.dock && app.dock.hide) {
-    // Setting a timeout because the showDockIcon is not currently working
-    // See more at https://github.com/maxogden/menubar/issues/306
-    setTimeout(() => {
-      app.dock.hide();
-    }, 1000);
+    app.dock.hide();
   }
 };
 
 menubarApp.on('ready', () => {
-  delayedHideAppIcon();
-
   ipcMain.handle('loginWithGithub', async () => {
     return auth.loginWithGithub(oAuthOptions);
   });
@@ -66,4 +60,10 @@ menubarApp.on('after-create-window', () => {
     }
     return { action: 'deny' };
   });
+
+  hideDockIcon();
+
+  if (isDevelopment) {
+    menubarApp.showWindow();
+  }
 });
