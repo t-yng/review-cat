@@ -34,6 +34,8 @@ const menubarApp = menubar({
 });
 
 const hideDockIcon = () => {
+  // menubar の showDockIcon:false が正常に動作しないので、自前でドックアイコンを非表示にしている
+  // @see: https://github.com/maxogden/menubar/issues/306
   if (app.dock && app.dock.hide) {
     app.dock.hide();
   }
