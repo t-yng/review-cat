@@ -2,8 +2,15 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { LeftNav } from '.';
 import { MemoryRouter } from 'react-router';
+import { usePullRequests } from '../../hooks';
+import { PullRequest } from '../../models';
 
-const pullRequests = [
+jest.mock('../../hooks/usePullRequests');
+const usePullRequestsMock = usePullRequests as jest.MockedFunction<
+  typeof usePullRequests
+>;
+
+const defaultPullRequests = [
   {
     status: 'requestedReview',
   },
@@ -18,16 +25,19 @@ const pullRequests = [
   },
 ];
 
-jest.mock('../../hooks/usePullRequests', () => ({
-  usePullRequests() {
-    return {
-      pullRequests: pullRequests,
-    };
-  },
-}));
-
 describe('LeftNav', () => {
   describe('GitPullRequestIcon', () => {
+    beforeEach(() => {
+      usePullRequestsMock.mockReturnValue({
+        pullRequests: defaultPullRequests as PullRequest[],
+        firstLoading: false,
+      });
+    });
+
+    afterEach(() => {
+      usePullRequestsMock.mockReset();
+    });
+
     const renderLeftNav = () => {
       return render(
         <MemoryRouter>
@@ -46,12 +56,21 @@ describe('LeftNav', () => {
     });
 
     it('レビューリクエストのプルリク数を表示する', () => {
-      // 描画
       renderLeftNav();
-      // ステータスバッジの取得
+
       const badge = screen.getByTestId('pr-count-badge');
-      // プルリク数が表示されている
       expect(badge).toHaveTextContent('2');
+    });
+
+    it('リクエスト待ちのプルリクが0件の場合はバッジを表示しない', () => {
+      usePullRequestsMock.mockReturnValue({
+        pullRequests: [],
+        firstLoading: false,
+      });
+      renderLeftNav();
+
+      const badge = screen.queryByTestId('pr-count-badge');
+      expect(badge).not.toBeInTheDocument();
     });
   });
 });
