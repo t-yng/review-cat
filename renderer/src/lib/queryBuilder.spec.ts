@@ -8,5 +8,11 @@ describe('queryBuilder', () => {
       expect(result).toEqual(expect.stringContaining('repo:test/repositoryA'));
       expect(result).toEqual(expect.stringContaining('repo:test/repositoryB'));
     });
+
+    it('リポジトリの一覧が空配列の時は空文字を返す', () => {
+      const repositories: string[] = [];
+      const result = buildSearchPullRequestsQuery(repositories);
+      expect(result).toBe('');
+    });
   });
 });
