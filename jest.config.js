@@ -12,6 +12,11 @@ module.exports = {
     '\\.css$': 'identity-obj-proxy',
   },
   collectCoverage: false,
-  collectCoverageFrom: ['renderer/**/*.{ts,tsx}', 'electron/**/*.ts'],
+  collectCoverageFrom: [
+    'renderer/**/*.{ts,tsx}',
+    'electron/**/*.ts',
+    '!renderer/**/*.css.ts',
+    '!**/*.d.ts',
+  ],
   coverageProvider: 'v8',
 };
