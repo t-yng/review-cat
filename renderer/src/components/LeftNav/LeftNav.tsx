@@ -16,7 +16,6 @@ import { Link } from 'react-router-dom';
 import { usePullRequests } from '../../hooks';
 
 export const LeftNav: React.FC = () => {
-  usePullRequests;
   const history = useHistory();
   const avatarRef = useRef<HTMLElement>(null);
   const [user] = useAtom(loginUserAtom);
@@ -72,7 +71,7 @@ export const LeftNav: React.FC = () => {
             className={iconStyle}
             aria-label="プルリクエスト一覧へ移動"
           />
-          {!firstLoading && (
+          {!firstLoading && requestedReviewPullRequests.length > 0 && (
             <span
               aria-label={`PRが${requestedReviewPullRequests.length}個あります`}
               className={statusCountBadge}
