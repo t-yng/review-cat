@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useAtom } from 'jotai';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { loginUserAtom, signOutAtom } from '../../jotai';
 import { GitHubAvatar } from '../GitHubAvatar';
 import { UserMenu } from '../UserMenu';
