@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { SettingsContainer } from './SettingContainer';
 import userEvent from '@testing-library/user-event';
 import { Settings } from '../../models';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 
 const defaultSettings: Settings = {
   notifyReviewRequested: false,
