@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { UserMenu } from './';
 import userEvent from '@testing-library/user-event';
 import { UserMenuProps } from '..';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('UserMenu', () => {
   const renderUserMenu = (props: Partial<UserMenuProps> | undefined) => {

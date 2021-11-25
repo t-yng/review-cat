@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { LeftNav } from '.';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 import { usePullRequests } from '../../hooks';
 import { PullRequest } from '../../models';
 
