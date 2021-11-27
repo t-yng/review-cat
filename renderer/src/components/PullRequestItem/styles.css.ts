@@ -1,10 +1,10 @@
-import { composeStyles, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 import { themeVars, themeFocusVisibleOutline } from '../../theme.css';
 import { space } from '../../themeStyleHelper';
 
-const rootStyle = composeStyles(
+const rootStyle = style([
   themeFocusVisibleOutline,
-  style({
+  {
     display: 'grid',
     gridTemplateAreas: `
       "avatar name"
@@ -16,8 +16,8 @@ const rootStyle = composeStyles(
     gap: `${space(0.5)} ${space(1)}`,
     padding: `${space(1)} ${space(1.5)}`,
     color: themeVars.color.gray700,
-  })
-);
+  },
+]);
 
 export const avatarContainerStyle = style({
   gridArea: 'avatar',

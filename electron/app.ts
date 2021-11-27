@@ -1,61 +1,71 @@
 import path from 'path';
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, ipcMain, shell } from 'electron';
+import { menubar } from 'menubar';
 import { auth } from './src/lib';
 import { oAuthOptions } from './src/constants/auth';
 
 const isDevelopment = process?.env?.NODE_ENV === 'development';
 
-function createWindow() {
-  if (process.platform === 'darwin') {
-    const appIcon = path.join(__dirname, 'assets', 'images', 'app-icon.png');
-    app.dock.setIcon(appIcon);
+const trayIcon = path.join(__dirname, 'assets', 'images', 'tray-icon.png');
+const indexUrl = isDevelopment
+  ? 'http://localhost:3000/'
+  : `file://${path.resolve(__dirname, './index.html')}`;
+
+const browserWindowOpts = {
+  width: 500,
+  height: 400,
+  minWidth: 500,
+  minHeight: 400,
+  resizable: false,
+  webPreferences: {
+    enableRemoteModule: true,
+    overlayScrollbars: true,
+    nodeIntegration: false,
+    contextIsolation: true,
+    preload: path.join(__dirname, 'preload.js'),
+  },
+};
+
+const menubarApp = menubar({
+  icon: trayIcon,
+  index: indexUrl,
+  browserWindow: browserWindowOpts,
+  preloadWindow: true,
+});
+
+const hideDockIcon = () => {
+  // menubar の showDockIcon:false が正常に動作しないので、自前でドックアイコンを非表示にしている
+  // @see: https://github.com/maxogden/menubar/issues/306
+  if (app.dock && app.dock.hide) {
+    app.dock.hide();
   }
+};
 
-  const mainWindow = new BrowserWindow({
-    width: 530,
-    height: 496,
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
-    },
+menubarApp.on('ready', () => {
+  ipcMain.handle('loginWithGithub', async () => {
+    return auth.loginWithGithub(oAuthOptions);
   });
 
-  mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url);
-
-    return {
-      action: 'deny',
-    };
+  ipcMain.handle('getAccessToken', async (event, code: string) => {
+    return auth.getGithubOAuthToken(oAuthOptions, code);
   });
+});
 
-  const indexUrl = isDevelopment
-    ? 'http://localhost:3000/'
-    : `file://${path.resolve(__dirname, './index.html')}`;
-
-  mainWindow.loadURL(indexUrl);
-}
-
-app.whenReady().then(() => {
-  createWindow();
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+menubarApp.on('after-create-window', () => {
+  // 外部リンクに遷移するときに新しいウィンドウを表示せずにデフォルトのブラウザで表示する
+  menubarApp.window?.webContents.setWindowOpenHandler(({ url }) => {
+    // NOTE: 外部リンクを開く時にウィンドウを閉じないようにブラウザにフォーカスを当てないようにする
+    //       ただし、Chromeの場合はバグでフォーカスが当たってしまうので注意
+    // @see: vhttps://github.com/electron/electron/issues/12492
+    if (url.startsWith('https:')) {
+      shell.openExternal(url, { activate: false });
     }
+    return { action: 'deny' };
   });
-});
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
+  hideDockIcon();
+
+  if (isDevelopment) {
+    menubarApp.showWindow();
   }
-});
-
-ipcMain.handle('loginWithGithub', async () => {
-  return auth.loginWithGithub(oAuthOptions);
-});
-
-ipcMain.handle('getAccessToken', async (event, code: string) => {
-  return auth.getGithubOAuthToken(oAuthOptions, code);
 });

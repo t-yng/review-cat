@@ -17,12 +17,7 @@ export const PullRequestItem: React.FC<Props> = ({ pullRequest }) => {
   };
 
   return (
-    <a
-      className={styles.rootStyle}
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a className={styles.rootStyle} href={url} target="_blank" rel="noreferrer">
       <span className={styles.avatarContainerStyle}>
         <GitHubAvatar
           {...{

@@ -5,6 +5,29 @@ import { PullRequestItem } from '.';
 import { PullRequest, User } from '../../models';
 
 describe('PullRequestItem', () => {
+  describe('link', () => {
+    it('リンク先がプルリクエストのURLになっている', () => {
+      const authorMock = mock<User>();
+      when(authorMock.avatarUrl).thenReturn(
+        'https://example.com/images/avatar.jpg'
+      );
+      when(authorMock.name).thenReturn('test');
+      const pullRequestMock = mock<PullRequest>();
+      when(pullRequestMock.url).thenReturn(
+        'https://github.com/higeOhige/review-cat/pull/84'
+      );
+      when(pullRequestMock.author).thenReturn(instance(authorMock));
+      when(pullRequestMock.title).thenReturn('test');
+
+      const pullRequest = instance(pullRequestMock);
+      render(<PullRequestItem pullRequest={pullRequest} />);
+
+      const link = screen.getByRole('link');
+
+      expect(link).toHaveAttribute('href', pullRequest.url);
+    });
+  });
+
   describe('status', () => {
     it.each([
       {
