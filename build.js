@@ -1,7 +1,9 @@
 const path = require('path');
-const { build } = require('electron-builder');
+const builder = require('electron-builder');
 
-build({
+builder.build({
+  targets: builder.Platform.MAC.createTarget(),
+  publish: 'never',
   config: {
     directories: {
       output: path.join(__dirname, 'app'),
