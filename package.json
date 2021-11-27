@@ -1,7 +1,7 @@
 {
   "name": "review-cat",
   "license": "MIT",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "main": "./dist/app.js",
   "scripts": {
     "dev": "yarn vite:dev & yarn electron:dev",
