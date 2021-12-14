@@ -1,11 +1,32 @@
+/** @type {import('@swc/core').Config} */
+const swcConfig = {
+  sourceMaps: true,
+  module: {
+    type: 'commonjs',
+  },
+  jsc: {
+    parser: {
+      syntax: 'typescript',
+      tsx: true,
+    },
+    transform: {
+      react: {
+        runtime: 'automatic',
+      },
+    },
+  },
+};
+
 /**
  * @type {import ('@jest/types').Config.InitialOptions}
  */
 module.exports = {
-  preset: 'ts-jest',
+  transform: {
+    '^.+\\.(t|j)sx?$': ['@swc/jest', swcConfig],
+  },
   testEnvironment: 'jsdom',
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
+  testRegex: '(\\.|/)(test|spec)\\.[jt]sx?$',
   setupFilesAfterEnv: ['./test/setup.ts'],
   moduleNameMapper: {
     electron: '<rootDir>/electron/src/__mocks__/electron.ts',
