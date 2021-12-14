@@ -16,13 +16,23 @@
     "electron:tsc": "tsc -p tsconfig.electron.json",
     "clean:app": "rimraf app",
     "clean:dist": "rimraf dist",
-    "lint": "eslint . --cache --ext .js,.ts,.tsx",
     "prepare": "husky install",
-    "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
+    "lint": "eslint",
+    "lint:all": "yarn lint . --cache --ext .js,.ts,.tsx",
+    "format": "prettier --write",
+    "format:all": "yarn format \"**/*.{js,ts,tsx,json}\"",
     "test": "jest",
     "type-check": "yarn type-check:renderer && yarn type-check:electron",
     "type-check:renderer": "tsc --noEmit",
     "type-check:electron": "tsc -p tsconfig.electron.json --noEmit"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,json}": [
+      "yarn format"
+    ],
+    "*.{js,ts,tsx}": [
+      "yarn lint"
+    ]
   },
   "dependencies": {
     "@apollo/client": "^3.4.10",
@@ -78,13 +88,5 @@
     "ts-mockito": "^2.6.1",
     "typescript": "^4.4.2",
     "vite": "^2.5.1"
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx,json}": [
-      "yarn format"
-    ],
-    "*.{js,ts,tsx}": [
-      "yarn lint"
-    ]
   }
 }
