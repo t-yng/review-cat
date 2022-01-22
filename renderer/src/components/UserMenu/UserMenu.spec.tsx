@@ -4,6 +4,7 @@ import { UserMenu } from './';
 import userEvent from '@testing-library/user-event';
 import { UserMenuProps } from '..';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 describe('UserMenu', () => {
   const renderUserMenu = (props: Partial<UserMenuProps> | undefined) => {
@@ -12,7 +13,7 @@ describe('UserMenu', () => {
         avatarUrl: 'https://example.com/images/avatar.jpeg',
         name: 'test',
       },
-      onClickSignOut: jest.fn(),
+      onClickSignOut: vi.fn(),
     };
 
     const userMenuProps = {
@@ -46,7 +47,7 @@ describe('UserMenu', () => {
   });
 
   it('ログアウトがクリックされた時に、onClickSignOut を実行する', () => {
-    const handleClickSignOutMock = jest.fn();
+    const handleClickSignOutMock = vi.fn();
 
     renderUserMenu({ onClickSignOut: handleClickSignOutMock });
 

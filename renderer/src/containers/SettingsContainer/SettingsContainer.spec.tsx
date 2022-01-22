@@ -4,6 +4,7 @@ import { SettingsContainer } from './SettingContainer';
 import userEvent from '@testing-library/user-event';
 import { Settings } from '../../models';
 import { MemoryRouter } from 'react-router-dom';
+import { testEach } from '../../../../test/helpers/testEach';
 
 const defaultSettings: Settings = {
   notifyReviewRequested: false,
@@ -13,11 +14,11 @@ const defaultSettings: Settings = {
   subscribedRepositories: ['test/testA', 'test/testB'],
 };
 
-const updateNotifyReviewRequestedMock: jest.Mock = jest.fn();
-const updateShowsPRMock: jest.Mock = jest.fn();
-const removeSubscribedRepositoryMock: jest.Mock = jest.fn();
+const updateNotifyReviewRequestedMock = vi.fn();
+const updateShowsPRMock = vi.fn();
+const removeSubscribedRepositoryMock = vi.fn();
 
-jest.mock('../../hooks/useSettings', () => ({
+vi.mock('../../hooks/useSettings', () => ({
   useSettings() {
     return {
       settings: defaultSettings,
@@ -58,7 +59,7 @@ describe('SettingsContainer', () => {
   });
 
   describe('PR表示の設定', () => {
-    it.each([
+    testEach([
       {
         label: 'レビュー待ちのPRを表示',
         expected: {
@@ -79,12 +80,10 @@ describe('SettingsContainer', () => {
       },
     ])(
       '$label のチェックボックスがクリックされた時にコールバック関数が呼ばれる',
-      ({ label, expected }) => {
+      ({ label, expected }: any) => {
         renderSettingContainer();
-
         const checkbox = screen.getByLabelText(label);
         userEvent.click(checkbox);
-
         expect(updateShowsPRMock).toBeCalledWith(expected);
       }
     );

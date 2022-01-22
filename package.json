@@ -21,7 +21,7 @@
     "lint:all": "yarn lint . --cache --ext .js,.ts,.tsx",
     "format": "prettier --write",
     "format:all": "yarn format \"**/*.{js,ts,tsx,json}\"",
-    "test": "jest",
+    "test": "vitest run",
     "type-check": "yarn type-check:renderer && yarn type-check:electron",
     "type-check:renderer": "tsc --noEmit",
     "type-check:electron": "tsc -p tsconfig.electron.json --noEmit"
@@ -51,13 +51,10 @@
   "devDependencies": {
     "@babel/cli": "^7.15.4",
     "@babel/core": "^7.15.5",
-    "@swc/core": "^1.2.120",
-    "@swc/jest": "^0.2.15",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^7.0.1",
     "@testing-library/user-event": "^13.2.1",
-    "@types/jest": "^26.0.24",
     "@types/node": "^16.0.0",
     "@types/node-fetch": "^2.5.11",
     "@types/react": "^17.0.0",
@@ -80,14 +77,14 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "graphql": "^15.5.1",
     "husky": "^7.0.0",
-    "identity-obj-proxy": "^3.0.0",
-    "jest": "^27.0.6",
+    "jsdom": "^19.0.0",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.2",
     "react-test-renderer": "^17.0.2",
     "rimraf": "^3.0.2",
     "ts-mockito": "^2.6.1",
     "typescript": "^4.4.2",
-    "vite": "^2.5.1"
+    "vite": "^2.5.1",
+    "vitest": "^0.1.26"
   }
 }

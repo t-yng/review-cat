@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { instance, mock, when } from 'ts-mockito';
 import { PullRequestItem } from '.';
 import { PullRequest, User } from '../../models';
+import { testEach } from '../../../../test/helpers/testEach';
 
 describe('PullRequestItem', () => {
   describe('link', () => {
@@ -29,7 +30,7 @@ describe('PullRequestItem', () => {
   });
 
   describe('status', () => {
-    it.each([
+    testEach([
       {
         status: 'requestedReview' as const,
         expected: 'レビュー待ち',
@@ -42,7 +43,7 @@ describe('PullRequestItem', () => {
         status: 'approved' as const,
         expected: '承認済',
       },
-    ])('$status のときに $expected を表示する', ({ status, expected }) => {
+    ])('$status のときに $expected を表示する', ({ status, expected }: any) => {
       const authorMock = mock<User>();
       when(authorMock.avatarUrl).thenReturn(
         'https://example.com/images/avatar.jpg'
@@ -55,10 +56,8 @@ describe('PullRequestItem', () => {
       );
       when(pullRequestMock.author).thenReturn(instance(authorMock));
       when(pullRequestMock.title).thenReturn('test');
-
       const pullRequest = instance(pullRequestMock);
       render(<PullRequestItem pullRequest={pullRequest} />);
-
       const statusLabel = screen.queryByText(expected);
       expect(statusLabel).toBeInTheDocument();
     });

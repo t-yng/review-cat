@@ -15,7 +15,7 @@ const repositories: Repository[] = [
   },
 ];
 
-jest.mock('../../components/SearchRepository', () => ({
+vi.mock('../../components/SearchRepository', () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   SearchRepository: (props: any) => {
     return (

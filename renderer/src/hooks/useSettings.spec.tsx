@@ -2,8 +2,9 @@ import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { Provider } from 'jotai';
 import { useSettings } from './useSettings';
+import { vi } from 'vitest';
 
-jest.mock('../lib/storage');
+vi.mock('../lib/storage');
 
 describe('useSettings', () => {
   const renderUseSettings = () => {

@@ -2,6 +2,7 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen, queryByText } from '@testing-library/react';
 import { AccountSelect } from './AccountSelect';
+import { vi } from 'vitest';
 
 describe('AccountSelect', () => {
   it('セレクトボックスをクリックしたときにアカウントの一覧が表示されること', () => {
@@ -39,7 +40,7 @@ describe('AccountSelect', () => {
 
     it('一覧のアカウントを選択したときに選択中のアカウントを変更すること', () => {
       const accounts = ['test1', 'test2'];
-      const onSelectMock = jest.fn();
+      const onSelectMock = vi.fn();
       render(<AccountSelect accounts={accounts} onSelect={onSelectMock} />);
 
       const selectButton = screen.getByRole('button');
@@ -54,7 +55,7 @@ describe('AccountSelect', () => {
   describe('onSelect', () => {
     it('一覧からアカウントを選択した時にコールバックで呼ばれること', () => {
       const accounts = ['test1', 'test2'];
-      const onSelectMock = jest.fn();
+      const onSelectMock = vi.fn();
       render(<AccountSelect accounts={accounts} onSelect={onSelectMock} />);
 
       const selectButton = screen.getByRole('button');

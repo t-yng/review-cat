@@ -3,13 +3,14 @@ import { useAtom } from 'jotai';
 import { Settings } from '../models';
 import { settingsReducerAtom, UPDATE_ACTION } from './settings';
 import { storage } from '../lib/storage';
+import { MockedObject, vi } from 'vitest';
 
-jest.mock('../lib/storage');
-const mockStorage = storage as jest.Mocked<typeof storage>;
+vi.mock('../lib/storage');
+const mockStorage = storage as MockedObject<typeof storage>;
 
 describe('jotai/settings', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('update settings', () => {

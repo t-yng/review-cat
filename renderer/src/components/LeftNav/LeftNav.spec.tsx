@@ -4,9 +4,10 @@ import { LeftNav } from '.';
 import { MemoryRouter } from 'react-router-dom';
 import { usePullRequests } from '../../hooks';
 import { PullRequest } from '../../models';
+import { MockedFunction } from 'vitest';
 
-jest.mock('../../hooks/usePullRequests');
-const usePullRequestsMock = usePullRequests as jest.MockedFunction<
+vi.mock('../../hooks/usePullRequests');
+const usePullRequestsMock = usePullRequests as MockedFunction<
   typeof usePullRequests
 >;
 
