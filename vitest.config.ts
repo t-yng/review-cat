@@ -14,6 +14,7 @@ export default defineConfig({
       all: true,
       include: ['renderer/**/*.{ts,tsx}', 'electron/**/*.ts'],
       exclude: ['renderer/**/*.css.ts', '**/*.d.ts'],
+      reporter: ['text-summary', 'clover', 'json', 'lcovonly'],
     },
   },
 });
