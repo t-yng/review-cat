@@ -10,5 +10,10 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: './test/setup.ts',
+    coverage: {
+      all: true,
+      include: ['renderer/**/*.{ts,tsx}', 'electron/**/*.ts'],
+      exclude: ['renderer/**/*.css.ts', '**/*.d.ts'],
+    },
   },
 });
