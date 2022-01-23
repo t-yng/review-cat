@@ -14,6 +14,9 @@ builder.build({
     files: ['./dist'],
     mac: {
       icon: 'dist/assets/images/app-icon.png',
+      extendInfo: {
+        LSUIElement: 'true',
+      },
     },
   },
 });
