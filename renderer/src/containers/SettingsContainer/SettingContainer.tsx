@@ -25,6 +25,7 @@ type SettingsProps = {
   ) => void;
   onChangedShowsInReviewPr: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangedShowsApprovedPr: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeAutoLaunch: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickDeleteRepository: (repository: string) => void;
 };
 
@@ -35,6 +36,7 @@ const Settings: FC<SettingsProps> = React.memo(
     onChangeShowsRequestedReviewPr,
     onChangedShowsInReviewPr,
     onChangedShowsApprovedPr,
+    onChangeAutoLaunch,
     onClickDeleteRepository,
   }) => {
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -136,6 +138,20 @@ const Settings: FC<SettingsProps> = React.memo(
             />
           </div>
         </div>
+        <div className={settingSectionStyle}>
+          <h2 className={settingSectionTitleStyle}>起動</h2>
+          <div className={settingItemStyle}>
+            <input
+              type="checkbox"
+              id="auto-launch"
+              onChange={onChangeAutoLaunch}
+              defaultChecked={settings.autoLaunched}
+            />
+            <label htmlFor="auto-launch" className={settingItemLabelStyle}>
+              ログイン時に自動で起動する
+            </label>
+          </div>
+        </div>
       </>
     );
   }
@@ -146,6 +162,7 @@ export const SettingsContainer = () => {
     settings,
     updateNotifyReviewRequested,
     updateShowsPR,
+    updateAutoLaunch,
     removeSubscribedRepository,
   } = useSettings();
 
@@ -167,6 +184,10 @@ export const SettingsContainer = () => {
     });
   };
 
+  const handleChangeAutoLaunch = (event: ChangeEvent<HTMLInputElement>) => {
+    updateAutoLaunch(event.target.checked);
+  };
+
   const handleShowsApproved = (event: ChangeEvent<HTMLInputElement>) => {
     updateShowsPR({
       approved: event.target.checked,
@@ -180,6 +201,7 @@ export const SettingsContainer = () => {
       onChangeShowsRequestedReviewPr={handleShowsRequestedReview}
       onChangedShowsInReviewPr={handleShowsInReview}
       onChangedShowsApprovedPr={handleShowsApproved}
+      onChangeAutoLaunch={handleChangeAutoLaunch}
       onClickDeleteRepository={removeSubscribedRepository}
     />
   );

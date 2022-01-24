@@ -10,11 +10,13 @@ const defaultSettings: Settings = {
   showsRequestedReviewPR: true,
   showsInReviewPR: true,
   showsApprovedPR: true,
+  autoLaunched: false,
   subscribedRepositories: ['test/testA', 'test/testB'],
 };
 
 const updateNotifyReviewRequestedMock: jest.Mock = jest.fn();
 const updateShowsPRMock: jest.Mock = jest.fn();
+const updateAutoLaunchMock = jest.fn();
 const removeSubscribedRepositoryMock: jest.Mock = jest.fn();
 
 jest.mock('../../hooks/useSettings', () => ({
@@ -23,6 +25,7 @@ jest.mock('../../hooks/useSettings', () => ({
       settings: defaultSettings,
       updateNotifyReviewRequested: updateNotifyReviewRequestedMock,
       updateShowsPR: updateShowsPRMock,
+      updateAutoLaunch: updateAutoLaunchMock,
       removeSubscribedRepository: removeSubscribedRepositoryMock,
     };
   },
@@ -32,6 +35,7 @@ describe('SettingsContainer', () => {
   beforeEach(() => {
     updateNotifyReviewRequestedMock.mockReset();
     updateShowsPRMock.mockReset();
+    updateAutoLaunchMock.mockReset();
     removeSubscribedRepositoryMock.mockReset();
   });
 
@@ -88,6 +92,19 @@ describe('SettingsContainer', () => {
         expect(updateShowsPRMock).toBeCalledWith(expected);
       }
     );
+  });
+
+  describe('起動設定', () => {
+    it('「ログイン時に自動で起動する」のチェックボックスをクリックされた時にコールバック関数が呼ばれる', () => {
+      renderSettingContainer();
+
+      const checkbox = screen.getByLabelText('ログイン時に自動で起動する');
+      userEvent.click(checkbox);
+
+      expect(updateAutoLaunchMock).toBeCalledWith(
+        !defaultSettings.autoLaunched
+      );
+    });
   });
 
   describe('リポジトリ一覧', () => {

@@ -21,6 +21,7 @@ describe('jotai/settings', () => {
         showsRequestedReviewPR: true,
         showsInReviewPR: true,
         showsApprovedPR: false,
+        autoLaunched: false,
         subscribedRepositories: ['test/test1', 'test/test2'],
       };
       act(() => {
@@ -41,6 +42,7 @@ describe('jotai/settings', () => {
         showsRequestedReviewPR: true,
         showsInReviewPR: true,
         showsApprovedPR: false,
+        autoLaunched: false,
         subscribedRepositories: ['test/test1', 'test/test2'],
       };
       mockStorage.getSettings.mockReturnValue(savedSettings);

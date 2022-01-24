@@ -9,4 +9,7 @@ contextBridge.exposeInMainWorld('ipc', {
     const token = await ipcRenderer.invoke('getAccessToken', code);
     return token;
   },
+  updateAutoLaunch: (isAutoLaunched: boolean) => {
+    ipcRenderer.invoke('updateAutoLaunch', isAutoLaunched);
+  },
 });

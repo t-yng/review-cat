@@ -39,6 +39,19 @@ export const useSettings = () => {
     [dispatch, settings]
   );
 
+  const updateAutoLaunch = useCallback(
+    (autoLaunched: boolean) => {
+      window.ipc.updateAutoLaunch(autoLaunched);
+      dispatch({
+        type: UPDATE_ACTION,
+        payload: {
+          autoLaunched: autoLaunched,
+        },
+      });
+    },
+    [dispatch]
+  );
+
   const addSubscribedRepository = useCallback(
     (repository: string) => {
       const repositories = [...settings.subscribedRepositories, repository];
@@ -71,6 +84,7 @@ export const useSettings = () => {
     settings,
     updateNotifyReviewRequested,
     updateShowsPR,
+    updateAutoLaunch,
     addSubscribedRepository,
     removeSubscribedRepository,
   };
