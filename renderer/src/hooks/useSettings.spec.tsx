@@ -50,6 +50,24 @@ describe('useSettings', () => {
     });
   });
 
+  describe('updateAutoLaunch', () => {
+    it('自動起動設定を更新する', () => {
+      window.ipc = {
+        updateAutoLaunch: jest.fn(),
+      } as any;
+      const { result } = renderUseSettings();
+      const settings = result.current.settings;
+
+      const updateValue = !settings.autoLaunched;
+      act(() => {
+        result.current.updateAutoLaunch(!updateValue);
+      });
+
+      expect(result.current.settings.autoLaunched).toBe(!updateValue);
+      expect(window.ipc.updateAutoLaunch).toBeCalledWith(!updateValue);
+    });
+  });
+
   describe('addSubscribedRepositories', () => {
     it('PRを監視するリポジトリを追加すること', () => {
       const { result } = renderUseSettings();

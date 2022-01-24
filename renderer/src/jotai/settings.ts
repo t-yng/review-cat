@@ -16,6 +16,7 @@ const defaultSettings: Settings = {
   showsRequestedReviewPR: true,
   showsInReviewPR: true,
   showsApprovedPR: true,
+  autoLaunched: false,
   subscribedRepositories: [],
 };
 

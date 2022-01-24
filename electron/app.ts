@@ -49,6 +49,12 @@ menubarApp.on('ready', () => {
   ipcMain.handle('getAccessToken', async (event, code: string) => {
     return auth.getGithubOAuthToken(oAuthOptions, code);
   });
+
+  ipcMain.handle('updateAutoLaunch', async (_, isAutoLaunched: boolean) => {
+    app.setLoginItemSettings({
+      openAtLogin: isAutoLaunched,
+    });
+  });
 });
 
 menubarApp.on('after-create-window', () => {
