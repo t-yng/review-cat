@@ -1,15 +1,15 @@
 import path from 'path';
-import { app, ipcMain, shell } from 'electron';
+import { app, ipcMain, shell, autoUpdater, dialog } from 'electron';
 import { menubar } from 'menubar';
 import { auth } from './src/lib';
 import { oAuthOptions } from './src/constants/auth';
 
-const isDevelopment = process?.env?.NODE_ENV === 'development';
+const isProduction = process?.env?.NODE_ENV === 'production';
 
 const trayIcon = path.join(__dirname, 'assets', 'images', 'tray-icon.png');
-const indexUrl = isDevelopment
-  ? 'http://localhost:3000/'
-  : `file://${path.resolve(__dirname, './index.html')}`;
+const indexUrl = isProduction
+  ? `file://${path.resolve(__dirname, './index.html')}`
+  : 'http://localhost:3000/';
 
 const browserWindowOpts = {
   width: 500,
@@ -55,6 +55,39 @@ menubarApp.on('ready', () => {
       openAtLogin: isAutoLaunched,
     });
   });
+
+  const platform = process.platform;
+  const version = app.getVersion();
+  const updateUrl = `http://review-cat-updater.herokuapp.com/update/${platform}/${version}`;
+
+  autoUpdater.setFeedURL({ url: updateUrl });
+  autoUpdater.checkForUpdates();
+
+  autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+    const dialogOpts = {
+      type: 'info',
+      buttons: ['Restart', 'Later'],
+      title: 'Application Update',
+      message: process.platform === 'win32' ? releaseNotes : releaseName,
+      detail:
+        'A new version has been downloaded. Restart the application to apply the updates.',
+    };
+    dialog.showMessageBox(dialogOpts).then((returnValue) => {
+      if (returnValue.response === 0) autoUpdater.quitAndInstall();
+    });
+
+    console.log('detect update downloaded');
+    console.log(releaseNotes);
+    return false;
+  });
+
+  autoUpdater.on('update-available', () => {
+    console.log('update is available');
+  });
+
+  autoUpdater.on('update-not-available', () => {
+    console.log('no updates');
+  });
 });
 
 menubarApp.on('after-create-window', () => {
@@ -71,7 +104,7 @@ menubarApp.on('after-create-window', () => {
 
   hideDockIcon();
 
-  if (isDevelopment) {
+  if (!isProduction) {
     menubarApp.showWindow();
   }
 });
