@@ -1,4 +1,5 @@
 import { atomWithReducer } from 'jotai/utils';
+import { notifyPullRequests } from '../lib/notification';
 import { PullRequest } from '../models';
 
 export const START_FETCH_ACTION = 'startFetchPullRequests' as const;
@@ -36,8 +37,13 @@ const pullRequestReducer = (prev: State, action: Action): State => {
       };
     }
     case UPDATE_ACTION: {
+      const newPullRequests = action.payload.pullRequests;
+      if (!prev.firstLoading) {
+        notifyPullRequests(newPullRequests, prev.pullRequests);
+      }
+
       return {
-        pullRequests: action.payload.pullRequests,
+        pullRequests: newPullRequests,
         firstLoading: false,
       };
     }
