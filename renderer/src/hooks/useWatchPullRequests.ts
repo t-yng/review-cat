@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useAtom } from 'jotai';
-import { gql } from '@apollo/client';
+import { ApolloQueryResult, gql } from '@apollo/client';
 import { loginUserAtom } from '../jotai/user';
 import { PullRequest } from '../models/PullRequest';
 import { User } from '../models/User';
@@ -169,20 +169,26 @@ export const useWatchPullRequests = () => {
         return toModelFromSearchPullRequest(pr, loginUser as User);
       });
 
+      return pullRequests;
+    },
+    [loginUser]
+  );
+
+  const onResponse = useCallback(
+    (result: ApolloQueryResult<SearchPullRequestsQueryResponse>) => {
+      const pullRequests = parseQueryResponse(result.data);
       dispatch({ type: UPDATE_ACTION, payload: { pullRequests } });
     },
-    [dispatch, loginUser]
+    [dispatch, parseQueryResponse]
   );
 
   const startPolling = useCallback(
     (interval: number) => {
-      watchedQuery.subscribe((result) => {
-        parseQueryResponse(result.data);
-      });
+      watchedQuery.subscribe(onResponse);
       watchedQuery.startPolling(interval);
       dispatch({ type: START_FETCH_ACTION });
     },
-    [watchedQuery, dispatch, parseQueryResponse]
+    [watchedQuery, dispatch, onResponse]
   );
 
   const stopPolling = useCallback(() => {
