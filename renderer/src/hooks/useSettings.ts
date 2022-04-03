@@ -1,5 +1,6 @@
 import { useAtom } from 'jotai';
 import { useCallback } from 'react';
+import { invoke } from '@tauri-apps/api/tauri';
 import { settingsReducerAtom, UPDATE_ACTION } from '../jotai/settings';
 
 export const useSettings = () => {
@@ -41,7 +42,7 @@ export const useSettings = () => {
 
   const updateAutoLaunch = useCallback(
     (autoLaunched: boolean) => {
-      window.ipc.updateAutoLaunch(autoLaunched);
+      invoke('update_auto_launch', { autoLaunched });
       dispatch({
         type: UPDATE_ACTION,
         payload: {

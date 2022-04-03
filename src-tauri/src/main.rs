@@ -6,8 +6,14 @@
 mod api;
 mod oauth;
 
-use tauri::Manager;
+use std::path::PathBuf;
+use std::env;
+
+use tauri::{Manager};
 use regex::Regex;
+use auto_launch::AutoLaunch;
+use dotenv::dotenv;
+
 use api::github::*;
 
 #[tauri::command]
@@ -49,6 +55,39 @@ fn close_oauth_window(app_handle: tauri::AppHandle) {
   window.close().unwrap();
 }
 
+#[tauri::command]
+fn update_auto_launch(app_handle: tauri::AppHandle, auto_launched: bool) {
+  let package_info = app_handle.package_info();
+  let app_name = match env::var("APP_ENV") {
+    Ok(app_env) => {
+      if app_env == "development" { "app" } else { &package_info.name }
+    }
+    Err(err) => {
+      println!("failed load APP_ENV: {}", err);
+      &package_info.name
+    }
+  };
+
+  let mut path_buf = PathBuf::from(app_handle.path_resolver().resource_dir().unwrap());
+  path_buf.push(&app_name);
+  let app_path = path_buf.to_str().unwrap();
+
+  let auto = AutoLaunch::new(app_name, app_path, false, true);
+
+  // TODO: 例外処理をちゃんと書く
+  let result = match auto_launched {
+    true => { auto.enable() }
+    false => { auto.disable() }
+  };
+
+  match result {
+    Ok(()) => {}
+    Err(err) => {
+      println!("failed update auto launch: {}", err);
+    }
+  }
+}
+
 fn get_code_from_callback_url(url: &str) -> String {
   let re = Regex::new(r"code=(.*)&?").unwrap();
   let caps = re.captures(url).unwrap();
@@ -57,11 +96,17 @@ fn get_code_from_callback_url(url: &str) -> String {
 }
 
 fn main() {
+  dotenv().ok();
+
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![login_with_github, close_oauth_window, get_github_access_token])
+    .invoke_handler(tauri::generate_handler![
+      login_with_github,
+      close_oauth_window,
+      get_github_access_token,
+      update_auto_launch,
+    ])
     .on_page_load(|window, payload| {
       let url = payload.url();
-      println!("url: {}", url);
       if url.contains("?code=") {
         let code = get_code_from_callback_url(url);
         println!("code: {}", code);

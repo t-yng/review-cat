@@ -1,5 +1,4 @@
 use std::env;
-use dotenv::dotenv;
 
 #[derive(Debug)]
 pub struct OAuthOptions {
@@ -9,8 +8,6 @@ pub struct OAuthOptions {
 }
 
 pub fn oauth_options() -> OAuthOptions {
-  dotenv().ok();
-
   OAuthOptions {
     client_id: env::var("GITHUB_APP_CLIENT_ID").unwrap(),
     client_secret: env::var("GITHUB_APP_CLIENT_SECRET").unwrap(),
