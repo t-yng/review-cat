@@ -1,13 +1,13 @@
 {
   "package": {
     "productName": "review-cat",
-    "version": "0.1.0"
+    "version": "1.2.0"
   },
   "build": {
-    "distDir": "../build",
+    "distDir": "../dist",
     "devPath": "http://localhost:3000",
-    "beforeDevCommand": "",
-    "beforeBuildCommand": ""
+    "beforeDevCommand": "yarn dev",
+    "beforeBuildCommand": "yarn build"
   },
   "tauri": {
     "bundle": {
@@ -54,9 +54,10 @@
     "windows": [
       {
         "title": "review-cat",
-        "width": 800,
-        "height": 600,
-        "resizable": true,
+        "label": "main-window",
+        "width": 500,
+        "height": 400,
+        "resizable": false,
         "fullscreen": false
       }
     ],

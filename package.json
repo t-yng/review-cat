@@ -4,7 +4,7 @@
   "version": "1.2.0",
   "main": "./dist/app.js",
   "scripts": {
-    "dev": "yarn vite:dev & yarn electron:dev",
+    "dev": "yarn vite:dev",
     "build": "yarn clean && yarn vite:build && yarn electron:build",
     "clean": "yarn clean:app & yarn clean:dist",
     "serve": "vite preview",

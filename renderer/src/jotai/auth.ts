@@ -1,4 +1,6 @@
 import { atom } from 'jotai';
+import { once } from '@tauri-apps/api/event';
+import { invoke } from '@tauri-apps/api/tauri';
 import { storage } from '../lib/storage';
 
 export const tokenAtom = atom<string | null>(storage.getGithubAccessToken());
@@ -18,13 +20,22 @@ export const tokenAtomWithPersistence = atom<string | null, string>(
 
 export const signInAtom = atom<null, (() => void) | undefined>(
   null,
-  async (get, set, callback) => {
-    const code = await window.ipc.loginWithGithub();
-    const token = await window.ipc.getAccessToken(code);
-    set(tokenAtomWithPersistence, token);
-    if (callback != null) {
-      callback();
-    }
+  (get, set, callback) => {
+    once('github-oauth-code', async (event) => {
+      // NOTE: すぐに認証ウィンドウを閉じるとアプリがクラッシュするので一定時間後にウィンドウを閉じる
+      setTimeout(() => {
+        invoke('close_oauth_window');
+      }, 1000);
+
+      const code = event.payload;
+      const token = await invoke<string>('get_github_access_token', { code });
+      alert(token);
+      set(tokenAtomWithPersistence, token);
+      if (callback != null) {
+        callback();
+      }
+    });
+    invoke('login_with_github');
   }
 );
 
