@@ -1,9 +1,14 @@
 import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { Provider } from 'jotai';
+import * as tauri from '@tauri-apps/api/tauri';
 import { useSettings } from './useSettings';
 
 jest.mock('../lib/storage');
+
+jest.mock('@tauri-apps/api/tauri', () => ({
+  invoke: jest.fn(),
+}));
 
 describe('useSettings', () => {
   const renderUseSettings = () => {
@@ -12,6 +17,10 @@ describe('useSettings', () => {
     );
     return renderHook(() => useSettings(), { wrapper });
   };
+
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
 
   describe('updateNotifyReviewRequested', () => {
     it('レビューリクエストの通知設定を更新すること', () => {
@@ -52,9 +61,6 @@ describe('useSettings', () => {
 
   describe('updateAutoLaunch', () => {
     it('自動起動設定を更新する', () => {
-      window.ipc = {
-        updateAutoLaunch: jest.fn(),
-      } as any;
       const { result } = renderUseSettings();
       const settings = result.current.settings;
 
@@ -64,7 +70,9 @@ describe('useSettings', () => {
       });
 
       expect(result.current.settings.autoLaunched).toBe(!updateValue);
-      expect(window.ipc.updateAutoLaunch).toBeCalledWith(!updateValue);
+      expect(tauri.invoke).toBeCalledWith('update_auto_launch', {
+        autoLaunched: !updateValue,
+      });
     });
   });
 
