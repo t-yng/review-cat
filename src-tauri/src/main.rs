@@ -9,7 +9,7 @@ mod oauth;
 use std::path::PathBuf;
 use std::env;
 
-use tauri::{Manager};
+use tauri::{Manager, SystemTray, SystemTrayEvent};
 use regex::Regex;
 use auto_launch::AutoLaunch;
 use dotenv::dotenv;
@@ -95,8 +95,25 @@ fn get_code_from_callback_url(url: &str) -> String {
   caps[1].into()
 }
 
+fn toggle_window_visible(window: &tauri::Window) {
+  match window.is_visible() {
+    Ok(visible) => {
+      if visible {
+        window.hide().unwrap();
+      } else {
+        window.show().unwrap();
+      }
+    }
+    Err(err) => {
+      panic!("failed toggle visible for main window {}", err);
+    }
+  }
+}
+
 fn main() {
   dotenv().ok();
+
+  let system_tray = SystemTray::new();
 
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
@@ -118,6 +135,22 @@ fn main() {
         window.hide().unwrap();
       }
     })
+    .on_system_tray_event(|app, event| match event {
+      SystemTrayEvent::LeftClick {
+        position,
+        ..
+      } => {
+        let window = app.get_window("main-window").unwrap();
+        let i32_position = tauri::PhysicalPosition::<i32> {
+          x: position.x as i32,
+          y: position.y as i32,
+        };
+        window.set_position(tauri::Position::Physical(i32_position)).unwrap();
+        toggle_window_visible(&window);
+      }
+      _ => {}
+    })
+    .system_tray(system_tray)
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

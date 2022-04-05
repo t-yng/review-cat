@@ -51,12 +51,18 @@
     "allowlist": {
       "all": true
     },
+    "systemTray": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true
+    },
     "windows": [
       {
         "title": "review-cat",
         "label": "main-window",
         "width": 500,
         "height": 400,
+        "decorations": false,
+        "visible": false,
         "resizable": false,
         "fullscreen": false
       }
