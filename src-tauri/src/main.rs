@@ -116,6 +116,11 @@ fn main() {
   let system_tray = SystemTray::new();
 
   tauri::Builder::default()
+    .setup(|app| {
+      #[cfg(target_os = "macos")]
+      app.set_activation_policy(tauri::ActivationPolicy::Accessory);
+      Ok(())
+    })
     .invoke_handler(tauri::generate_handler![
       login_with_github,
       close_oauth_window,
