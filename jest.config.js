@@ -32,6 +32,7 @@ module.exports = {
     electron: '<rootDir>/electron/src/__mocks__/electron.ts',
     '\\.css$': 'identity-obj-proxy',
   },
+  transformIgnorePatterns: ['/node_modules/(?!@tauri-apps)/'],
   collectCoverage: false,
   collectCoverageFrom: [
     'renderer/**/*.{ts,tsx}',
