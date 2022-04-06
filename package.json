@@ -24,7 +24,8 @@
     "test": "jest",
     "type-check": "yarn type-check:renderer && yarn type-check:electron",
     "type-check:renderer": "tsc --noEmit",
-    "type-check:electron": "tsc -p tsconfig.electron.json --noEmit"
+    "type-check:electron": "tsc -p tsconfig.electron.json --noEmit",
+    "tauricon": "tauricon"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json}": [
@@ -55,6 +56,7 @@
     "@swc/core": "^1.2.120",
     "@swc/jest": "^0.2.15",
     "@tauri-apps/cli": "^1.0.0-rc.8",
+    "@tauri-apps/tauricon": "github:tauri-apps/tauricon",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^7.0.1",
