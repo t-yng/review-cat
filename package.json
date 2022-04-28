@@ -51,8 +51,7 @@
   "devDependencies": {
     "@babel/cli": "^7.15.4",
     "@babel/core": "^7.15.5",
-    "@swc/core": "^1.2.120",
-    "@swc/jest": "^0.2.15",
+    "@swc-node/jest": "^1.5.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^7.0.1",
