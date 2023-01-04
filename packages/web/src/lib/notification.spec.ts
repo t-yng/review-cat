@@ -1,4 +1,4 @@
-import { createPullRequest } from '../../../test/mocks/factory/pullRequest';
+import { createPullRequest } from '../../test/mocks/factory/pullRequest';
 import { PullRequest } from '../models';
 import { notifyPullRequests } from './notification';
 

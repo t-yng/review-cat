@@ -5,7 +5,6 @@ import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  root: './renderer',
   base: mode === 'production' ? '' : '/',
   // @see: https://github.com/apollographql/apollo-client/issues/8661
   define: {
