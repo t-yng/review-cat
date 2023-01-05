@@ -4,10 +4,10 @@
   "version": "1.2.0",
   "private": true,
   "workspaces": ["packages/*"],
-  "main": "./dist/app.js",
   "scripts": {
     "dev": "yarn workspace web dev & yarn workspace main dev",
-    "build": "yarn workspaces run build && yarn workspace main package",
+    "build": "yarn workspaces run build",
+    "package": "yarn workspace main package",
     "prepare": "husky install",
     "lint": "eslint",
     "lint:all": "yarn workspaces run lint:all",
@@ -25,7 +25,6 @@
     ]
   },
   "devDependencies": {
-    "cpx": "^1.5.0",
     "esbuild": "^0.16.13"
   }
 }
