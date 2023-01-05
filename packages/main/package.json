@@ -43,7 +43,7 @@
     "electron": "13.1.5",
     "electron-builder": "^23.6.0",
     "eslint": "^7.30.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-custom": "*",
     "graphql": "^15.5.1",
     "husky": "^7.0.0",
     "identity-obj-proxy": "^3.0.0",
