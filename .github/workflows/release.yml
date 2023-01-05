@@ -44,7 +44,7 @@ jobs:
           tag_name: v${{ steps.package-version.outputs.current-version }}
           generate_release_notes: true
           files: |
-            ./app/ReviewCat-${{ steps.package-version.outputs.current-version }}.dmg
+            ./packages/main/app/ReviewCat-${{ steps.package-version.outputs.current-version }}.dmg
       - name: Notify to Slack
         uses: 8398a7/action-slack@v3
         with:
