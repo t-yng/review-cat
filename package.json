@@ -6,15 +6,15 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "dev": "yarn workspace web dev & yarn workspace main dev",
-    "build": "yarn workspaces run build",
+    "build": "yarn workspace web build & yarn workspace main build",
     "package": "yarn workspace main package",
     "prepare": "husky install",
     "lint": "eslint",
-    "lint:all": "yarn workspaces run lint:all",
+    "lint:all": "yarn workspace web lint:all & yarn workspace main lint:all",
     "format": "prettier --write",
-    "format:all": "yarn workspaces run format:all",
-    "test": "yarn workspaces run test",
-    "type-check": "yarn workspaces run type-check"
+    "format:all": "yarn workspace web format:all & yarn workspace main format:all",
+    "test": "yarn workspace web test & yarn workspace main test",
+    "type-check": "yarn workspace web type-check & yarn workspace main type-check"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json}": [
