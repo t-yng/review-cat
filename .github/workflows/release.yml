@@ -30,6 +30,8 @@ jobs:
         env:
           GITHUB_APP_CLIENT_ID: ${{ secrets.PROD_GITHUB_APP_CLIENT_ID }}
           GITHUB_APP_CLIENT_SECRET: ${{ secrets.PROD_GITHUB_APP_CLIENT_SECRET }}
+      - name: Package app
+        run: yarn package
       - name: Get npm version
         id: package-version
         run: |
