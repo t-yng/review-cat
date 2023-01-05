@@ -9,11 +9,15 @@ import {
   User,
 } from '../../models';
 import { PullRequestListContainer } from './PullRequestListContainer';
-import * as useSettingsModule from '../../hooks/useSettings';
+import * as useSettingsHook from '../../hooks/useSettings';
 
-type SpyUserSettings = jest.SpyInstance<
-  Partial<ReturnType<typeof useSettingsModule.useSettings>>
->;
+jest.mock('../../hooks/useSettings', () => {
+  const actualModule = jest.requireActual('../../hooks/useSettings');
+  return {
+    __esModule: true,
+    ...actualModule,
+  };
+});
 
 jest.mock('../../hooks/usePullRequests', () => {
   const pullRequests = [
@@ -48,13 +52,14 @@ jest.mock('../../hooks/usePullRequests', () => {
 
 describe('PullRequestListContainer', () => {
   describe('filterPullRequests', () => {
-    let settingsMock: Settings;
-    let spyUseSettings: SpyUserSettings;
+    // let settingsMock: Settings;
+    // let spyUseSettings: SpyUserSettings;
 
-    beforeEach(() => {
-      settingsMock = mock<Settings>();
-      spyUseSettings = jest.spyOn(useSettingsModule, 'useSettings');
-    });
+    // beforeEach(() => {
+    //   // settingsMock = mock<Settings>();
+    //   // spyUseSettings = jest.spyOn(useSettingsHook, 'useSettings');
+    // });
+
     it.each([
       {
         statusText: 'レビュー待ち',
@@ -77,15 +82,17 @@ describe('PullRequestListContainer', () => {
     ])(
       '$statusText の表示をOFFにした時にプルリクスト一覧から除外する',
       (cases) => {
+        const settingsMock = mock<Settings>();
         when(settingsMock.showsRequestedReviewPR).thenReturn(
           cases.showsRequestedReviewPR
         );
         when(settingsMock.showsInReviewPR).thenReturn(cases.showsInReviewPR);
         when(settingsMock.showsApprovedPR).thenReturn(cases.showsApprovedPR);
 
-        spyUseSettings.mockReturnValue({
+        jest.spyOn(useSettingsHook, 'useSettings').mockReturnValue({
           settings: instance(settingsMock),
-        });
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
 
         render(<PullRequestListContainer />);
 

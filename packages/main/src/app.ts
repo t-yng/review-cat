@@ -1,15 +1,17 @@
 import path from 'path';
 import { app, ipcMain, shell } from 'electron';
 import { menubar } from 'menubar';
-import { auth } from './src/lib';
-import { oAuthOptions } from './src/constants/auth';
+import { auth } from './lib';
+import { oAuthOptions } from './constants/auth';
 
 const isDevelopment = process?.env?.NODE_ENV === 'development';
 
 const trayIcon = path.join(__dirname, 'assets', 'images', 'tray-icon.png');
-const indexUrl = isDevelopment
-  ? 'http://localhost:3000/'
-  : `file://${path.resolve(__dirname, './index.html')}`;
+
+// `file://${require.resolve('web/dist/index.html')}`;
+// `file://${path.resolve(__dirname, './index.html')}`
+const html = `file://${require.resolve('web/dist/index.html')}`;
+const indexUrl = isDevelopment ? 'http://localhost:3000/' : html;
 
 const browserWindowOpts = {
   width: 500,

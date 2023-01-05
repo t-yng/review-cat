@@ -1,5 +1,5 @@
 import { BrowserWindow, WebContents } from 'electron';
-import { auth } from './';
+import { auth } from '.';
 import { oAuthOptions } from '../constants/auth';
 
 describe('auth', () => {
