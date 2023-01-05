@@ -10,12 +10,11 @@
     "build": "yarn workspaces run build && yarn workspace main package",
     "prepare": "husky install",
     "lint": "eslint",
-    "lint:all": "yarn workspace web lint:all && yarn lint ./electron --cache --ext .js,.ts,.tsx",
+    "lint:all": "yarn workspaces run lint:all",
     "format": "prettier --write",
-    "format:all": "yarn format \"**/*.{js,ts,tsx,json}\"",
+    "format:all": "yarn workspaces run format:all",
     "test": "yarn workspaces run test",
-    "type-check": "yarn type-check:renderer && yarn type-check:electron",
-    "type-check:electron": "tsc -p tsconfig.electron.json --noEmit"
+    "type-check": "yarn workspaces run type-check"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json}": [

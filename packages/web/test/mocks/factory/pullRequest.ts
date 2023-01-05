@@ -1,6 +1,6 @@
-import { PullRequest } from '../../../renderer/src/models';
 import { createRepository } from './repository';
 import { createUser } from './user';
+import type { PullRequest } from '../../../src/models';
 
 export const createPullRequest = (pullRequest?: Partial<PullRequest>) => {
   const defaultValue: PullRequest = {

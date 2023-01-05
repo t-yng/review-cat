@@ -1,4 +1,4 @@
-import { Repository } from '../../../renderer/src/models';
+import type { Repository } from '../../../src/models';
 
 export const createRepository = (repository?: Partial<Repository>) => {
   const defaultValue: Repository = {

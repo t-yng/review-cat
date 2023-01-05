@@ -10,7 +10,7 @@
     "clean": "rimraf app & rimraf dist",
     "copy": "cpx 'assets/images/**' dist/assets/images",
     "lint": "eslint",
-    "lint:all": "&& yarn lint . --cache --ext .js,.ts,.tsx",
+    "lint:all": "yarn lint . --cache --ext .js,.ts,.tsx",
     "format": "prettier --write",
     "format:all": "yarn format \"**/*.{js,ts,tsx,json}\"",
     "test": "jest",

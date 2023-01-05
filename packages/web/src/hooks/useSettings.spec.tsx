@@ -1,4 +1,5 @@
 import React from 'react';
+import type { ReactNode, ReactFragment } from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { Provider } from 'jotai';
 import { useSettings } from './useSettings';
@@ -7,9 +8,11 @@ jest.mock('../lib/storage');
 
 describe('useSettings', () => {
   const renderUseSettings = () => {
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <Provider>{children}</Provider>
-    );
+    const wrapper = ({
+      children,
+    }: {
+      children: Exclude<ReactNode, ReactFragment>;
+    }) => <Provider>{children}</Provider>;
     return renderHook(() => useSettings(), { wrapper });
   };
 
@@ -54,6 +57,7 @@ describe('useSettings', () => {
     it('自動起動設定を更新する', () => {
       window.ipc = {
         updateAutoLaunch: jest.fn(),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any;
       const { result } = renderUseSettings();
       const settings = result.current.settings;

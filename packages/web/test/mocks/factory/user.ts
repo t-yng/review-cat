@@ -1,4 +1,4 @@
-import { User } from '../../../renderer/src/models';
+import type { User } from '../../../src/models';
 
 export const createUser = (user?: Partial<User>) => {
   const defaultValue: User = {
