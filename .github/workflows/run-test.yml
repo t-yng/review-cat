@@ -22,11 +22,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: yarn install
-      - run: yarn lint
+      - run: yarn lint:all
       - run: yarn type-check
-      - run: yarn test -- --coverage
-      - name: Codecov
-        uses: codecov/codecov-action@v2
+      - run: yarn test:coverage
+      - name: Upload main coverage to Codecov
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: unittests
+          flags: main
+          directory: packages/main
+      - name: Upload web coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: web
+          directory: packages/web
