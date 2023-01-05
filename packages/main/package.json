@@ -1,0 +1,59 @@
+{
+  "name": "main",
+  "license": "MIT",
+  "version": "1.2.0",
+  "main": "./dist/app.js",
+  "scripts": {
+    "dev": "NODE_ENV=development node esbuild.js && yarn copy && electron --require dotenv/config ./dist/app.js",
+    "build": "yarn clean && NODE_ENV=production node esbuild.js && yarn copy",
+    "package": "node build.js",
+    "clean": "rimraf app & rimraf dist",
+    "copy": "cpx 'assets/images/**' dist/assets/images",
+    "lint": "eslint",
+    "lint:all": "yarn lint . --cache --ext .js,.ts,.tsx",
+    "format": "prettier --write",
+    "format:all": "yarn format \"**/*.{js,ts,tsx,json}\"",
+    "test": "jest",
+    "type-check": "tsc --noEmit"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,json}": [
+      "yarn format"
+    ],
+    "*.{js,ts,tsx}": [
+      "yarn lint"
+    ]
+  },
+  "dependencies": {
+    "@apollo/client": "^3.4.10",
+    "@swc/core": "^1.3.24",
+    "cross-fetch": "^3.1.4",
+    "menubar": "^9.1.0",
+    "web": "*"
+  },
+  "devDependencies": {
+    "@swc-node/jest": "^1.5.0",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.0.0",
+    "@types/node-fetch": "^2.5.11",
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
+    "@typescript-eslint/parser": "^4.28.1",
+    "cpx": "^1.5.0",
+    "dotenv": "^10.0.0",
+    "electron": "13.1.5",
+    "electron-builder": "^23.6.0",
+    "eslint": "^7.30.0",
+    "eslint-config-custom": "*",
+    "graphql": "^15.5.1",
+    "husky": "^7.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.0.6",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.2",
+    "rimraf": "^3.0.2",
+    "tsconfig": "*",
+    "ts-mockito": "^2.6.1",
+    "typescript": "^4.4.2",
+    "vite": "^2.5.1"
+  }
+}
