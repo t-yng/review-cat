@@ -3,29 +3,39 @@
   "license": "MIT",
   "version": "1.2.0",
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "yarn workspace web dev & yarn workspace main dev",
     "build": "yarn workspace web build && yarn workspace main build",
     "package": "yarn workspace main package",
     "prepare": "husky install",
-    "lint": "eslint",
     "lint:all": "yarn workspace web lint:all && yarn workspace main lint:all",
-    "format": "prettier --write",
     "format:all": "yarn workspace web format:all && yarn workspace main format:all",
     "test": "yarn workspace web test && yarn workspace main test",
     "test:coverage": "yarn workspace web test --coverage && yarn workspace main test --coverage",
     "type-check": "yarn workspace web type-check && yarn workspace main type-check"
   },
-  "lint-staged": {
-    "*.{js,ts,tsx,json}": [
-      "yarn format"
-    ],
-    "*.{js,ts,tsx}": [
-      "yarn lint"
-    ]
-  },
   "devDependencies": {
-    "esbuild": "^0.16.13"
+    "@review-cat/eslint-config-custom": "*",
+    "@review-cat/tsconfig": "*",
+    "@swc-node/jest": "^1.5.6",
+    "@types/jest": "^29.2.5",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
+    "cpx": "^1.5.0",
+    "dotenv": "^16.0.3",
+    "electron": "^22.0.0",
+    "electron-builder": "^23.6.0",
+    "eslint": "^8.31.0",
+    "husky": "^8.0.3",
+    "jest": "^29.3.1",
+    "lint-staged": "^13.1.0",
+    "prettier": "^2.8.2",
+    "rimraf": "^3.0.2",
+    "ts-mockito": "^2.6.1",
+    "typescript": "^4.9.4"
   }
 }
