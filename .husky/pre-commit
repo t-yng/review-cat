@@ -1,4 +1,10 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn workspace web lint-staged -p false && yarn workspace main lint-staged -p false
+export FORCE_COLOR=1;
+
+echo "> lint for web";
+yarn workspace web lint-staged -p false
+
+echo "> lint for main";
+yarn workspace main lint-staged -p false
