@@ -12,8 +12,8 @@ export const PullRequestItem: React.FC<Props> = ({ pullRequest }) => {
 
   const statusLabel: { [key in PullRequestStatus]: string } = {
     requestedReview: 'レビュー待ち',
-    reviewing: 'レビュー中',
-    approved: '承認済',
+    reviewing: 'レビュー済み',
+    approved: '承認済み',
   };
 
   return (
