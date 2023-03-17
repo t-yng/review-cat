@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => ({
   define: {
     __DEV__: false,
   },
+  server: {
+    port: 3000,
+  },
   build: {
     outDir: path.join(__dirname, 'dist'),
     emptyOutDir: true,
