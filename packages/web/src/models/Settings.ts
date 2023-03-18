@@ -3,6 +3,7 @@ export interface Settings {
   showsRequestedReviewPR: boolean;
   showsInReviewPR: boolean;
   showsApprovedPR: boolean;
+  showsMyPR: boolean;
   autoLaunched: boolean;
   subscribedRepositories: string[];
 }

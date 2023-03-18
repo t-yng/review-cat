@@ -1,8 +1,11 @@
 import React, { FC } from 'react';
 import { usePullRequests } from '../../hooks/usePullRequests';
 import { RepositorySection } from '../../components/RepositorySection';
-import { PullRequest, Repositories, Settings } from '../../models';
+import { PullRequest, Repositories, Settings, User } from '../../models';
 import { useSettings } from '../../hooks';
+import { useGitHubAccounts } from '../../hooks/useGitHubAccounts';
+import { useAtom } from 'jotai';
+import { loginUserAtom } from '../../jotai';
 
 /**
  * プルリクエストをリポジトリ毎にまとめる
@@ -39,9 +42,15 @@ const groupByRepository = (pullRequests: Array<PullRequest>): Repositories => {
 
 const filterPullRequests = (
   pullRequests: PullRequest[],
-  settings: Settings
+  settings: Settings,
+  loginUser: User | null
 ) => {
   return pullRequests.filter((pr) => {
+    // 自分のプルリクエストの表示設定がOFFの場合は自分のプルリクエストを除外
+    if (pr.author.name === loginUser?.name && !settings.showsMyPR) {
+      return false;
+    }
+
     switch (pr.status) {
       case 'requestedReview':
         return settings.showsRequestedReviewPR;
@@ -49,6 +58,7 @@ const filterPullRequests = (
         return settings.showsInReviewPR;
       case 'approved':
         return settings.showsApprovedPR;
+      default:
     }
   });
 };
@@ -56,7 +66,8 @@ const filterPullRequests = (
 export const PullRequestListContainer: FC = () => {
   const { pullRequests, firstLoading } = usePullRequests();
   const { settings } = useSettings();
-  const filteredPullRequests = filterPullRequests(pullRequests, settings);
+  const [user] = useAtom(loginUserAtom);
+  const filteredPullRequests = filterPullRequests(pullRequests, settings, user);
   const repositories = groupByRepository(filteredPullRequests);
 
   if (firstLoading) {

@@ -22,10 +22,12 @@ export const useSettings = () => {
       requestedReview = settings.showsRequestedReviewPR,
       inReview = settings.showsInReviewPR,
       approved = settings.showsApprovedPR,
+      mine = settings.showsMyPR,
     }: {
       requestedReview?: boolean;
       inReview?: boolean;
       approved?: boolean;
+      mine?: boolean;
     }) => {
       dispatch({
         type: UPDATE_ACTION,
@@ -33,6 +35,7 @@ export const useSettings = () => {
           showsRequestedReviewPR: requestedReview,
           showsInReviewPR: inReview,
           showsApprovedPR: approved,
+          showsMyPR: mine,
         },
       });
     },

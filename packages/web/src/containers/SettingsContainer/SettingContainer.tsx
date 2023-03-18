@@ -25,6 +25,7 @@ type SettingsProps = {
   ) => void;
   onChangedShowsInReviewPr: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangedShowsApprovedPr: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeShowsMyPr: (event: ChangeEvent<HTMLInputElement>) => void;
   onChangeAutoLaunch: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickDeleteRepository: (repository: string) => void;
 };
@@ -36,6 +37,7 @@ const Settings: FC<SettingsProps> = React.memo(
     onChangeShowsRequestedReviewPr,
     onChangedShowsInReviewPr,
     onChangedShowsApprovedPr,
+    onChangeShowsMyPr,
     onChangeAutoLaunch,
     onClickDeleteRepository,
   }) => {
@@ -105,6 +107,17 @@ const Settings: FC<SettingsProps> = React.memo(
                 className={settingItemLabelStyle}
               >
                 承認済みのPRを表示
+              </label>
+            </div>
+            <div className={settingItemStyle}>
+              <input
+                type="checkbox"
+                id="shows-my-pr"
+                onChange={onChangeShowsMyPr}
+                defaultChecked={settings.showsMyPR}
+              />
+              <label htmlFor="shows-my-pr" className={settingItemLabelStyle}>
+                自分が作成したPRを表示
               </label>
             </div>
           </div>
@@ -184,6 +197,12 @@ export const SettingsContainer = () => {
     });
   };
 
+  const handleShowsMyPr = (event: ChangeEvent<HTMLInputElement>) => {
+    updateShowsPR({
+      mine: event.target.checked,
+    });
+  };
+
   const handleChangeAutoLaunch = (event: ChangeEvent<HTMLInputElement>) => {
     updateAutoLaunch(event.target.checked);
   };
@@ -201,6 +220,7 @@ export const SettingsContainer = () => {
       onChangeShowsRequestedReviewPr={handleShowsRequestedReview}
       onChangedShowsInReviewPr={handleShowsInReview}
       onChangedShowsApprovedPr={handleShowsApproved}
+      onChangeShowsMyPr={handleShowsMyPr}
       onChangeAutoLaunch={handleChangeAutoLaunch}
       onClickDeleteRepository={removeSubscribedRepository}
     />
