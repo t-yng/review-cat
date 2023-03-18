@@ -1,18 +1,28 @@
-import { PullRequest, pullRequestStatus } from '../models';
+import { PullRequest, pullRequestStatus, User } from '../models';
 
 const shouldNotify = (
+  loginUser: User,
   newPullRequest: PullRequest,
   beforePullRequest?: PullRequest
 ) => {
-  // TODO: 自分が作成したプルリクエストの場合はレビュー済みになった状態で通知する
+  // 自分が作成したプルリクエストの場合はレビュー済みになった状態で通知する
+  if (
+    newPullRequest.author.name === loginUser.name &&
+    newPullRequest.status === pullRequestStatus.reviewed
+  ) {
+    return true;
+  }
+
   if (beforePullRequest == null) {
     return newPullRequest.status === pullRequestStatus.waitingReview;
-  } else {
-    return (
-      beforePullRequest.status !== newPullRequest.status &&
-      newPullRequest.status === pullRequestStatus.waitingReview
-    );
+  } else if (
+    beforePullRequest.status !== newPullRequest.status &&
+    newPullRequest.status === pullRequestStatus.waitingReview
+  ) {
+    return true;
   }
+
+  return false;
 };
 
 /**
@@ -30,6 +40,7 @@ const notifyPullRequest = (pullRequest: PullRequest) => {
 };
 
 export const notifyPullRequests = (
+  loginUser: User,
   newPullRequests: PullRequest[],
   beforePullRequests: PullRequest[]
 ) => {
@@ -38,7 +49,7 @@ export const notifyPullRequests = (
       (pr) => pr.url === newPullRequest.url
     );
 
-    if (shouldNotify(newPullRequest, beforePullRequest)) {
+    if (shouldNotify(loginUser, newPullRequest, beforePullRequest)) {
       notifyPullRequest(newPullRequest);
     }
   }
