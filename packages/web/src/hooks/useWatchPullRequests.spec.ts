@@ -1,6 +1,6 @@
 import { mock, when, instance } from 'ts-mockito';
 import { getPullRequestStatus } from '.';
-import { User } from '../models';
+import { pullRequestStatus, User } from '../models';
 import { SearchPullRequest } from './useWatchPullRequests';
 
 describe('usePullRequestStatus', () => {
@@ -18,23 +18,13 @@ describe('usePullRequestStatus', () => {
       mockPullRequest = mock<SearchPullRequest>();
     });
 
-    it('requestedReviewer に自分が含まれているときに requestedReview の status を設定すること', () => {
+    it('requestedReviewer に自分が含まれているときにプルリクエストをレビュー待ちの状態にする', () => {
       when(mockPullRequest.reviewRequests).thenReturn({
         totalCount: 1,
         nodes: [{ requestedReviewer: { login: userName } }],
       });
-
-      const status = getPullRequestStatus(
-        instance(mockPullRequest),
-        instance(mockUser)
-      );
-
-      expect(status).toBe('requestedReview');
-    });
-
-    it('自身の承認済みのコメントが存在するときに approved の status を設定すること', () => {
       when(mockPullRequest.reviews).thenReturn({
-        totalCount: 1,
+        nodes: [],
       });
 
       const status = getPullRequestStatus(
@@ -42,16 +32,40 @@ describe('usePullRequestStatus', () => {
         instance(mockUser)
       );
 
-      expect(status).toBe('approved');
+      expect(status).toBe(pullRequestStatus.waitingReview);
     });
 
-    it('上記以外の場合は reviewing の status を設定すること', () => {
+    it('自身の承認済みのレビューが存在するときに対象のプルリクエストを承認済みにする', () => {
+      when(mockPullRequest.reviews).thenReturn({
+        nodes: [
+          {
+            state: 'APPROVED',
+            author: {
+              login: userName,
+            },
+          },
+        ],
+      });
+
       const status = getPullRequestStatus(
         instance(mockPullRequest),
         instance(mockUser)
       );
 
-      expect(status).toBe('reviewing');
+      expect(status).toBe(pullRequestStatus.approved);
+    });
+
+    it('上記以外の場合はプルリクエストをレビュー済みの状態にする', () => {
+      when(mockPullRequest.reviews).thenReturn({
+        nodes: [],
+      });
+
+      const status = getPullRequestStatus(
+        instance(mockPullRequest),
+        instance(mockUser)
+      );
+
+      expect(status).toBe(pullRequestStatus.reviewed);
     });
   });
 });

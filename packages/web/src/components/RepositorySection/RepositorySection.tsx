@@ -15,8 +15,8 @@ interface Props {
 export const RepositorySection: React.FC<Props> = ({ repository }) => {
   const sortPullRequests = (pullRequests: PullRequest[]) => {
     const priority: { [key in PullRequestStatus]: number } = {
-      requestedReview: 1,
-      reviewing: 2,
+      waitingReview: 1,
+      reviewed: 2,
       approved: 3,
     };
 

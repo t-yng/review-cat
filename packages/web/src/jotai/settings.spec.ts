@@ -1,8 +1,8 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useAtom } from 'jotai';
 import { Settings } from '../models';
-import { settingsReducerAtom, UPDATE_ACTION } from './settings';
 import { storage } from '../lib/storage';
+import { settingsReducerAtom, UPDATE_ACTION } from './settings';
 
 jest.mock('../lib/storage');
 const mockStorage = storage as jest.Mocked<typeof storage>;
@@ -21,6 +21,7 @@ describe('jotai/settings', () => {
         showsRequestedReviewPR: true,
         showsInReviewPR: true,
         showsApprovedPR: false,
+        showsMyPR: false,
         autoLaunched: false,
         subscribedRepositories: ['test/test1', 'test/test2'],
       };
@@ -42,9 +43,13 @@ describe('jotai/settings', () => {
         showsRequestedReviewPR: true,
         showsInReviewPR: true,
         showsApprovedPR: false,
+        showsMyPR: false,
         autoLaunched: false,
         subscribedRepositories: ['test/test1', 'test/test2'],
       };
+
+      // TODO: 単体で実行した時にテストに失敗する
+      //       getSettingsのモックが更新されていない
       mockStorage.getSettings.mockReturnValue(savedSettings);
 
       const { result } = renderHook(() => useAtom(settingsReducerAtom));

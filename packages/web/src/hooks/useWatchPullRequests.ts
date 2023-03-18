@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useAtom } from 'jotai';
 import { ApolloQueryResult, gql } from '@apollo/client';
 import { loginUserAtom } from '../jotai/user';
-import { PullRequest } from '../models/PullRequest';
+import { PullRequest, pullRequestStatus } from '../models/PullRequest';
 import { User } from '../models/User';
 import { useSettings } from './useSettings';
 import { buildSearchPullRequestsQuery } from '../lib';
@@ -21,8 +21,12 @@ export type SearchPullRequestsQueryResponse = {
   readonly search: {
     readonly nodes: ReadonlyArray<{
       readonly headRefName?: string;
-      readonly title?: string;
-      readonly url?: string;
+      readonly title: string;
+      readonly url: string;
+      readonly reviewDecision:
+        | 'APPROVED'
+        | 'CHANGES_REQUESTED'
+        | 'REVIEW_REQUIRED';
       readonly author?: {
         readonly avatarUrl: string;
         readonly login: string;
@@ -32,7 +36,17 @@ export type SearchPullRequestsQueryResponse = {
         readonly openGraphImageUrl: string;
       };
       readonly reviews?: {
-        readonly totalCount: number;
+        nodes: ReadonlyArray<{
+          readonly state:
+            | 'PENDING'
+            | 'COMMENTED'
+            | 'APPROVED'
+            | 'CHANGES_REQUESTED'
+            | 'DISMISSED';
+          readonly author: {
+            readonly login: string;
+          };
+        }>;
       } | null;
       readonly reviewRequests?: {
         readonly totalCount: number;
@@ -52,16 +66,14 @@ export type SearchPullRequest = Exclude<
 >;
 
 export const SearchPullRequestsQuery = gql`
-  query SearchPullRequestsQuery(
-    $login_user_name: String!
-    $search_query: String!
-  ) {
+  query SearchPullRequestsQuery($search_query: String!) {
     search(type: ISSUE, query: $search_query, last: 100) {
       nodes {
         ... on PullRequest {
           headRefName
           title
           url
+          reviewDecision
           author {
             avatarUrl
             login
@@ -70,8 +82,15 @@ export const SearchPullRequestsQuery = gql`
             nameWithOwner
             openGraphImageUrl
           }
-          reviews(author: $login_user_name, states: [APPROVED], last: 100) {
-            totalCount
+          reviews(last: 100) {
+            nodes {
+              ... on PullRequestReview {
+                state
+                author {
+                  login
+                }
+              }
+            }
           }
           reviewRequests(last: 100) {
             totalCount
@@ -101,21 +120,42 @@ export const getPullRequestStatus = (
   pr: SearchPullRequest,
   loginUser: User
 ): PullRequest['status'] => {
-  const isRequestedReview = pr.reviewRequests?.nodes?.some(
-    (node) => node?.requestedReviewer?.login === loginUser.name
+  const reviewRequestedAuthors =
+    pr.reviewRequests?.nodes?.map((n) => n?.requestedReviewer?.login) ?? [];
+  const reviewAuthors = pr.reviews?.nodes.map((n) => n.author.login) ?? [];
+  const reviewers = Array.from(
+    new Set([...reviewRequestedAuthors, ...reviewAuthors])
   );
 
-  if (isRequestedReview) {
-    return 'requestedReview';
+  // PRのオーナーが自分の場合のプルリクのステータス
+  if (pr.author?.login === loginUser.name) {
+    // レビューリクエストに全てのレビュアーが含まれていたらレビュー待ちと判定
+    if (reviewRequestedAuthors.length === reviewers.length) {
+      return pullRequestStatus.waitingReview;
+    } else if (pr.reviewDecision === 'APPROVED') {
+      return pullRequestStatus.approved;
+    } else {
+      return pullRequestStatus.reviewed;
+    }
   }
+  // PRのオーナーが自分以外の場合のプルリクのステータス
+  else {
+    const approvedReviewAuthors =
+      pr.reviews?.nodes
+        .filter((n) => n.state === 'APPROVED')
+        .map((n) => n.author.login) ?? [];
 
-  const totalCount = pr.reviews?.totalCount ?? 0;
-  const isApproved = totalCount > 0;
-  if (isApproved) {
-    return 'approved';
+    // reviewRequests に自分が含まれている場合はレビュー待ちと判定
+    if (reviewRequestedAuthors.includes(loginUser.name)) {
+      return pullRequestStatus.waitingReview;
+    }
+    // 自分が承認済みのレビューがある場合は承認済みと判定
+    else if (approvedReviewAuthors.includes(loginUser.name)) {
+      return pullRequestStatus.approved;
+    } else {
+      return pullRequestStatus.reviewed;
+    }
   }
-
-  return 'reviewing';
 };
 
 const toModelFromSearchPullRequest = (
@@ -150,14 +190,13 @@ export const useWatchPullRequests = () => {
     return client.watchQuery<SearchPullRequestsQueryResponse>({
       query: SearchPullRequestsQuery,
       variables: {
-        login_user_name: loginUser?.name,
         search_query: buildSearchPullRequestsQuery(
           settings.subscribedRepositories
         ),
       },
       fetchPolicy: 'cache-and-network',
     });
-  }, [loginUser?.name, settings.subscribedRepositories]);
+  }, [settings.subscribedRepositories]);
 
   const parseQueryResponse = useCallback(
     (response: SearchPullRequestsQueryResponse) => {
@@ -176,10 +215,11 @@ export const useWatchPullRequests = () => {
 
   const onResponse = useCallback(
     (result: ApolloQueryResult<SearchPullRequestsQueryResponse>) => {
+      if (loginUser == null) return;
       const pullRequests = parseQueryResponse(result.data);
-      dispatch({ type: UPDATE_ACTION, payload: { pullRequests } });
+      dispatch({ type: UPDATE_ACTION, payload: { loginUser, pullRequests } });
     },
-    [dispatch, parseQueryResponse]
+    [dispatch, loginUser, parseQueryResponse]
   );
 
   const startPolling = useCallback(

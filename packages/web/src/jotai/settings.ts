@@ -16,11 +16,15 @@ const defaultSettings: Settings = {
   showsRequestedReviewPR: true,
   showsInReviewPR: true,
   showsApprovedPR: true,
+  showsMyPR: true,
   autoLaunched: false,
   subscribedRepositories: [],
 };
 
-const initialSettings = storage.getSettings() ?? defaultSettings;
+const initialSettings = {
+  ...defaultSettings,
+  ...storage.getSettings(),
+};
 
 const settingsReducer = (prev: Settings, action: SettingsAction) => {
   switch (action.type) {

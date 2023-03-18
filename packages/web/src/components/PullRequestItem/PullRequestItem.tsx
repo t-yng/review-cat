@@ -1,5 +1,9 @@
 import React from 'react';
-import { PullRequest, PullRequestStatus } from '../../models';
+import {
+  PullRequest,
+  PullRequestStatus,
+  pullRequestStatus,
+} from '../../models';
 import { GitHubAvatar } from '../GitHubAvatar';
 import { styles } from './styles.css';
 
@@ -11,9 +15,9 @@ export const PullRequestItem: React.FC<Props> = ({ pullRequest }) => {
   const { author, url, title, status } = pullRequest;
 
   const statusLabel: { [key in PullRequestStatus]: string } = {
-    requestedReview: 'レビュー待ち',
-    reviewing: 'レビュー中',
-    approved: '承認済',
+    waitingReview: 'レビュー待ち',
+    reviewed: 'レビュー済み',
+    approved: '承認済み',
   };
 
   return (

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { instance, mock, when } from 'ts-mockito';
 import { PullRequestItem } from '.';
-import { PullRequest, User } from '../../models';
+import { PullRequest, pullRequestStatus, User } from '../../models';
 
 describe('PullRequestItem', () => {
   describe('link', () => {
@@ -31,16 +31,16 @@ describe('PullRequestItem', () => {
   describe('status', () => {
     it.each([
       {
-        status: 'requestedReview' as const,
+        status: pullRequestStatus.waitingReview,
         expected: 'レビュー待ち',
       },
       {
-        status: 'reviewing' as const,
-        expected: 'レビュー中',
+        status: pullRequestStatus.reviewed,
+        expected: 'レビュー済み',
       },
       {
-        status: 'approved' as const,
-        expected: '承認済',
+        status: pullRequestStatus.approved,
+        expected: '承認済み',
       },
     ])('$status のときに $expected を表示する', ({ status, expected }) => {
       const authorMock = mock<User>();

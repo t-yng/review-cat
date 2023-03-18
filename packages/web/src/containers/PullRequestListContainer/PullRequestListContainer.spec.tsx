@@ -4,6 +4,7 @@ import { instance, mock, when } from 'ts-mockito';
 import {
   PullRequest,
   PullRequestStatus,
+  pullRequestStatus,
   Repository,
   Settings,
   User,
@@ -21,9 +22,9 @@ jest.mock('../../hooks/useSettings', () => {
 
 jest.mock('../../hooks/usePullRequests', () => {
   const pullRequests = [
-    'requestedReview' as const,
-    'reviewing' as const,
-    'approved' as const,
+    pullRequestStatus.waitingReview,
+    pullRequestStatus.reviewed,
+    pullRequestStatus.approved,
   ].map((status: PullRequestStatus) => {
     const repositoryMock = mock<Repository>();
     when(repositoryMock.nameWithOwner).thenReturn('test');
@@ -52,14 +53,6 @@ jest.mock('../../hooks/usePullRequests', () => {
 
 describe('PullRequestListContainer', () => {
   describe('filterPullRequests', () => {
-    // let settingsMock: Settings;
-    // let spyUseSettings: SpyUserSettings;
-
-    // beforeEach(() => {
-    //   // settingsMock = mock<Settings>();
-    //   // spyUseSettings = jest.spyOn(useSettingsHook, 'useSettings');
-    // });
-
     it.each([
       {
         statusText: 'レビュー待ち',
@@ -68,13 +61,13 @@ describe('PullRequestListContainer', () => {
         showsApprovedPR: true,
       },
       {
-        statusText: 'レビュー中',
+        statusText: 'レビュー済み',
         showsRequestedReviewPR: true,
         showsInReviewPR: false,
         showsApprovedPR: true,
       },
       {
-        statusText: '承認済',
+        statusText: '承認済み',
         showsRequestedReviewPR: true,
         showsInReviewPR: true,
         showsApprovedPR: false,
@@ -96,20 +89,20 @@ describe('PullRequestListContainer', () => {
 
         render(<PullRequestListContainer />);
 
-        const requestedReviewPullRequest = screen.queryByText('レビュー待ち');
-        const reviewingPullRequest = screen.queryByText('レビュー中');
-        const approvedPullRequest = screen.queryByText('承認済');
+        const waitingReviewPullRequest = screen.queryByText('レビュー待ち');
+        const reviewedPullRequest = screen.queryByText('レビュー済み');
+        const approvedPullRequest = screen.queryByText('承認済み');
 
         if (cases.showsRequestedReviewPR) {
-          expect(requestedReviewPullRequest).toBeInTheDocument();
+          expect(waitingReviewPullRequest).toBeInTheDocument();
         } else {
-          expect(requestedReviewPullRequest).not.toBeInTheDocument();
+          expect(waitingReviewPullRequest).not.toBeInTheDocument();
         }
 
         if (cases.showsInReviewPR) {
-          expect(reviewingPullRequest).toBeInTheDocument();
+          expect(reviewedPullRequest).toBeInTheDocument();
         } else {
-          expect(reviewingPullRequest).not.toBeInTheDocument();
+          expect(reviewedPullRequest).not.toBeInTheDocument();
         }
 
         if (cases.showsApprovedPR) {

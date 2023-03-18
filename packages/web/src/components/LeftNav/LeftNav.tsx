@@ -14,6 +14,7 @@ import {
 import { GitPullRequestIcon } from '@primer/octicons-react';
 import { Link } from 'react-router-dom';
 import { usePullRequests } from '../../hooks';
+import { pullRequestStatus } from '../../models';
 
 export const LeftNav: React.FC = () => {
   const history = useHistory();
@@ -24,7 +25,7 @@ export const LeftNav: React.FC = () => {
   const { pullRequests, firstLoading } = usePullRequests();
 
   const requestedReviewPullRequests = pullRequests.filter(
-    (pr) => pr.status === 'requestedReview'
+    (pr) => pr.status === pullRequestStatus.waitingReview
   );
 
   useEffect(() => {

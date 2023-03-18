@@ -1,6 +1,6 @@
 import { createRepository } from './repository';
 import { createUser } from './user';
-import type { PullRequest } from '../../../src/models';
+import { PullRequest, pullRequestStatus } from '../../../src/models';
 
 export const createPullRequest = (pullRequest?: Partial<PullRequest>) => {
   const defaultValue: PullRequest = {
@@ -8,7 +8,7 @@ export const createPullRequest = (pullRequest?: Partial<PullRequest>) => {
     url: 'https://github.com/higeOhige/review-cat/pull/84',
     author: createUser(),
     repository: createRepository(),
-    status: 'requestedReview',
+    status: pullRequestStatus.waitingReview,
   };
 
   return {
