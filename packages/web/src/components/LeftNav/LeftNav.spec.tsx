@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { LeftNav } from '.';
 import { MemoryRouter } from 'react-router-dom';
 import { usePullRequests } from '../../hooks';
-import { PullRequest } from '../../models';
+import { PullRequest, pullRequestStatus } from '../../models';
 
 jest.mock('../../hooks/usePullRequests');
 const usePullRequestsMock = usePullRequests as jest.MockedFunction<
@@ -12,16 +12,16 @@ const usePullRequestsMock = usePullRequests as jest.MockedFunction<
 
 const defaultPullRequests = [
   {
-    status: 'requestedReview',
+    status: pullRequestStatus.waitingReview,
   },
   {
-    status: 'requestedReview',
+    status: pullRequestStatus.waitingReview,
   },
   {
-    status: 'reviewing',
+    status: pullRequestStatus.reviewed,
   },
   {
-    status: 'approved',
+    status: pullRequestStatus.approved,
   },
 ];
 

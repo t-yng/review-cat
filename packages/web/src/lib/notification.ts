@@ -1,15 +1,16 @@
-import { PullRequest } from '../models';
+import { PullRequest, pullRequestStatus } from '../models';
 
 const shouldNotify = (
   newPullRequest: PullRequest,
   beforePullRequest?: PullRequest
 ) => {
+  // TODO: 自分が作成したプルリクエストの場合はレビュー済みになった状態で通知する
   if (beforePullRequest == null) {
-    return newPullRequest.status === 'requestedReview';
+    return newPullRequest.status === pullRequestStatus.waitingReview;
   } else {
     return (
       beforePullRequest.status !== newPullRequest.status &&
-      newPullRequest.status === 'requestedReview'
+      newPullRequest.status === pullRequestStatus.waitingReview
     );
   }
 };

@@ -1,5 +1,5 @@
 import { createPullRequest } from '../../test/mocks/factory/pullRequest';
-import { PullRequest } from '../models';
+import { PullRequest, pullRequestStatus } from '../models';
 import { notifyPullRequests } from './notification';
 
 describe('lib/notification', () => {
@@ -21,10 +21,10 @@ describe('lib/notification', () => {
     const newPullRequest = createPullRequest({
       title: '新しいPR',
       url: 'https://github.com/higeOhige/review-cat/pull/100',
-      status: 'requestedReview',
+      status: pullRequestStatus.waitingReview,
     });
     const beforePullRequests: PullRequest[] = [
-      createPullRequest({ status: 'reviewing' }),
+      createPullRequest({ status: pullRequestStatus.reviewed }),
     ];
     const newPullRequests = [...beforePullRequests, newPullRequest];
     notifyPullRequests(newPullRequests, beforePullRequests);
@@ -40,10 +40,10 @@ describe('lib/notification', () => {
   it('更新後のプルリクエストが「レビュー待ち」に更新された時にデスクトップ通知をする', () => {
     const pullRequest = createPullRequest();
     const newPullRequests: PullRequest[] = [
-      { ...pullRequest, status: 'requestedReview' },
+      { ...pullRequest, status: pullRequestStatus.waitingReview },
     ];
     const beforePullRequests: PullRequest[] = [
-      { ...pullRequest, status: 'reviewing' },
+      { ...pullRequest, status: pullRequestStatus.reviewed },
     ];
     notifyPullRequests(newPullRequests, beforePullRequests);
 
@@ -58,13 +58,17 @@ describe('lib/notification', () => {
   it('更新後のプルリクエストが「レビュー済み」の場合はデスクトップ通知をしない', () => {
     const pullRequest = createPullRequest();
     const newPullRequests: PullRequest[] = [
-      { ...pullRequest, status: 'approved' },
+      { ...pullRequest, status: pullRequestStatus.approved },
     ];
     const beforePullRequests: PullRequest[] = [
-      { ...pullRequest, status: 'reviewing' },
+      { ...pullRequest, status: pullRequestStatus.reviewed },
     ];
     notifyPullRequests(newPullRequests, beforePullRequests);
 
     expect(NotificationMock).not.toBeCalled();
   });
+
+  it.todo(
+    '自分が作成したプルリクエストの場合は「レビュー済み」になった時にデスクトップ通知する'
+  );
 });

@@ -5,7 +5,14 @@ export interface Repository {
   openGraphImageUrl: string;
 }
 
-export type PullRequestStatus = 'requestedReview' | 'reviewing' | 'approved';
+export const pullRequestStatus = {
+  waitingReview: 'waitingReview',
+  reviewed: 'reviewed',
+  approved: 'approved',
+} as const;
+
+export type PullRequestStatus =
+  (typeof pullRequestStatus)[keyof typeof pullRequestStatus];
 
 export interface PullRequest {
   title: string;

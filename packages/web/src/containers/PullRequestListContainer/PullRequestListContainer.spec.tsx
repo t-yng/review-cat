@@ -4,6 +4,7 @@ import { instance, mock, when } from 'ts-mockito';
 import {
   PullRequest,
   PullRequestStatus,
+  pullRequestStatus,
   Repository,
   Settings,
   User,
@@ -21,9 +22,9 @@ jest.mock('../../hooks/useSettings', () => {
 
 jest.mock('../../hooks/usePullRequests', () => {
   const pullRequests = [
-    'requestedReview' as const,
-    'reviewing' as const,
-    'approved' as const,
+    pullRequestStatus.waitingReview,
+    pullRequestStatus.reviewed,
+    pullRequestStatus.approved,
   ].map((status: PullRequestStatus) => {
     const repositoryMock = mock<Repository>();
     when(repositoryMock.nameWithOwner).thenReturn('test');

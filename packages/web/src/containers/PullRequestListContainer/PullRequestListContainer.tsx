@@ -1,9 +1,14 @@
 import React, { FC } from 'react';
 import { usePullRequests } from '../../hooks/usePullRequests';
 import { RepositorySection } from '../../components/RepositorySection';
-import { PullRequest, Repositories, Settings, User } from '../../models';
+import {
+  PullRequest,
+  pullRequestStatus,
+  Repositories,
+  Settings,
+  User,
+} from '../../models';
 import { useSettings } from '../../hooks';
-import { useGitHubAccounts } from '../../hooks/useGitHubAccounts';
 import { useAtom } from 'jotai';
 import { loginUserAtom } from '../../jotai';
 
@@ -52,11 +57,11 @@ const filterPullRequests = (
     }
 
     switch (pr.status) {
-      case 'requestedReview':
+      case pullRequestStatus.waitingReview:
         return settings.showsRequestedReviewPR;
-      case 'reviewing':
+      case pullRequestStatus.reviewed:
         return settings.showsInReviewPR;
-      case 'approved':
+      case pullRequestStatus.approved:
         return settings.showsApprovedPR;
       default:
     }

@@ -5,6 +5,7 @@ import { RepositorySection } from '.';
 import {
   PullRequest,
   PullRequestStatus,
+  pullRequestStatus,
   RepositoryData,
   User,
 } from '../../models';
@@ -34,9 +35,9 @@ describe('RepositorySection', () => {
   describe('sortPullRequests', () => {
     it('ステータスに応じてプルリクの一覧をソートする', () => {
       const pullRequests = [
-        'approved' as const,
-        'requestedReview' as const,
-        'reviewing' as const,
+        pullRequestStatus.approved,
+        pullRequestStatus.waitingReview,
+        pullRequestStatus.reviewed,
       ].map((status, i) => {
         const url = `https://github.com/higeOhige/review-cat/pull/${i}`;
         return createPullRequest({ status, url });

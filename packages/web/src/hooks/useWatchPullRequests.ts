@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useAtom } from 'jotai';
 import { ApolloQueryResult, gql } from '@apollo/client';
 import { loginUserAtom } from '../jotai/user';
-import { PullRequest } from '../models/PullRequest';
+import { PullRequest, pullRequestStatus } from '../models/PullRequest';
 import { User } from '../models/User';
 import { useSettings } from './useSettings';
 import { buildSearchPullRequestsQuery } from '../lib';
@@ -37,6 +37,12 @@ export type SearchPullRequestsQueryResponse = {
       };
       readonly reviews?: {
         nodes: ReadonlyArray<{
+          readonly state:
+            | 'PENDING'
+            | 'COMMENTED'
+            | 'APPROVED'
+            | 'CHANGES_REQUESTED'
+            | 'DISMISSED';
           readonly author: {
             readonly login: string;
           };
@@ -125,22 +131,29 @@ export const getPullRequestStatus = (
   if (pr.author?.login === loginUser.name) {
     // レビューリクエストに全てのレビュアーが含まれていたらレビュー待ちと判定
     if (reviewRequestedAuthors.length === reviewers.length) {
-      return 'requestedReview';
+      return pullRequestStatus.waitingReview;
     } else if (pr.reviewDecision === 'APPROVED') {
-      return 'approved';
+      return pullRequestStatus.approved;
     } else {
-      return 'reviewing';
+      return pullRequestStatus.reviewed;
     }
   }
   // PRのオーナーが自分以外の場合のプルリクのステータス
   else {
+    const approvedReviewAuthors =
+      pr.reviews?.nodes
+        .filter((n) => n.state === 'APPROVED')
+        .map((n) => n.author.login) ?? [];
+
     // reviewRequests に自分が含まれている場合はレビュー待ちと判定
     if (reviewRequestedAuthors.includes(loginUser.name)) {
-      return 'requestedReview';
-    } else if (pr.reviewDecision === 'APPROVED') {
-      return 'approved';
+      return pullRequestStatus.waitingReview;
+    }
+    // 自分が承認済みのレビューがある場合は承認済みと判定
+    else if (approvedReviewAuthors.includes(loginUser.name)) {
+      return pullRequestStatus.approved;
     } else {
-      return 'reviewing';
+      return pullRequestStatus.reviewed;
     }
   }
 };
