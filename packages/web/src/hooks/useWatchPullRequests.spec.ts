@@ -23,6 +23,9 @@ describe('usePullRequestStatus', () => {
         totalCount: 1,
         nodes: [{ requestedReviewer: { login: userName } }],
       });
+      when(mockPullRequest.reviews).thenReturn({
+        nodes: [],
+      });
 
       const status = getPullRequestStatus(
         instance(mockPullRequest),
@@ -53,6 +56,10 @@ describe('usePullRequestStatus', () => {
     });
 
     it('上記以外の場合はプルリクエストをレビュー済みの状態にする', () => {
+      when(mockPullRequest.reviews).thenReturn({
+        nodes: [],
+      });
+
       const status = getPullRequestStatus(
         instance(mockPullRequest),
         instance(mockUser)

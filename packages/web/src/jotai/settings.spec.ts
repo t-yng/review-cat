@@ -48,6 +48,8 @@ describe('jotai/settings', () => {
         subscribedRepositories: ['test/test1', 'test/test2'],
       };
 
+      // TODO: 単体で実行した時にテストに失敗する
+      //       getSettingsのモックが更新されていない
       mockStorage.getSettings.mockReturnValue(savedSettings);
 
       const { result } = renderHook(() => useAtom(settingsReducerAtom));
