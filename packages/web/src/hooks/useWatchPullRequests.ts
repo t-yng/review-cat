@@ -215,10 +215,11 @@ export const useWatchPullRequests = () => {
 
   const onResponse = useCallback(
     (result: ApolloQueryResult<SearchPullRequestsQueryResponse>) => {
+      if (loginUser == null) return;
       const pullRequests = parseQueryResponse(result.data);
-      dispatch({ type: UPDATE_ACTION, payload: { pullRequests } });
+      dispatch({ type: UPDATE_ACTION, payload: { loginUser, pullRequests } });
     },
-    [dispatch, parseQueryResponse]
+    [dispatch, loginUser, parseQueryResponse]
   );
 
   const startPolling = useCallback(
