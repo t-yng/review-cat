@@ -1,0 +1,3 @@
+{
+  "extends": "@review-cat/tsconfig/base.json"
+}
