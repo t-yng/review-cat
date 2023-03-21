@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen, queryByText } from '@testing-library/react';
-import { AccountSelect, AccountSelectProps } from './AccountSelect';
-import { composeStories } from '@storybook/testing-react';
+import { render, screen, queryByText, act } from '@testing-library/react';
+import { composeStories } from '@storybook/react';
 import * as stories from './AccountSelect.stories';
+import { AccountSelect, AccountSelectProps } from './AccountSelect';
 
 const { ClickButton, ClickAnotherAccount } = composeStories(stories);
 
@@ -21,7 +21,7 @@ describe('AccountSelect', () => {
     const accounts = ['test1', 'test2'];
     const { container } = renderAccountSelect({ accounts });
 
-    await ClickButton.play({ canvasElement: container });
+    await act(async () => await ClickButton.play({ canvasElement: container }));
 
     const listbox = screen.getByRole('listbox');
     expect(queryByText(listbox, accounts[0])).toBeInTheDocument();
@@ -43,7 +43,16 @@ describe('AccountSelect', () => {
         accounts,
         onSelect: onSelectMock,
       });
-      await ClickAnotherAccount.play({ canvasElement: container });
+
+      await act(
+        async () => await ClickButton.play({ canvasElement: container })
+      );
+
+      // NOTE: js-dom環境で実行するとボタンクリックでDOMの更新が行われないため、↑でボタンクリックを実行する
+      //       @headlessui/reactのも問題かもしれない
+      await act(
+        async () => await ClickAnotherAccount.play({ canvasElement: container })
+      );
 
       expect(screen.getByRole('button', { name: 'test2' })).toBeInTheDocument();
       expect(onSelectMock).toBeCalledWith('test2');

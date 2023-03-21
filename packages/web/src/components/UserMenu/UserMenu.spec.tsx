@@ -1,11 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { UserMenu } from './';
 import userEvent from '@testing-library/user-event';
+import { UserMenu } from './';
 import { UserMenuProps } from '..';
 import { MemoryRouter } from 'react-router-dom';
 
 describe('UserMenu', () => {
+  const user = userEvent.setup();
+
   const renderUserMenu = (props: Partial<UserMenuProps> | undefined) => {
     const defaultProps: UserMenuProps = {
       user: {
@@ -26,6 +28,7 @@ describe('UserMenu', () => {
       </MemoryRouter>
     );
   };
+
   it('ユーザー名を表示する', () => {
     const user = {
       avatarUrl: '',
@@ -45,13 +48,13 @@ describe('UserMenu', () => {
     expect(link).toHaveAttribute('href', '/settings');
   });
 
-  it('ログアウトがクリックされた時に、onClickSignOut を実行する', () => {
+  it('ログアウトがクリックされた時に、onClickSignOut を実行する', async () => {
     const handleClickSignOutMock = jest.fn();
 
     renderUserMenu({ onClickSignOut: handleClickSignOutMock });
 
     const signOutButton = screen.getByText('ログアウト');
-    userEvent.click(signOutButton);
+    await user.click(signOutButton);
 
     expect(handleClickSignOutMock).toBeCalled();
   });

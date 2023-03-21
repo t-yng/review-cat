@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SelectRepositoryContainer } from './SelectRepositoryContainer';
 import { Repository } from '../../hooks/useSearchRepository';
@@ -28,14 +27,16 @@ jest.mock('../../components/SearchRepository', () => ({
 }));
 
 describe('SelectRepositoryContainer', () => {
+  const user = userEvent.setup();
   const renderSelectRepositoryContainer = () => {
     return render(<SelectRepositoryContainer />);
   };
 
-  it('検索結果のリポジトリ一覧を表示する', () => {
+  it('検索結果のリポジトリ一覧を表示する', async () => {
     renderSelectRepositoryContainer();
     const button = screen.getByText('検索');
-    userEvent.click(button);
+
+    await act(async () => await user.click(button));
 
     for (const repository of repositories) {
       expect(screen.queryByText(repository.nameWithOwner)).toBeInTheDocument();

@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  Redirect,
-} from 'react-router-dom';
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import { useSettings } from '../../../hooks/useSettings';
 import {
   LoginPage,
@@ -18,25 +13,38 @@ export const AppRoute = () => {
   const { settings } = useSettings();
 
   return (
-    <Router>
-      <Switch>
-        <Route path="/login">
-          <LoginPage />
-        </Route>
-        <PrivateRoute path="/select-repository">
-          <SelectRepositoryPage />
-        </PrivateRoute>
-        <PrivateRoute path="/settings">
-          <SettingsPage />
-        </PrivateRoute>
-        <PrivateRoute path="/">
-          {settings.subscribedRepositories.length === 0 ? (
-            <Redirect to="/select-repository" />
-          ) : (
-            <PullRequestListPage />
-          )}
-        </PrivateRoute>
-      </Switch>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/select-repository"
+          element={
+            <PrivateRoute>
+              <SelectRepositoryPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <PrivateRoute>
+              <SettingsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            settings.subscribedRepositories.length === 0 ? (
+              <Navigate to="/select-repository" replace />
+            ) : (
+              <PrivateRoute>
+                <PullRequestListPage />
+              </PrivateRoute>
+            )
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };

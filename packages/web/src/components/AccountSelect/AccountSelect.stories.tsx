@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ComponentStoryObj } from '@storybook/react';
+import type { StoryObj } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library';
 import { AccountSelect } from './AccountSelect';
 
@@ -7,7 +7,7 @@ export default {
   component: AccountSelect,
 };
 
-export const Default: ComponentStoryObj<typeof AccountSelect> = {
+export const Default: StoryObj<typeof AccountSelect> = {
   args: {
     accounts: ['test1', 'test2'],
     onSelect: () => {
@@ -23,18 +23,19 @@ export const Default: ComponentStoryObj<typeof AccountSelect> = {
   },
 };
 
-export const ClickButton: ComponentStoryObj<typeof AccountSelect> = {
+export const ClickButton: StoryObj<typeof AccountSelect> = {
   ...Default,
-  play: async ({ canvasElement }) => {
-    await userEvent.click(within(canvasElement).getByRole('button'));
+  play: ({ canvasElement }) => {
+    userEvent.click(within(canvasElement).getByRole('button'));
   },
 };
 
-export const ClickAnotherAccount: ComponentStoryObj<typeof AccountSelect> = {
+export const ClickAnotherAccount: StoryObj<typeof AccountSelect> = {
   ...Default,
   play: async (ctx) => {
-    await ClickButton.play?.(ctx);
     const canvas = within(ctx.canvasElement);
-    await userEvent.click(canvas.getByRole('option', { name: 'test2' }));
+    ClickButton.play?.(ctx);
+    const option = await canvas.findByRole('option', { name: 'test2' });
+    userEvent.click(option);
   },
 };

@@ -1,5 +1,5 @@
-import React, { ReactChild } from 'react';
-import { renderHook } from '@testing-library/react-hooks';
+import { ReactNode } from 'react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { MockedProvider, MockedProviderProps } from '@apollo/client/testing';
 import {
   SearchGitHubAccountsQueryResponse,
@@ -38,33 +38,29 @@ const graphQLMocks: MockedProviderProps['mocks'] = [
 
 describe('useGitHubAccounts', () => {
   it('ログイン中のユーザーアカウントを一覧に含める', async () => {
-    const wrapper = ({ children }: { children: ReactChild }) => (
+    const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedProvider mocks={graphQLMocks}>{children}</MockedProvider>
     );
-    const { result, waitForNextUpdate } = renderHook(
-      () => useGitHubAccounts(),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useGitHubAccounts(), { wrapper });
 
-    await waitForNextUpdate();
+    // await waitForNextUpdate();
 
-    expect(result.current.accounts).toContain(responseMock.viewer.login);
+    await waitFor(() => {
+      expect(result.current.accounts).toContain(responseMock.viewer.login);
+    });
   });
 
   it('ログイン中のユーザーが所属する組織アカウントを一覧に含める', async () => {
-    const wrapper = ({ children }: { children: ReactChild }) => (
+    const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedProvider mocks={graphQLMocks}>{children}</MockedProvider>
     );
-    const { result, waitForNextUpdate } = renderHook(
-      () => useGitHubAccounts(),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useGitHubAccounts(), { wrapper });
 
-    await waitForNextUpdate();
-
-    const organizations = responseMock.viewer.organizations.nodes ?? [];
-    for (const org of organizations) {
-      expect(result.current.accounts).toContain(org?.login);
-    }
+    await waitFor(() => {
+      const organizations = responseMock.viewer.organizations.nodes ?? [];
+      for (const org of organizations) {
+        expect(result.current.accounts).toContain(org?.login);
+      }
+    });
   });
 });

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { SettingsContainer } from './SettingContainer';
 import userEvent from '@testing-library/user-event';
@@ -33,6 +32,8 @@ jest.mock('../../hooks/useSettings', () => ({
 }));
 
 describe('SettingsContainer', () => {
+  const user = userEvent.setup();
+
   beforeEach(() => {
     updateNotifyReviewRequestedMock.mockReset();
     updateShowsPRMock.mockReset();
@@ -49,12 +50,12 @@ describe('SettingsContainer', () => {
   };
 
   describe('通知設定', () => {
-    it('チェックボックスがクリックされた時にコールバック関数が呼ばれる', () => {
+    it('チェックボックスがクリックされた時にコールバック関数が呼ばれる', async () => {
       renderSettingContainer();
 
       const checkbox =
         screen.getByLabelText('レビューリクエスト時に通知を受け取る');
-      userEvent.click(checkbox);
+      await user.click(checkbox);
 
       expect(updateNotifyReviewRequestedMock).toBeCalledWith(
         !defaultSettings.notifyReviewRequested
@@ -84,11 +85,11 @@ describe('SettingsContainer', () => {
       },
     ])(
       '$label のチェックボックスがクリックされた時にコールバック関数が呼ばれる',
-      ({ label, expected }) => {
+      async ({ label, expected }) => {
         renderSettingContainer();
 
         const checkbox = screen.getByLabelText(label);
-        userEvent.click(checkbox);
+        await user.click(checkbox);
 
         expect(updateShowsPRMock).toBeCalledWith(expected);
       }
@@ -96,11 +97,11 @@ describe('SettingsContainer', () => {
   });
 
   describe('起動設定', () => {
-    it('「ログイン時に自動で起動する」のチェックボックスをクリックされた時にコールバック関数が呼ばれる', () => {
+    it('「ログイン時に自動で起動する」のチェックボックスをクリックされた時にコールバック関数が呼ばれる', async () => {
       renderSettingContainer();
 
       const checkbox = screen.getByLabelText('ログイン時に自動で起動する');
-      userEvent.click(checkbox);
+      await user.click(checkbox);
 
       expect(updateAutoLaunchMock).toBeCalledWith(
         !defaultSettings.autoLaunched
@@ -109,7 +110,7 @@ describe('SettingsContainer', () => {
   });
 
   describe('リポジトリ一覧', () => {
-    it('監視しているリポジトリの一覧を表示する', () => {
+    it('監視しているリポジトリの一覧を表示する', async () => {
       renderSettingContainer();
 
       const repositories = defaultSettings.subscribedRepositories.map(
@@ -123,13 +124,13 @@ describe('SettingsContainer', () => {
       }
     });
 
-    it('削除アイコンをクリックした時にコールバック関数が呼ばれる', () => {
+    it('削除アイコンをクリックした時にコールバック関数が呼ばれる', async () => {
       renderSettingContainer();
 
       const deleteIcon = screen.getAllByRole('button', {
         name: 'リポジトリを削除',
       })[0];
-      userEvent.click(deleteIcon);
+      await user.click(deleteIcon);
 
       expect(removeSubscribedRepositoryMock).toBeCalledWith('test/testA');
     });
