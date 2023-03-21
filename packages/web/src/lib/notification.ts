@@ -5,6 +5,11 @@ const shouldNotify = (
   newPullRequest: PullRequest,
   beforePullRequest?: PullRequest
 ) => {
+  // プルリクエストのステータスが変更されていない場合は通知しない
+  if (beforePullRequest?.status === newPullRequest.status) {
+    return false;
+  }
+
   // 自分が作成したプルリクエストの場合はレビュー済みになった状態で通知する
   if (
     newPullRequest.author.name === loginUser.name &&
@@ -13,12 +18,10 @@ const shouldNotify = (
     return true;
   }
 
+  // 自分がレビュアーのプルリクエストの場合
   if (beforePullRequest == null) {
     return newPullRequest.status === pullRequestStatus.waitingReview;
-  } else if (
-    beforePullRequest.status !== newPullRequest.status &&
-    newPullRequest.status === pullRequestStatus.waitingReview
-  ) {
+  } else if (newPullRequest.status === pullRequestStatus.waitingReview) {
     return true;
   }
 
