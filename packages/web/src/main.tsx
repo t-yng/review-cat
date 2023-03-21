@@ -1,13 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import 'destyle.css';
 import App from './App';
 
 const rootElement = document.getElementById('root');
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  rootElement
-);
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const root = createRoot(rootElement!);
+root.render(<App />);

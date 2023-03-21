@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, queryByRole } from '@testing-library/react';
 import {
   SelectRepositoryList,
@@ -7,6 +6,8 @@ import {
 import userEvent from '@testing-library/user-event';
 
 describe('SelectRepositoryList', () => {
+  const user = userEvent.setup();
+
   const renderSelectRepositoryList = (
     props: Partial<SelectRepositoryListProps> = {}
   ) => {
@@ -64,7 +65,7 @@ describe('SelectRepositoryList', () => {
       expect(icon).toBeInTheDocument();
     });
 
-    it('追加アイコンをクリックすることでリポジトリを設定に追加するコールバック関数が呼ばれる', () => {
+    it('追加アイコンをクリックすることでリポジトリを設定に追加するコールバック関数が呼ばれる', async () => {
       const repositories = [
         {
           nameWithOwner: 'test/testA',
@@ -81,7 +82,7 @@ describe('SelectRepositoryList', () => {
       const addRepositoryButton = screen.getByRole('button', {
         name: 'リポジトリを設定に追加する',
       });
-      userEvent.click(addRepositoryButton);
+      await user.click(addRepositoryButton);
 
       expect(addRepositoryMock).toBeCalledWith(repositories[0].nameWithOwner);
     });
@@ -108,7 +109,7 @@ describe('SelectRepositoryList', () => {
       expect(icon).toBeInTheDocument();
     });
 
-    it('追加済みのアイコンをクリックすることでリポジトリを設定から削除するコールバック関数が呼ばれる', () => {
+    it('追加済みのアイコンをクリックすることでリポジトリを設定から削除するコールバック関数が呼ばれる', async () => {
       const repositories = [
         {
           nameWithOwner: 'test/testA',
@@ -125,7 +126,7 @@ describe('SelectRepositoryList', () => {
       const removeRepositoryButton = screen.getByRole('button', {
         name: '設定からリポジトリを削除する',
       });
-      userEvent.click(removeRepositoryButton);
+      await user.click(removeRepositoryButton);
 
       expect(removeRepositoryMock).toBeCalledWith(
         repositories[0].nameWithOwner

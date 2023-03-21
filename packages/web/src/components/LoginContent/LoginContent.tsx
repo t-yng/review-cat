@@ -4,15 +4,15 @@ import { AppIcon } from '../AppIcon';
 import { rootStyle, buttonContainerStyle } from './styles.css';
 import { useAtom } from 'jotai';
 import { signInAtom } from '../../jotai/auth';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginContent: React.FC = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [, signIn] = useAtom(signInAtom);
 
   const handleClick = () => {
     signIn(() => {
-      history.replace('/');
+      navigate('/', { replace: true });
     });
   };
 

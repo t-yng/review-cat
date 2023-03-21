@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useAtom } from 'jotai';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { loginUserAtom, signOutAtom } from '../../jotai';
 import { GitHubAvatar } from '../GitHubAvatar';
 import { UserMenu } from '../UserMenu';
@@ -17,7 +17,7 @@ import { usePullRequests } from '../../hooks';
 import { pullRequestStatus } from '../../models';
 
 export const LeftNav: React.FC = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const avatarRef = useRef<HTMLElement>(null);
   const [user] = useAtom(loginUserAtom);
   const [, signOut] = useAtom(signOutAtom);
@@ -50,9 +50,9 @@ export const LeftNav: React.FC = () => {
 
   const handleSignOut = useCallback(() => {
     signOut(() => {
-      history.replace('/login');
+      navigate('/login', { replace: true });
     });
-  }, [signOut, history]);
+  }, [signOut, navigate]);
 
   return (
     <nav className={navStyle} ref={avatarRef}>

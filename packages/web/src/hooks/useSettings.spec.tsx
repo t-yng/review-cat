@@ -1,6 +1,6 @@
 import React from 'react';
-import type { ReactNode, ReactFragment } from 'react';
-import { renderHook, act } from '@testing-library/react-hooks';
+import type { ReactNode } from 'react';
+import { renderHook, act } from '@testing-library/react';
 import { Provider } from 'jotai';
 import { useSettings } from './useSettings';
 
@@ -8,11 +8,9 @@ jest.mock('../lib/storage');
 
 describe('useSettings', () => {
   const renderUseSettings = () => {
-    const wrapper = ({
-      children,
-    }: {
-      children: Exclude<ReactNode, ReactFragment>;
-    }) => <Provider>{children}</Provider>;
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <Provider>{children}</Provider>
+    );
     return renderHook(() => useSettings(), { wrapper });
   };
 
