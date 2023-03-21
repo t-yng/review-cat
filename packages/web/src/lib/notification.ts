@@ -5,24 +5,18 @@ const shouldNotify = (
   newPullRequest: PullRequest,
   beforePullRequest?: PullRequest
 ) => {
+  // プルリクエストのステータスが変更されていない場合は通知しない
+  if (beforePullRequest?.status === newPullRequest.status) {
+    return false;
+  }
+
   // 自分が作成したプルリクエストの場合はレビュー済みになった状態で通知する
-  if (
-    newPullRequest.author.name === loginUser.name &&
-    newPullRequest.status === pullRequestStatus.reviewed
-  ) {
-    return true;
+  if (newPullRequest.author.name === loginUser.name) {
+    return newPullRequest.status === pullRequestStatus.reviewed;
   }
 
-  if (beforePullRequest == null) {
-    return newPullRequest.status === pullRequestStatus.waitingReview;
-  } else if (
-    beforePullRequest.status !== newPullRequest.status &&
-    newPullRequest.status === pullRequestStatus.waitingReview
-  ) {
-    return true;
-  }
-
-  return false;
+  // 自分がレビュアーのプルリクエストの場合
+  return newPullRequest.status === pullRequestStatus.waitingReview;
 };
 
 /**
