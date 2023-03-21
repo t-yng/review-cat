@@ -13,6 +13,11 @@ export default defineConfig(({ mode }) => ({
   server: {
     port: 3000,
   },
+  resolve: {
+    alias: {
+      '@/': path.join(__dirname, 'src/'),
+    },
+  },
   build: {
     outDir: path.join(__dirname, 'dist'),
     emptyOutDir: true,

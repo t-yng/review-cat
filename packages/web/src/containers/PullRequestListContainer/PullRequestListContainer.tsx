@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
+import { useSetting } from '@/stores';
 import { usePullRequests } from '../../hooks/usePullRequests';
 import { RepositorySection } from '../../components/RepositorySection';
 import {
@@ -8,7 +9,6 @@ import {
   Settings,
   User,
 } from '../../models';
-import { useSettings } from '../../hooks';
 import { useAtom } from 'jotai';
 import { loginUserAtom } from '../../jotai';
 
@@ -70,9 +70,9 @@ const filterPullRequests = (
 
 export const PullRequestListContainer: FC = () => {
   const { pullRequests, firstLoading } = usePullRequests();
-  const { settings } = useSettings();
+  const { setting } = useSetting();
   const [user] = useAtom(loginUserAtom);
-  const filteredPullRequests = filterPullRequests(pullRequests, settings, user);
+  const filteredPullRequests = filterPullRequests(pullRequests, setting, user);
   const repositories = groupByRepository(filteredPullRequests);
 
   if (firstLoading) {

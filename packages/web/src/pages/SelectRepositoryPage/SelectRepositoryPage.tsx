@@ -1,22 +1,22 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components';
-import { useSettings } from '../../hooks';
+import { useSetting } from '@/stores';
 import { BaseLayout } from '../../layouts/BaseLayout';
 import { completeButtonStyle, containerStyle, titleStyle } from './styles.css';
 import { SelectRepositoryContainer } from '../../containers/SelectRepositoryContainer/SelectRepositoryContainer';
 
 export const SelectRepositoryPage = () => {
   const navigate = useNavigate();
-  const { settings } = useSettings();
+  const { setting } = useSetting();
 
   const handleClick = useCallback(() => {
-    if (settings.subscribedRepositories.length === 0) {
+    if (setting.subscribedRepositories.length === 0) {
       alert('レビュー対象のリポジトリを1つ以上選択してください。');
     } else {
       navigate('/', { replace: true });
     }
-  }, [settings, navigate]);
+  }, [setting, navigate]);
 
   return (
     <BaseLayout>

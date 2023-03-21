@@ -1,6 +1,6 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, memo, useState } from 'react';
 import { XCircleFillIcon } from '@primer/octicons-react';
-import { useSettings } from '../../hooks';
+import { useSetting } from '@/stores';
 import {
   settingSectionStyle,
   settingSectionTitleStyle,
@@ -30,7 +30,7 @@ type SettingsProps = {
   onClickDeleteRepository: (repository: string) => void;
 };
 
-const Settings: FC<SettingsProps> = React.memo(
+const Settings: FC<SettingsProps> = memo(
   ({
     settings,
     onChangeNotifyReviewRequested,
@@ -172,12 +172,12 @@ const Settings: FC<SettingsProps> = React.memo(
 
 export const SettingsContainer = () => {
   const {
-    settings,
+    setting,
     updateNotifyReviewRequested,
     updateShowsPR,
     updateAutoLaunch,
     removeSubscribedRepository,
-  } = useSettings();
+  } = useSetting();
 
   const handleChangeNotifyReviewRequested = (
     event: ChangeEvent<HTMLInputElement>
@@ -215,7 +215,7 @@ export const SettingsContainer = () => {
 
   return (
     <Settings
-      settings={settings}
+      settings={setting}
       onChangeNotifyReviewRequested={handleChangeNotifyReviewRequested}
       onChangeShowsRequestedReviewPr={handleShowsRequestedReview}
       onChangedShowsInReviewPr={handleShowsInReview}

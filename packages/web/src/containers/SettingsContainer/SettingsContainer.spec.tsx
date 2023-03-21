@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import { SettingsContainer } from './SettingContainer';
+import { screen } from '@testing-library/react';
+import { customRender } from '@test/helpers/render';
 import userEvent from '@testing-library/user-event';
+import { SettingsContainer } from './SettingContainer';
 import { Settings } from '../../models';
-import { MemoryRouter } from 'react-router-dom';
 
 const defaultSettings: Settings = {
   notifyReviewRequested: false,
@@ -19,10 +19,10 @@ const updateShowsPRMock: jest.Mock = jest.fn();
 const updateAutoLaunchMock = jest.fn();
 const removeSubscribedRepositoryMock: jest.Mock = jest.fn();
 
-jest.mock('../../hooks/useSettings', () => ({
-  useSettings() {
+jest.mock('@/stores', () => ({
+  useSetting() {
     return {
-      settings: defaultSettings,
+      setting: defaultSettings,
       updateNotifyReviewRequested: updateNotifyReviewRequestedMock,
       updateShowsPR: updateShowsPRMock,
       updateAutoLaunch: updateAutoLaunchMock,
@@ -42,11 +42,7 @@ describe('SettingsContainer', () => {
   });
 
   const renderSettingContainer = () => {
-    return render(
-      <MemoryRouter>
-        <SettingsContainer />
-      </MemoryRouter>
-    );
+    return customRender(<SettingsContainer />);
   };
 
   describe('通知設定', () => {

@@ -4,7 +4,7 @@ import { ApolloQueryResult, gql } from '@apollo/client';
 import { loginUserAtom } from '../jotai/user';
 import { PullRequest, pullRequestStatus } from '../models/PullRequest';
 import { User } from '../models/User';
-import { useSettings } from './useSettings';
+import { useSetting } from '@/stores';
 import { buildSearchPullRequestsQuery } from '../lib';
 import { client } from '../lib/apollo';
 import { useAtomValue } from 'jotai/utils';
@@ -184,19 +184,19 @@ const toModelFromSearchPullRequest = (
 export const useWatchPullRequests = () => {
   const [, dispatch] = useAtom(pullRequestsReducerAtom);
   const loginUser = useAtomValue(loginUserAtom);
-  const { settings } = useSettings();
+  const { setting } = useSetting();
 
   const watchedQuery = useMemo(() => {
     return client.watchQuery<SearchPullRequestsQueryResponse>({
       query: SearchPullRequestsQuery,
       variables: {
         search_query: buildSearchPullRequestsQuery(
-          settings.subscribedRepositories
+          setting.subscribedRepositories
         ),
       },
       fetchPolicy: 'cache-and-network',
     });
-  }, [settings.subscribedRepositories]);
+  }, [setting.subscribedRepositories]);
 
   const parseQueryResponse = useCallback(
     (response: SearchPullRequestsQueryResponse) => {
