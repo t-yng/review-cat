@@ -9,19 +9,17 @@ describe('lib/notification', () => {
   let NotificationMock: jest.MockedFunction<any>;
 
   beforeEach(() => {
-    console.log('mock notification');
     NotificationMock = jest.fn();
     NotificationMock.permission = 'granted';
     window.Notification = NotificationMock;
   });
 
   afterEach(() => {
-    console.log('restore notification');
     window.Notification = NotificationOriginal;
   });
 
   describe('自分がレビュアーのプルリクエストの場合', () => {
-    const loginUser = createUser({ name: 'test' });
+    const loginUser = createUser({ name: 'notification-test' });
 
     it('新しい「レビュー待ち」のプルリクエストが存在したらデスクトップ通知をする', () => {
       const newPullRequest = createPullRequest({
@@ -76,7 +74,7 @@ describe('lib/notification', () => {
   });
 
   describe('自分が作成したプルリクエストの場合', () => {
-    const loginUser = createUser({ name: 'test' });
+    const loginUser = createUser({ name: 'notification-test' });
     const pullRequest = createPullRequest({
       author: loginUser,
     });
