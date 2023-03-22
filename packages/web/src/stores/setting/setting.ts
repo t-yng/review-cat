@@ -1,6 +1,6 @@
 import { atom, AtomEffect } from 'recoil';
-import { storage } from '../../lib';
-import { Settings } from '../../models';
+import { storage } from '@/lib';
+import { Settings } from '@/models';
 
 const defaultSetting: Settings = {
   notifyReviewRequested: false,

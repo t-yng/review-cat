@@ -4,7 +4,7 @@ import { storage } from '@/lib/storage';
 import { useSetting } from './useSetting';
 import { Settings } from '@/models';
 
-jest.mock('../../lib/storage');
+jest.mock('@/lib/storage');
 const mockStorage = storage as jest.Mocked<typeof storage>;
 
 describe('useSetting', () => {
