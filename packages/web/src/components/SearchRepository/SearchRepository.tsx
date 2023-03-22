@@ -1,13 +1,8 @@
-import { useAtom } from 'jotai';
-import React, { memo, useEffect } from 'react';
-import { useCallback, useState, FC } from 'react';
+import { useCallback, useState, FC, memo, useEffect } from 'react';
+import { useAuth } from '@/stores';
 import { AccountSelect, RepositorySearchBox } from '..';
-import { useGitHubAccounts } from '../../hooks/useGitHubAccounts';
-import {
-  Repository,
-  useSearchRepository,
-} from '../../hooks/useSearchRepository';
-import { loginUserAtom } from '../../jotai';
+import { useGitHubAccounts } from '@/hooks/useGitHubAccounts';
+import { Repository, useSearchRepository } from '@/hooks/useSearchRepository';
 import { rootStyle } from './style.css';
 
 type SearchRepositoryProps = {
@@ -16,7 +11,7 @@ type SearchRepositoryProps = {
 
 export const SearchRepository: FC<SearchRepositoryProps> = memo(
   ({ onSearch }) => {
-    const [user] = useAtom(loginUserAtom);
+    const { loginUser } = useAuth();
     const [account, setAccount] = useState<string | null>(null);
     const { accounts } = useGitHubAccounts();
     const { search } = useSearchRepository();
@@ -33,11 +28,11 @@ export const SearchRepository: FC<SearchRepositoryProps> = memo(
           alert('アカウントを選択してください');
           return;
         }
-        const isOrganization = account !== user?.name;
+        const isOrganization = account !== loginUser?.name;
         const repositories = await search({ account, keyword, isOrganization });
         onSearch(repositories);
       },
-      [account, onSearch, search, user]
+      [account, loginUser, onSearch, search]
     );
 
     const handleAccountSelect = useCallback((account: string) => {

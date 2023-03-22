@@ -1,9 +1,20 @@
-import { atom } from 'jotai';
+import { client } from '@/lib/apollo';
+import { User } from '@/models';
 import { gql } from '@apollo/client';
-import { client } from '../lib/apollo';
-import { User } from '../models';
+import { AtomEffect } from 'recoil';
 
-export const LoginUserQuery = gql`
+export const autoSignInEffect: AtomEffect<User | null> = ({ setSelf }) => {
+  fetchUser()
+    .then((user) => {
+      setSelf(user);
+    })
+    .catch((error) => {
+      console.error(error);
+      setSelf(null);
+    });
+};
+
+const LoginUserQuery = gql`
   query LoginUserQuery {
     viewer {
       login
@@ -11,21 +22,6 @@ export const LoginUserQuery = gql`
     }
   }
 `;
-
-export const userAtom = atom<User | null>(null);
-
-export const loginUserAtom = atom(
-  (get) => get(userAtom),
-  async (get, set) => {
-    try {
-      const user = await fetchUser();
-      set(userAtom, user);
-    } catch (error) {
-      console.error(error);
-      set(userAtom, null);
-    }
-  }
-);
 
 const fetchUser = async (): Promise<User | null> => {
   const response = await new Promise<User>((resolve, reject) => {

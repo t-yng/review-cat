@@ -1,16 +1,12 @@
 import { FC, PropsWithChildren, Suspense } from 'react';
-import { Route, RouteProps, Navigate } from 'react-router-dom';
-import { useAtom } from 'jotai';
-import { isLoggedInAtom } from '../../../jotai';
-import { AuthProvider } from '../../AuthProvider';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '@/stores';
 
 export const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
-  const [isLoggedIn] = useAtom(isLoggedInAtom);
+  const { isLoggedIn } = useAuth();
 
   return isLoggedIn ? (
-    <Suspense fallback="Loading...">
-      <AuthProvider>{children}</AuthProvider>
-    </Suspense>
+    <Suspense fallback="Loading...">{children}</Suspense>
   ) : (
     <Navigate to="/login" replace />
   );

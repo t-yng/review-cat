@@ -1,18 +1,15 @@
 import { useCallback, useMemo } from 'react';
 import { useAtom } from 'jotai';
 import { ApolloQueryResult, gql } from '@apollo/client';
-import { loginUserAtom } from '../jotai/user';
-import { PullRequest, pullRequestStatus } from '../models/PullRequest';
-import { User } from '../models/User';
-import { useSetting } from '@/stores';
-import { buildSearchPullRequestsQuery } from '../lib';
-import { client } from '../lib/apollo';
-import { useAtomValue } from 'jotai/utils';
+import { PullRequest, pullRequestStatus, User } from '@/models';
+import { useSetting, useAuth } from '@/stores';
+import { buildSearchPullRequestsQuery } from '@/lib';
+import { client } from '@/lib/apollo';
 import {
   pullRequestsReducerAtom,
   START_FETCH_ACTION,
   UPDATE_ACTION,
-} from '../jotai/pullRequest';
+} from '@/jotai/pullRequest';
 
 type TypeWithGenerics<T> = T[] | ReadonlyArray<T>;
 type ExtractGenerics<T> = T extends TypeWithGenerics<infer X> ? X : never;
@@ -183,7 +180,7 @@ const toModelFromSearchPullRequest = (
 
 export const useWatchPullRequests = () => {
   const [, dispatch] = useAtom(pullRequestsReducerAtom);
-  const loginUser = useAtomValue(loginUserAtom);
+  const { loginUser } = useAuth();
   const { setting } = useSetting();
 
   const watchedQuery = useMemo(() => {
