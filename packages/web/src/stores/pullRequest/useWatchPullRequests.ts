@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { ApolloQueryResult } from '@apollo/client';
 import { PullRequest, User } from '@/models';
 import { useSetting, useAuth } from '@/stores';
@@ -15,7 +15,7 @@ import {
 import { toModelFromSearchPullRequest } from './helper';
 
 export const useWatchPullRequests = () => {
-  const [firstLoading, setFirstLoading] = useRecoilState(firstLoadingState);
+  const setFirstLoading = useSetRecoilState(firstLoadingState);
   const setPullRequests = useSetRecoilState(pullRequestsState);
   const { loginUser } = useAuth();
   const { setting } = useSetting();
