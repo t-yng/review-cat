@@ -11,7 +11,7 @@ import {
   statusCountBadge,
   userIconStyle,
 } from './styles.css';
-import { usePullRequests } from '@/hooks';
+import { usePullRequests } from '@/stores';
 import { pullRequestStatus } from '@/models';
 
 export const LeftNav: FC = () => {

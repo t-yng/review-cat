@@ -2,9 +2,11 @@ import { screen } from '@testing-library/react';
 import { PullRequestStatus, pullRequestStatus } from '@/models';
 import { PullRequestListContainer } from './PullRequestListContainer';
 import { useSetting } from '@/stores';
-import { createRepository } from '@test/mocks/factory/repository';
-import { createPullRequest } from '@test/mocks/factory/pullRequest';
-import { createSetting } from '@test/mocks/factory/setting';
+import {
+  createRepository,
+  createPullRequest,
+  createSetting,
+} from '@test/mocks/factory';
 import { customRender } from '@test/helpers/render';
 
 jest.mock('@/stores/setting/useSetting', () => {
@@ -14,7 +16,7 @@ jest.mock('@/stores/setting/useSetting', () => {
 });
 const useSettingMock = useSetting as jest.MockedFunction<typeof useSetting>;
 
-jest.mock('@/hooks/usePullRequests', () => {
+jest.mock('@/stores/pullRequest/usePullRequests', () => {
   return {
     usePullRequests() {
       const pullRequests = [

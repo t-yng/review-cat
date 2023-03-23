@@ -1,11 +1,10 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { usePullRequests } from '@/stores';
+import { PullRequest, pullRequestStatus } from '@/models';
 import { LeftNav } from '.';
-import { MemoryRouter } from 'react-router-dom';
-import { usePullRequests } from '../../hooks';
-import { PullRequest, pullRequestStatus } from '../../models';
+import { customRender } from '@test/helpers/render';
 
-jest.mock('../../hooks/usePullRequests');
+jest.mock('@/stores/pullRequest/usePullRequests');
 const usePullRequestsMock = usePullRequests as jest.MockedFunction<
   typeof usePullRequests
 >;
@@ -39,11 +38,7 @@ describe('LeftNav', () => {
     });
 
     const renderLeftNav = () => {
-      return render(
-        <MemoryRouter>
-          <LeftNav />
-        </MemoryRouter>
-      );
+      return customRender(<LeftNav />);
     };
 
     it('プルリク一覧へのリンクとなっている', () => {

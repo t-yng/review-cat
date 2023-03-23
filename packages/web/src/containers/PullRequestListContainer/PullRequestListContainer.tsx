@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import { useSetting, useAuth } from '@/stores';
-import { usePullRequests } from '@/hooks/usePullRequests';
+import { useSetting, useAuth, usePullRequests } from '@/stores';
 import { RepositorySection } from '@/components/RepositorySection';
 import {
   PullRequest,
