@@ -8,7 +8,7 @@ import { settingState } from './setting';
 jest.mock('@/lib/storage');
 const mockStorage = storage as jest.Mocked<typeof storage>;
 
-describe('jotai/settings', () => {
+describe('stores/setting', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
