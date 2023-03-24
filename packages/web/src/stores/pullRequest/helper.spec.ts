@@ -1,9 +1,9 @@
 import { mock, when, instance } from 'ts-mockito';
-import { getPullRequestStatus } from '.';
-import { pullRequestStatus, User } from '../models';
-import { SearchPullRequest } from './useWatchPullRequests';
+import { getPullRequestStatus } from './helper';
+import { pullRequestStatus, User } from '../../models';
+import { SearchPullRequest } from './searchPullRequestQuery';
 
-describe('usePullRequestStatus', () => {
+describe('stores/pullRequest/helper', () => {
   describe('getPullRequestStatus', () => {
     const userName = 'test';
     let mockPullRequest: SearchPullRequest;

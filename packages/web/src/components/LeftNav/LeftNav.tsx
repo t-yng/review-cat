@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useAtom } from 'jotai';
-import { useNavigate } from 'react-router-dom';
-import { loginUserAtom, signOutAtom } from '../../jotai';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { GitPullRequestIcon } from '@primer/octicons-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/stores';
 import { GitHubAvatar } from '../GitHubAvatar';
 import { UserMenu } from '../UserMenu';
 import {
@@ -11,16 +11,13 @@ import {
   statusCountBadge,
   userIconStyle,
 } from './styles.css';
-import { GitPullRequestIcon } from '@primer/octicons-react';
-import { Link } from 'react-router-dom';
-import { usePullRequests } from '../../hooks';
-import { pullRequestStatus } from '../../models';
+import { usePullRequests } from '@/stores';
+import { pullRequestStatus } from '@/models';
 
-export const LeftNav: React.FC = () => {
+export const LeftNav: FC = () => {
   const navigate = useNavigate();
   const avatarRef = useRef<HTMLElement>(null);
-  const [user] = useAtom(loginUserAtom);
-  const [, signOut] = useAtom(signOutAtom);
+  const { loginUser, signOut } = useAuth();
   const [visibleUserMenu, setVisibleUserMenu] = useState(false);
   const { pullRequests, firstLoading } = usePullRequests();
 
@@ -57,9 +54,9 @@ export const LeftNav: React.FC = () => {
   return (
     <nav className={navStyle} ref={avatarRef}>
       <h1>
-        {user != null && (
+        {loginUser != null && (
           <GitHubAvatar
-            src={user?.avatarUrl}
+            src={loginUser.avatarUrl}
             onClick={handleClickUserIcon}
             className={`${iconStyle} ${userIconStyle}`}
           />
@@ -83,8 +80,8 @@ export const LeftNav: React.FC = () => {
           )}
         </Link>
       </div>
-      {user != null && visibleUserMenu && (
-        <UserMenu user={user} onClickSignOut={handleSignOut} />
+      {loginUser != null && visibleUserMenu && (
+        <UserMenu user={loginUser} onClickSignOut={handleSignOut} />
       )}
     </nav>
   );

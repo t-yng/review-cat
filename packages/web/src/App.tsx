@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react';
-import { Provider } from 'jotai';
+import { Suspense } from 'react';
+import { RecoilRoot } from 'recoil';
 import { ApolloProvider } from '@apollo/client';
 import { AppRoute } from './components/routes';
 import { client } from './lib/apollo';
@@ -8,13 +8,13 @@ import { AppProvider } from './components/AppProvider';
 const App = () => {
   return (
     <ApolloProvider client={client}>
-      <Provider>
+      <RecoilRoot>
         <Suspense fallback="Loading...">
           <AppProvider>
             <AppRoute />
           </AppProvider>
         </Suspense>
-      </Provider>
+      </RecoilRoot>
     </ApolloProvider>
   );
 };

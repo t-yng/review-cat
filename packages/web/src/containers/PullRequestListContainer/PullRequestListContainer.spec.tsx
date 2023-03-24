@@ -1,53 +1,42 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { instance, mock, when } from 'ts-mockito';
-import {
-  PullRequest,
-  PullRequestStatus,
-  pullRequestStatus,
-  Repository,
-  Settings,
-  User,
-} from '../../models';
+import { screen } from '@testing-library/react';
+import { PullRequestStatus, pullRequestStatus } from '@/models';
 import { PullRequestListContainer } from './PullRequestListContainer';
-import * as useSettingsHook from '../../hooks/useSettings';
+import { useSetting } from '@/stores';
+import {
+  createRepository,
+  createPullRequest,
+  createSetting,
+} from '@test/mocks/factory';
+import { customRender } from '@test/helpers/render';
 
-jest.mock('../../hooks/useSettings', () => {
-  const actualModule = jest.requireActual('../../hooks/useSettings');
+jest.mock('@/stores/setting/useSetting', () => {
   return {
-    __esModule: true,
-    ...actualModule,
+    useSetting: jest.fn(),
   };
 });
+const useSettingMock = useSetting as jest.MockedFunction<typeof useSetting>;
 
-jest.mock('../../hooks/usePullRequests', () => {
-  const pullRequests = [
-    pullRequestStatus.waitingReview,
-    pullRequestStatus.reviewed,
-    pullRequestStatus.approved,
-  ].map((status: PullRequestStatus) => {
-    const repositoryMock = mock<Repository>();
-    when(repositoryMock.nameWithOwner).thenReturn('test');
-    const repository = instance(repositoryMock);
-
-    const authorMock = mock<User>();
-    when(authorMock.avatarUrl).thenReturn('');
-    when(authorMock.name).thenReturn('');
-    const author = instance(authorMock);
-
-    const pullRequestMock = mock<PullRequest>();
-    when(pullRequestMock.status).thenReturn(status);
-    when(pullRequestMock.repository).thenReturn(repository);
-    when(pullRequestMock.author).thenReturn(author);
-    when(pullRequestMock.url).thenReturn('');
-    when(pullRequestMock.title).thenReturn('');
-    return instance(pullRequestMock);
-  });
-
+jest.mock('@/stores/pullRequest/usePullRequests', () => {
   return {
-    usePullRequests: () => ({
-      pullRequests: pullRequests,
-    }),
+    usePullRequests() {
+      const pullRequests = [
+        pullRequestStatus.waitingReview,
+        pullRequestStatus.reviewed,
+        pullRequestStatus.approved,
+      ].map((status: PullRequestStatus, index) => {
+        const pullRequest = createPullRequest({
+          status: status,
+          repository: createRepository({ nameWithOwner: 'test' }),
+          url: `https://github.com/t-yng/review-cat/pull/${index}`,
+        });
+
+        return pullRequest;
+      });
+
+      return {
+        pullRequests: pullRequests,
+      };
+    },
   };
 });
 
@@ -75,19 +64,15 @@ describe('PullRequestListContainer', () => {
     ])(
       '$statusText の表示をOFFにした時にプルリクスト一覧から除外する',
       (cases) => {
-        const settingsMock = mock<Settings>();
-        when(settingsMock.showsRequestedReviewPR).thenReturn(
-          cases.showsRequestedReviewPR
-        );
-        when(settingsMock.showsInReviewPR).thenReturn(cases.showsInReviewPR);
-        when(settingsMock.showsApprovedPR).thenReturn(cases.showsApprovedPR);
+        const setting = createSetting({
+          showsRequestedReviewPR: cases.showsRequestedReviewPR,
+          showsInReviewPR: cases.showsInReviewPR,
+          showsApprovedPR: cases.showsApprovedPR,
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        useSettingMock.mockReturnValue({ setting: setting } as any);
 
-        jest.spyOn(useSettingsHook, 'useSettings').mockReturnValue({
-          settings: instance(settingsMock),
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any);
-
-        render(<PullRequestListContainer />);
+        customRender(<PullRequestListContainer />);
 
         const waitingReviewPullRequest = screen.queryByText('レビュー待ち');
         const reviewedPullRequest = screen.queryByText('レビュー済み');

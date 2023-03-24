@@ -1,3 +1,2 @@
-export * from './usePullRequests';
-export * from './useSettings';
-export * from './useWatchPullRequests';
+export { useGitHubAccounts } from './useGitHubAccounts';
+export { useSearchRepository } from './useSearchRepository';

@@ -1,7 +1,8 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Repository } from '@/hooks/useSearchRepository';
 import { SelectRepositoryContainer } from './SelectRepositoryContainer';
-import { Repository } from '../../hooks/useSearchRepository';
+import { customRender } from '@test/helpers/render';
 
 const repositories: Repository[] = [
   {
@@ -29,7 +30,7 @@ jest.mock('../../components/SearchRepository', () => ({
 describe('SelectRepositoryContainer', () => {
   const user = userEvent.setup();
   const renderSelectRepositoryContainer = () => {
-    return render(<SelectRepositoryContainer />);
+    return customRender(<SelectRepositoryContainer />);
   };
 
   it('検索結果のリポジトリ一覧を表示する', async () => {

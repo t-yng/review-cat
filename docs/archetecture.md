@@ -23,14 +23,14 @@
 
 ### ライブラリ
 - Electron
-- Relay
+- Apollo
 - React
 - vanilla extract（スタイルライブラリ）[GitHub](https://github.com/seek-oss/vanilla-extract)
-- jotai（状態管理ライブラリ）
+- Recoil（状態管理ライブラリ）
 
 ### テストツール
 - Jest
-- ts-jest
+- swc-jest
 - React Testing Library
 
 ### CI

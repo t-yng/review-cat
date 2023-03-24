@@ -1,6 +1,11 @@
 {
   "extends": "@review-cat/tsconfig/base.json",
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@test/*": ["test/*"]
+    }
   }
 }

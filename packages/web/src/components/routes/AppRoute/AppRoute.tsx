@@ -1,16 +1,11 @@
-import React from 'react';
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
-import { useSettings } from '../../../hooks/useSettings';
-import {
-  LoginPage,
-  PullRequestListPage,
-  SelectRepositoryPage,
-} from '../../../pages';
-import { SettingsPage } from '../../../pages/SettingsPage';
+import { useSetting } from '@/stores';
+import { LoginPage, PullRequestListPage, SelectRepositoryPage } from '@/pages';
+import { SettingsPage } from '@/pages/SettingsPage';
 import { PrivateRoute } from '../PrivateRoute';
 
 export const AppRoute = () => {
-  const { settings } = useSettings();
+  const { setting } = useSetting();
 
   return (
     <BrowserRouter>
@@ -35,7 +30,7 @@ export const AppRoute = () => {
         <Route
           path="/"
           element={
-            settings.subscribedRepositories.length === 0 ? (
+            setting.subscribedRepositories.length === 0 ? (
               <Navigate to="/select-repository" replace />
             ) : (
               <PrivateRoute>

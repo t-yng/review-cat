@@ -1,5 +1,5 @@
-import React, { useEffect, FC, PropsWithChildren } from 'react';
-import { useWatchPullRequests } from '../../hooks';
+import { useEffect, FC, PropsWithChildren } from 'react';
+import { useWatchPullRequests } from '@/stores';
 
 // 頻度が多いと Github GraphQL API のレート制限に影響するので、投げるクエリのスコアを計算して調整してください。
 // @see: https://docs.github.com/ja/graphql/overview/resource-limitations

@@ -1,14 +1,13 @@
-import React from 'react';
+import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/stores';
 import { Button } from '../Button';
 import { AppIcon } from '../AppIcon';
 import { rootStyle, buttonContainerStyle } from './styles.css';
-import { useAtom } from 'jotai';
-import { signInAtom } from '../../jotai/auth';
-import { useNavigate } from 'react-router-dom';
 
-export const LoginContent: React.FC = () => {
+export const LoginContent: FC = () => {
   const navigate = useNavigate();
-  const [, signIn] = useAtom(signInAtom);
+  const { signIn } = useAuth();
 
   const handleClick = () => {
     signIn(() => {

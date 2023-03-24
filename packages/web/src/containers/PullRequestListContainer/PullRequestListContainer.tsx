@@ -1,16 +1,13 @@
-import React, { FC } from 'react';
-import { usePullRequests } from '../../hooks/usePullRequests';
-import { RepositorySection } from '../../components/RepositorySection';
+import { FC } from 'react';
+import { useSetting, useAuth, usePullRequests } from '@/stores';
+import { RepositorySection } from '@/components/RepositorySection';
 import {
   PullRequest,
   pullRequestStatus,
   Repositories,
   Settings,
   User,
-} from '../../models';
-import { useSettings } from '../../hooks';
-import { useAtom } from 'jotai';
-import { loginUserAtom } from '../../jotai';
+} from '@/models';
 
 /**
  * プルリクエストをリポジトリ毎にまとめる
@@ -70,9 +67,13 @@ const filterPullRequests = (
 
 export const PullRequestListContainer: FC = () => {
   const { pullRequests, firstLoading } = usePullRequests();
-  const { settings } = useSettings();
-  const [user] = useAtom(loginUserAtom);
-  const filteredPullRequests = filterPullRequests(pullRequests, settings, user);
+  const { setting } = useSetting();
+  const { loginUser } = useAuth();
+  const filteredPullRequests = filterPullRequests(
+    pullRequests,
+    setting,
+    loginUser
+  );
   const repositories = groupByRepository(filteredPullRequests);
 
   if (firstLoading) {
