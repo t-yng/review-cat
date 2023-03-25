@@ -1,6 +1,6 @@
+import { LoginUserDocument } from '@/gql/generated';
 import { client } from '@/lib/apollo';
 import { User } from '@/models';
-import { gql } from '@apollo/client';
 import { AtomEffect } from 'recoil';
 
 export const autoSignInEffect: AtomEffect<User | null> = ({ setSelf }) => {
@@ -14,21 +14,12 @@ export const autoSignInEffect: AtomEffect<User | null> = ({ setSelf }) => {
     });
 };
 
-const LoginUserQuery = gql`
-  query LoginUserQuery {
-    viewer {
-      login
-      avatarUrl
-    }
-  }
-`;
-
 const fetchUser = async (): Promise<User | null> => {
   const response = await new Promise<User>((resolve, reject) => {
     client
       .query<{
         viewer: { login: string; avatarUrl: string };
-      }>({ query: LoginUserQuery, fetchPolicy: 'cache-first' })
+      }>({ query: LoginUserDocument, fetchPolicy: 'cache-first' })
       .then((response) => {
         resolve({
           name: response.data.viewer.login,

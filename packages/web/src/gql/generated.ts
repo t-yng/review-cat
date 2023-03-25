@@ -27670,6 +27670,13 @@ export type WorkflowState =
   /** The workflow was disabled manually. */
   | 'DISABLED_MANUALLY';
 
+export type LoginUserQueryVariables = Exact<{ [key: string]: never }>;
+
+export type LoginUserQuery = {
+  __typename?: 'Query';
+  viewer: { __typename?: 'User'; login: string; avatarUrl: any };
+};
+
 export type SearchGitHubAccountsQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -27871,6 +27878,59 @@ export const SearchPullRequestFragmentDoc = gql`
   }
   ${RequestedReviewerFragmentDoc}
 `;
+export const LoginUserDocument = gql`
+  query LoginUser {
+    viewer {
+      login
+      avatarUrl
+    }
+  }
+`;
+
+/**
+ * __useLoginUserQuery__
+ *
+ * To run a query within a React component, call `useLoginUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLoginUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLoginUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLoginUserQuery(
+  baseOptions?: Apollo.QueryHookOptions<LoginUserQuery, LoginUserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<LoginUserQuery, LoginUserQueryVariables>(
+    LoginUserDocument,
+    options
+  );
+}
+export function useLoginUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    LoginUserQuery,
+    LoginUserQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<LoginUserQuery, LoginUserQueryVariables>(
+    LoginUserDocument,
+    options
+  );
+}
+export type LoginUserQueryHookResult = ReturnType<typeof useLoginUserQuery>;
+export type LoginUserLazyQueryHookResult = ReturnType<
+  typeof useLoginUserLazyQuery
+>;
+export type LoginUserQueryResult = Apollo.QueryResult<
+  LoginUserQuery,
+  LoginUserQueryVariables
+>;
 export const SearchGitHubAccountsDocument = gql`
   query SearchGitHubAccounts {
     viewer {
