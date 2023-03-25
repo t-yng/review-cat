@@ -27670,7 +27670,27 @@ export type WorkflowState =
   /** The workflow was disabled manually. */
   | 'DISABLED_MANUALLY';
 
-export type RequestedReviewerFragment = { __typename?: 'User'; login: string };
+export type SearchGitHubAccountsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type SearchGitHubAccountsQuery = {
+  __typename?: 'Query';
+  viewer: {
+    __typename?: 'User';
+    login: string;
+    organizations: {
+      __typename?: 'OrganizationConnection';
+      nodes?: Array<{
+        __typename?: 'Organization';
+        avatarUrl: any;
+        login: string;
+      } | null> | null;
+    };
+  };
+};
+
+export type RequestedReviewerFragment = { __typename: 'User'; login: string };
 
 export type SearchPullRequestFragment = {
   __typename?: 'PullRequest';
@@ -27712,7 +27732,7 @@ export type SearchPullRequestFragment = {
       requestedReviewer?:
         | { __typename?: 'Mannequin' }
         | { __typename?: 'Team' }
-        | { __typename?: 'User'; login: string }
+        | { __typename: 'User'; login: string }
         | null;
     } | null> | null;
   } | null;
@@ -27776,7 +27796,7 @@ export type SearchPullRequestsQuery = {
               requestedReviewer?:
                 | { __typename?: 'Mannequin' }
                 | { __typename?: 'Team' }
-                | { __typename?: 'User'; login: string }
+                | { __typename: 'User'; login: string }
                 | null;
             } | null> | null;
           } | null;
@@ -27790,6 +27810,7 @@ export type SearchPullRequestsQuery = {
 
 export const RequestedReviewerFragmentDoc = gql`
   fragment RequestedReviewer on User {
+    __typename
     login
   }
 `;
@@ -27828,6 +27849,69 @@ export const SearchPullRequestFragmentDoc = gql`
   }
   ${RequestedReviewerFragmentDoc}
 `;
+export const SearchGitHubAccountsDocument = gql`
+  query SearchGitHubAccounts {
+    viewer {
+      login
+      organizations(first: 20) {
+        nodes {
+          avatarUrl
+          login
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useSearchGitHubAccountsQuery__
+ *
+ * To run a query within a React component, call `useSearchGitHubAccountsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchGitHubAccountsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchGitHubAccountsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSearchGitHubAccountsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    SearchGitHubAccountsQuery,
+    SearchGitHubAccountsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    SearchGitHubAccountsQuery,
+    SearchGitHubAccountsQueryVariables
+  >(SearchGitHubAccountsDocument, options);
+}
+export function useSearchGitHubAccountsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SearchGitHubAccountsQuery,
+    SearchGitHubAccountsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    SearchGitHubAccountsQuery,
+    SearchGitHubAccountsQueryVariables
+  >(SearchGitHubAccountsDocument, options);
+}
+export type SearchGitHubAccountsQueryHookResult = ReturnType<
+  typeof useSearchGitHubAccountsQuery
+>;
+export type SearchGitHubAccountsLazyQueryHookResult = ReturnType<
+  typeof useSearchGitHubAccountsLazyQuery
+>;
+export type SearchGitHubAccountsQueryResult = Apollo.QueryResult<
+  SearchGitHubAccountsQuery,
+  SearchGitHubAccountsQueryVariables
+>;
 export const SearchPullRequestsDocument = gql`
   query SearchPullRequests($search_query: String!) {
     search(type: ISSUE, query: $search_query, last: 100) {
