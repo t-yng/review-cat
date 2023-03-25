@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { MockedProvider, MockedProviderProps } from '@apollo/client/testing';
+import { useGitHubAccounts } from './useGitHubAccounts';
 import {
-  SearchGitHubAccountsQueryResponse,
-  SearchGitHubAccountsQuery,
-  useGitHubAccounts,
-} from './useGitHubAccounts';
+  SearchGitHubAccountsDocument,
+  SearchGitHubAccountsQueryResult,
+} from '@/gql/generated';
 
-const responseMock: SearchGitHubAccountsQueryResponse = {
+const responseMock: SearchGitHubAccountsQueryResult['data'] = {
   viewer: {
     login: 'test-user',
     organizations: {
@@ -27,7 +27,7 @@ const responseMock: SearchGitHubAccountsQueryResponse = {
 
 const graphQLMocks: MockedProviderProps['mocks'] = [
   {
-    request: { query: SearchGitHubAccountsQuery },
+    request: { query: SearchGitHubAccountsDocument },
     result: {
       data: {
         ...responseMock,

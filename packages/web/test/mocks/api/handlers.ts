@@ -1,7 +1,7 @@
 import { graphql } from 'msw';
 
 export const handlers = [
-  graphql.query('LoginUserQuery', (req, res, ctx) => {
+  graphql.query('LoginUser', (req, res, ctx) => {
     return res(
       ctx.data({
         viewer: {

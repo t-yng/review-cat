@@ -1,37 +1,9 @@
 import { useState, useEffect } from 'react';
-import { gql, useQuery } from '@apollo/client';
-
-export type SearchGitHubAccountsQueryResponse = {
-  readonly viewer: {
-    readonly login: string;
-    readonly organizations: {
-      readonly nodes: ReadonlyArray<{
-        readonly avatarUrl: string;
-        readonly login: string;
-      } | null> | null;
-    };
-  };
-};
-
-export const SearchGitHubAccountsQuery = gql`
-  query SearchGitHubAccountsQuery {
-    viewer {
-      login
-      organizations(first: 20) {
-        nodes {
-          avatarUrl
-          login
-        }
-      }
-    }
-  }
-`;
+import { useSearchGitHubAccountsQuery } from '@/gql/generated';
 
 export const useGitHubAccounts = () => {
   const [accounts, setAccounts] = useState<string[]>([]);
-  const { loading, data } = useQuery<SearchGitHubAccountsQueryResponse>(
-    SearchGitHubAccountsQuery
-  );
+  const { loading, data } = useSearchGitHubAccountsQuery();
 
   useEffect(() => {
     const accounts = [];

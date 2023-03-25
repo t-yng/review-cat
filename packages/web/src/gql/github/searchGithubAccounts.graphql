@@ -1,0 +1,11 @@
+query SearchGitHubAccounts {
+  viewer {
+    login
+    organizations(first: 20) {
+      nodes {
+        avatarUrl
+        login
+      }
+    }
+  }
+}

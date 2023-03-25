@@ -7,12 +7,12 @@ import { buildSearchPullRequestsQuery } from '@/lib';
 import { client } from '@/lib/apollo';
 import { firstLoadingState, pullRequestsState } from './pullRequest';
 import { notifyPullRequests } from '@/lib/notification';
-import {
-  SearchPullRequest,
-  SearchPullRequestsQuery,
-  SearchPullRequestsQueryResponse,
-} from './searchPullRequestQuery';
 import { toModelFromSearchPullRequest } from './helper';
+import {
+  SearchPullRequestFragment as SearchPullRequest,
+  SearchPullRequestsDocument,
+  SearchPullRequestsQuery,
+} from '@/gql/generated';
 
 export const useWatchPullRequests = () => {
   const setFirstLoading = useSetRecoilState(firstLoadingState);
@@ -21,8 +21,8 @@ export const useWatchPullRequests = () => {
   const { setting } = useSetting();
 
   const watchedQuery = useMemo(() => {
-    return client.watchQuery<SearchPullRequestsQueryResponse>({
-      query: SearchPullRequestsQuery,
+    return client.watchQuery<SearchPullRequestsQuery>({
+      query: SearchPullRequestsDocument,
       variables: {
         search_query: buildSearchPullRequestsQuery(
           setting.subscribedRepositories
@@ -33,7 +33,7 @@ export const useWatchPullRequests = () => {
   }, [setting.subscribedRepositories]);
 
   const parseQueryResponse = useCallback(
-    (response: SearchPullRequestsQueryResponse) => {
+    (response: SearchPullRequestsQuery) => {
       const searchPullRequests = (response.search.nodes?.filter(
         (node) => node != null
       ) ?? []) as Array<SearchPullRequest>;
@@ -48,7 +48,7 @@ export const useWatchPullRequests = () => {
   );
 
   const onResponse = useCallback(
-    (result: ApolloQueryResult<SearchPullRequestsQueryResponse>) => {
+    (result: ApolloQueryResult<SearchPullRequestsQuery>) => {
       if (loginUser == null) return;
       const pullRequests = parseQueryResponse(result.data);
       setPullRequests((prevPullRequests) => {

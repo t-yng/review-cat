@@ -1,33 +1,14 @@
 import { useCallback } from 'react';
-import { gql } from '@apollo/client';
 import { client } from '../lib/apollo';
+import {
+  SearchRepositoryDocument,
+  SearchRepositoryQueryResult,
+} from '@/gql/generated';
 
 export type Repository = {
   nameWithOwner: string;
   url: string;
 };
-
-type SearchRepositoryQueryResponse = {
-  readonly search: {
-    readonly nodes: ReadonlyArray<{
-      readonly nameWithOwner?: string;
-      readonly url?: string;
-    } | null> | null;
-  };
-};
-
-const SearchRepositoryQuery = gql`
-  query SearchRepositoryQuery($query: String!) {
-    search(type: REPOSITORY, query: $query, last: 100) {
-      nodes {
-        ... on Repository {
-          nameWithOwner
-          url
-        }
-      }
-    }
-  }
-`;
 
 export const useSearchRepository = () => {
   const search = useCallback(
@@ -40,13 +21,13 @@ export const useSearchRepository = () => {
         const accountModifier = options.isOrganization ? 'org' : 'user';
         const query = `${options.keyword} ${accountModifier}:${options.account}`;
         client
-          .query<SearchRepositoryQueryResponse>({
-            query: SearchRepositoryQuery,
+          .query<SearchRepositoryQueryResult['data']>({
+            query: SearchRepositoryDocument,
             variables: { query },
             fetchPolicy: 'network-only',
           })
           .then((res) => {
-            const repositories = res.data.search.nodes;
+            const repositories = res?.data?.search.nodes;
             resolve(repositories as Repository[]);
           });
       });
