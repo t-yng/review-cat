@@ -1,0 +1,10 @@
+query SearchRepository($query: String!) {
+  search(type: REPOSITORY, query: $query, last: 100) {
+    nodes {
+      ... on Repository {
+        nameWithOwner
+        url
+      }
+    }
+  }
+}

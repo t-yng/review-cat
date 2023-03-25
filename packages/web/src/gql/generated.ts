@@ -27808,6 +27808,28 @@ export type SearchPullRequestsQuery = {
   };
 };
 
+export type SearchRepositoryQueryVariables = Exact<{
+  query: Scalars['String'];
+}>;
+
+export type SearchRepositoryQuery = {
+  __typename?: 'Query';
+  search: {
+    __typename?: 'SearchResultItemConnection';
+    nodes?: Array<
+      | { __typename?: 'App' }
+      | { __typename?: 'Discussion' }
+      | { __typename?: 'Issue' }
+      | { __typename?: 'MarketplaceListing' }
+      | { __typename?: 'Organization' }
+      | { __typename?: 'PullRequest' }
+      | { __typename?: 'Repository'; nameWithOwner: string; url: any }
+      | { __typename?: 'User' }
+      | null
+    > | null;
+  };
+};
+
 export const RequestedReviewerFragmentDoc = gql`
   fragment RequestedReviewer on User {
     __typename
@@ -27972,4 +27994,67 @@ export type SearchPullRequestsLazyQueryHookResult = ReturnType<
 export type SearchPullRequestsQueryResult = Apollo.QueryResult<
   SearchPullRequestsQuery,
   SearchPullRequestsQueryVariables
+>;
+export const SearchRepositoryDocument = gql`
+  query SearchRepository($query: String!) {
+    search(type: REPOSITORY, query: $query, last: 100) {
+      nodes {
+        ... on Repository {
+          nameWithOwner
+          url
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useSearchRepositoryQuery__
+ *
+ * To run a query within a React component, call `useSearchRepositoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchRepositoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchRepositoryQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useSearchRepositoryQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    SearchRepositoryQuery,
+    SearchRepositoryQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<SearchRepositoryQuery, SearchRepositoryQueryVariables>(
+    SearchRepositoryDocument,
+    options
+  );
+}
+export function useSearchRepositoryLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SearchRepositoryQuery,
+    SearchRepositoryQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    SearchRepositoryQuery,
+    SearchRepositoryQueryVariables
+  >(SearchRepositoryDocument, options);
+}
+export type SearchRepositoryQueryHookResult = ReturnType<
+  typeof useSearchRepositoryQuery
+>;
+export type SearchRepositoryLazyQueryHookResult = ReturnType<
+  typeof useSearchRepositoryLazyQuery
+>;
+export type SearchRepositoryQueryResult = Apollo.QueryResult<
+  SearchRepositoryQuery,
+  SearchRepositoryQueryVariables
 >;
