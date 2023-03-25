@@ -1,0 +1,45 @@
+fragment RequestedReviewer on User {
+  __typename
+  login
+}
+
+fragment SearchPullRequest on PullRequest {
+  headRefName
+  title
+  url
+  reviewDecision
+  author {
+    avatarUrl
+    login
+  }
+  repository {
+    nameWithOwner
+    openGraphImageUrl
+  }
+  reviews(last: 100) {
+    nodes {
+      ... on PullRequestReview {
+        state
+        author {
+          login
+        }
+      }
+    }
+  }
+  reviewRequests(last: 100) {
+    totalCount
+    nodes {
+      requestedReviewer {
+        ...RequestedReviewer
+      }
+    }
+  }
+}
+
+query SearchPullRequests($search_query: String!) {
+  search(type: ISSUE, query: $search_query, last: 100) {
+    nodes {
+      ...SearchPullRequest
+    }
+  }
+}

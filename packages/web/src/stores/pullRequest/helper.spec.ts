@@ -1,12 +1,12 @@
 import { mock, when, instance } from 'ts-mockito';
 import { getPullRequestStatus } from './helper';
 import { pullRequestStatus, User } from '../../models';
-import { SearchPullRequest } from './searchPullRequestQuery';
+import { SearchPullRequestFragment } from '@/gql/generated';
 
 describe('stores/pullRequest/helper', () => {
   describe('getPullRequestStatus', () => {
     const userName = 'test';
-    let mockPullRequest: SearchPullRequest;
+    let mockPullRequest: SearchPullRequestFragment;
     let mockUser: User;
 
     beforeAll(() => {
@@ -15,13 +15,20 @@ describe('stores/pullRequest/helper', () => {
     });
 
     beforeEach(() => {
-      mockPullRequest = mock<SearchPullRequest>();
+      mockPullRequest = mock<SearchPullRequestFragment>();
     });
 
     it('requestedReviewer に自分が含まれているときにプルリクエストをレビュー待ちの状態にする', () => {
       when(mockPullRequest.reviewRequests).thenReturn({
         totalCount: 1,
-        nodes: [{ requestedReviewer: { login: userName } }],
+        nodes: [
+          {
+            requestedReviewer: {
+              __typename: 'User',
+              login: userName,
+            },
+          },
+        ],
       });
       when(mockPullRequest.reviews).thenReturn({
         nodes: [],

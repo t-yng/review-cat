@@ -1,5 +1,8 @@
 import { PullRequest, pullRequestStatus, User } from '@/models';
-import { SearchPullRequest } from './searchPullRequestQuery';
+import {
+  RequestedReviewerFragment,
+  SearchPullRequestFragment,
+} from '@/gql/generated';
 
 /**
  * プルリクエストのステータス文字列を生成する
@@ -10,12 +13,18 @@ import { SearchPullRequest } from './searchPullRequestQuery';
  *   reviewing(レビュー中): 上記以外のプルリクエスト
  */
 export const getPullRequestStatus = (
-  pr: SearchPullRequest,
+  pr: SearchPullRequestFragment,
   loginUser: User
 ): PullRequest['status'] => {
   const reviewRequestedAuthors =
-    pr.reviewRequests?.nodes?.map((n) => n?.requestedReviewer?.login) ?? [];
-  const reviewAuthors = pr.reviews?.nodes.map((n) => n.author.login) ?? [];
+    pr.reviewRequests?.nodes
+      ?.map((n) => n?.requestedReviewer)
+      ?.filter(
+        (reviewer): reviewer is RequestedReviewerFragment =>
+          reviewer?.__typename === 'User'
+      )
+      .map((reviewer) => reviewer.login) ?? [];
+  const reviewAuthors = pr.reviews?.nodes?.map((n) => n?.author?.login) ?? [];
   const reviewers = Array.from(
     new Set([...reviewRequestedAuthors, ...reviewAuthors])
   );
@@ -35,8 +44,8 @@ export const getPullRequestStatus = (
   else {
     const approvedReviewAuthors =
       pr.reviews?.nodes
-        .filter((n) => n.state === 'APPROVED')
-        .map((n) => n.author.login) ?? [];
+        ?.filter((n) => n?.state === 'APPROVED')
+        .map((n) => n?.author?.login) ?? [];
 
     // reviewRequests に自分が含まれている場合はレビュー待ちと判定
     if (reviewRequestedAuthors.includes(loginUser.name)) {
@@ -52,7 +61,7 @@ export const getPullRequestStatus = (
 };
 
 export const toModelFromSearchPullRequest = (
-  pr: SearchPullRequest,
+  pr: SearchPullRequestFragment,
   loginUser: User
 ): PullRequest => {
   const basePullRequest: Omit<PullRequest, 'status'> = {
