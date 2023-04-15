@@ -1,0 +1,17 @@
+{
+  "name": "e2e",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.32.3",
+    "main": "*",
+    "playwright": "1.32.3"
+  },
+  "scripts": {
+    "test": "playwright test"
+  }
+}
