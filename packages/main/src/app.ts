@@ -13,15 +13,13 @@ const trayIcon = path.join(__dirname, 'assets', 'images', 'tray-icon.png');
 const html = `file://${require.resolve('web/dist/index.html')}`;
 const indexUrl = isDevelopment ? 'http://localhost:3000/' : html;
 
-const browserWindowOpts = {
+const browserWindowOpts: Electron.BrowserWindowConstructorOptions = {
   width: 500,
   height: 400,
   minWidth: 500,
   minHeight: 400,
   resizable: false,
   webPreferences: {
-    enableRemoteModule: true,
-    overlayScrollbars: true,
     nodeIntegration: false,
     contextIsolation: true,
     preload: path.join(__dirname, 'preload.js'),
