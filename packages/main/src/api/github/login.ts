@@ -1,4 +1,4 @@
-import fetch from 'cross-fetch';
+import axios from 'axios';
 
 type Credentials = {
   clientId: string;
@@ -16,15 +16,14 @@ export const oAuthAccessToken = async (
   credentials: Credentials
 ): Promise<OAuthResponse> => {
   try {
-    const response = await fetch(
+    const res = await axios.post<OAuthResponse>(
       'https://github.com/login/oauth/access_token',
       {
-        method: 'POST',
-        body: JSON.stringify({
-          client_id: credentials.clientId,
-          client_secret: credentials.clientSecret,
-          code: credentials.code,
-        }),
+        client_id: credentials.clientId,
+        client_secret: credentials.clientSecret,
+        code: credentials.code,
+      },
+      {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -32,12 +31,10 @@ export const oAuthAccessToken = async (
       }
     );
 
-    if (response.ok) {
-      return (await response.json()) as OAuthResponse;
+    if (res.status === 200) {
+      return res.data;
     } else {
-      throw new Error(await response.text());
-      // console.log(await response.text());
-      // return null;
+      throw new Error(res.statusText);
     }
   } catch (error) {
     console.log(error);

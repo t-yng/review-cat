@@ -1,5 +1,13 @@
 import { _electron as electron } from 'playwright';
 import { test } from '@playwright/test';
+import jsonServer from 'json-server';
+
+const server = jsonServer.create();
+server.use(jsonServer.bodyParser);
+
+test.beforeAll(() => {
+  server.listen(4400);
+});
 
 test('GitHubでログインできる', async () => {
   // アプリを起動
@@ -39,6 +47,18 @@ test('GitHubでログインできる', async () => {
     });
   });
 
+  // GitHub認証のアクセストークン取得をモック
+  server.post('/login/oauth/access_token', (req, res) => {
+    if (req.body.code === '1234567890') {
+      return res.status(200).json({
+        access_token: 'mock_token',
+      });
+    } else {
+      return res.status(401);
+    }
+  });
+
+  // ユーザーがGitHubでのログインが完了した状態を再現
   try {
     await authWindow.goto('https://github.com/authorized', {
       waitUntil: 'commit',
@@ -51,8 +71,6 @@ test('GitHubでログインできる', async () => {
       throw error;
     }
   }
-
-  await mainWindow.waitForTimeout(2000);
 
   await mainWindow.screenshot({ path: 'intro.png' });
 

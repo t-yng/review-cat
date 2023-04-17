@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.32.3",
+    "json-server": "0.17.3",
     "main": "*",
     "playwright": "1.32.3"
   },

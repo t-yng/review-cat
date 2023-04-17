@@ -3,9 +3,17 @@ import { app, ipcMain, shell } from 'electron';
 import { menubar } from 'menubar';
 import { auth } from './lib';
 import { oAuthOptions } from './constants/auth';
+import axios from 'axios';
+
+if (process.env.NODE_ENV === 'test') {
+  axios.defaults.proxy = {
+    protocol: 'http',
+    host: '127.0.0.1',
+    port: 4400,
+  };
+}
 
 const isDevelopment = process?.env?.NODE_ENV === 'development';
-
 const trayIcon = path.join(__dirname, 'assets', 'images', 'tray-icon.png');
 
 // `file://${require.resolve('web/dist/index.html')}`;
