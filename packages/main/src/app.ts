@@ -13,13 +13,13 @@ if (process.env.NODE_ENV === 'test') {
   };
 }
 
-const isDevelopment = process?.env?.NODE_ENV === 'development';
+const isProduction = process?.env?.NODE_ENV === 'production';
 const trayIcon = path.join(__dirname, 'assets', 'images', 'tray-icon.png');
 
 // `file://${require.resolve('web/dist/index.html')}`;
 // `file://${path.resolve(__dirname, './index.html')}`
 const html = `file://${require.resolve('web/dist/index.html')}`;
-const indexUrl = isDevelopment ? 'http://localhost:3000/' : html;
+const indexUrl = isProduction ? html : 'http://localhost:3000/';
 
 const browserWindowOpts: Electron.BrowserWindowConstructorOptions = {
   width: 500,
@@ -79,7 +79,7 @@ menubarApp.on('after-create-window', () => {
 
   hideDockIcon();
 
-  if (isDevelopment) {
+  if (!isProduction) {
     menubarApp.showWindow();
   }
 });
