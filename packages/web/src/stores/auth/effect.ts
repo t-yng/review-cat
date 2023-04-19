@@ -17,7 +17,7 @@ export const autoSignInEffect: AtomEffect<User | null> = ({ setSelf }) => {
     });
 };
 
-const fetchUser = async (): Promise<User | null> => {
+export const fetchUser = async (): Promise<User | null> => {
   const response = await new Promise<User>((resolve, reject) => {
     client
       .query<{
@@ -30,6 +30,7 @@ const fetchUser = async (): Promise<User | null> => {
         });
       })
       .catch((error) => {
+        console.error(error);
         reject(error);
       });
   });

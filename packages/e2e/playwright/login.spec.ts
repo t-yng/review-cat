@@ -1,6 +1,7 @@
 import { _electron as electron } from 'playwright';
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import jsonServer from 'json-server';
+import { hasOperationName } from './utils/gaphql';
 
 const server = jsonServer.create();
 server.use(jsonServer.bodyParser);
@@ -14,18 +15,22 @@ test('GitHubでログインできる', async () => {
   const electronApp = await electron.launch({
     args: [require.resolve('main/dist/app.js')],
   });
+
+  // メインプロセスのログを出力
   const mainProcess = electronApp.process();
   mainProcess.stdout?.on('data', (data) => {
     console.log(data.toString());
   });
 
+  // ウィンドウのコンソールログを出力
   const mainWindow = await electronApp.firstWindow();
   mainWindow.on('console', console.log);
 
-  // react-routerのページ遷移を実行するために、ナビゲーションのイベントを発火
   await mainWindow.evaluate(() => {
     // ログイン状態を初期化
     window.localStorage.clear();
+
+    // react-routerのページ遷移を実行するために、ナビゲーションのイベントを発火
     window.history.pushState({}, '', '/');
   });
 
@@ -58,7 +63,29 @@ test('GitHubでログインできる', async () => {
     }
   });
 
-  // ユーザーがGitHubでのログインが完了した状態を再現
+  // ユーザー情報の取得をモック
+  mainWindow.route('https://api.github.com/graphql', (route) => {
+    const body = route.request().postDataJSON();
+    if (hasOperationName(body.query, 'LoginUser')) {
+      return route.fulfill({
+        status: 200,
+        headers: {
+          contentType: 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            viewer: {
+              login: 'test',
+              avatarUrl:
+                'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=test',
+            },
+          },
+        }),
+      });
+    }
+  });
+
+  // ユーザーがGitHubでのログインを完了した状態を再現
   try {
     await authWindow.goto('https://github.com/authorized', {
       waitUntil: 'commit',
@@ -72,7 +99,8 @@ test('GitHubでログインできる', async () => {
     }
   }
 
-  await mainWindow.screenshot({ path: 'intro.png' });
+  await expect(mainWindow.getByRole('img', { name: 'test' })).toBeVisible();
+  await expect(mainWindow).toHaveURL(/\/select\-repository/);
 
   await electronApp.close();
 });

@@ -2,6 +2,7 @@ import { storage } from '@/lib';
 import { useCallback } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { isLoggedInSelector, loginUserState, tokenState } from './auth';
+import { fetchUser } from './effect';
 
 export const useAuth = () => {
   const [loginUser, setLoginUser] = useRecoilState(loginUserState);
@@ -12,12 +13,16 @@ export const useAuth = () => {
     async (callback: () => void) => {
       const code = await window.ipc.loginWithGithub();
       const token = await window.ipc.getAccessToken(code);
+      // FIXME: 処理が漏れているので、後でリファクタする
       setToken(token);
+      storage.setGithubAccessToken(token);
+      const user = await fetchUser();
+      setLoginUser(user);
       if (callback != null) {
         callback();
       }
     },
-    [setToken]
+    [setLoginUser, setToken]
   );
 
   const signOut = useCallback(

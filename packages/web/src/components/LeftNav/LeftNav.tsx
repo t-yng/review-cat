@@ -59,6 +59,7 @@ export const LeftNav: FC = () => {
             src={loginUser.avatarUrl}
             onClick={handleClickUserIcon}
             className={`${iconStyle} ${userIconStyle}`}
+            alt={loginUser.name}
           />
         )}
       </h1>
