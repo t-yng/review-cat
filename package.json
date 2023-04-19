@@ -13,7 +13,8 @@
     "prepare": "husky install",
     "lint:all": "yarn workspace web lint:all && yarn workspace main lint:all",
     "format:all": "yarn workspace web format:all && yarn workspace main format:all",
-    "test": "yarn workspace web test && yarn workspace main test",
+    "test": "yarn workspace web test && yarn workspace main test && yarn test:e2e",
+    "test:e2e": "yarn workspace e2e test",
     "test:coverage": "yarn workspace web test --coverage && yarn workspace main test --coverage",
     "type-check": "yarn workspace web type-check && yarn workspace main type-check"
   },

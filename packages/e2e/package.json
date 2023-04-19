@@ -1,0 +1,18 @@
+{
+  "name": "e2e",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.32.3",
+    "json-server": "0.17.3",
+    "main": "*",
+    "playwright": "1.32.3"
+  },
+  "scripts": {
+    "test": "yarn workspace web dev & yarn workspace main build:test && playwright test && kill $(lsof -t -i:3000)"
+  }
+}

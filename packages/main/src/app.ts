@@ -3,25 +3,31 @@ import { app, ipcMain, shell } from 'electron';
 import { menubar } from 'menubar';
 import { auth } from './lib';
 import { oAuthOptions } from './constants/auth';
+import axios from 'axios';
 
-const isDevelopment = process?.env?.NODE_ENV === 'development';
+if (process.env.NODE_ENV === 'test') {
+  axios.defaults.proxy = {
+    protocol: 'http',
+    host: '127.0.0.1',
+    port: 4400,
+  };
+}
 
+const isProduction = process?.env?.NODE_ENV === 'production';
 const trayIcon = path.join(__dirname, 'assets', 'images', 'tray-icon.png');
 
 // `file://${require.resolve('web/dist/index.html')}`;
 // `file://${path.resolve(__dirname, './index.html')}`
 const html = `file://${require.resolve('web/dist/index.html')}`;
-const indexUrl = isDevelopment ? 'http://localhost:3000/' : html;
+const indexUrl = isProduction ? html : 'http://localhost:3000/';
 
-const browserWindowOpts = {
+const browserWindowOpts: Electron.BrowserWindowConstructorOptions = {
   width: 500,
   height: 400,
   minWidth: 500,
   minHeight: 400,
   resizable: false,
   webPreferences: {
-    enableRemoteModule: true,
-    overlayScrollbars: true,
     nodeIntegration: false,
     contextIsolation: true,
     preload: path.join(__dirname, 'preload.js'),
@@ -73,7 +79,7 @@ menubarApp.on('after-create-window', () => {
 
   hideDockIcon();
 
-  if (isDevelopment) {
+  if (!isProduction) {
     menubarApp.showWindow();
   }
 });

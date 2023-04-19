@@ -30,13 +30,13 @@ export const AppRoute = () => {
         <Route
           path="/"
           element={
-            setting.subscribedRepositories.length === 0 ? (
-              <Navigate to="/select-repository" replace />
-            ) : (
-              <PrivateRoute>
+            <PrivateRoute>
+              {setting.subscribedRepositories.length === 0 ? (
+                <Navigate to="/select-repository" replace />
+              ) : (
                 <PullRequestListPage />
-              </PrivateRoute>
-            )
+              )}
+            </PrivateRoute>
           }
         />
       </Routes>
