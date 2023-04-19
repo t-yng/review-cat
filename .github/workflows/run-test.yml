@@ -25,6 +25,7 @@ jobs:
       - run: yarn lint:all
       - run: yarn type-check
       - run: yarn test:coverage
+      - run: yarn test:e2e
       - name: Upload main coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
