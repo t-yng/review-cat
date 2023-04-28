@@ -13,6 +13,6 @@
     "playwright": "1.32.3"
   },
   "scripts": {
-    "test": "yarn workspace web dev & yarn workspace main build:test && playwright test && kill $(lsof -t -i:3000)"
+    "test": "f() { yarn workspace web dev & yarn workspace main build:test && playwright test \"$@\" && kill $(lsof -t -i:3000); }; f"
   }
 }
