@@ -3,19 +3,23 @@ import { hasOperationName } from './gaphql';
 
 export const loginWithGitHub = async (
   electronApp: ElectronApplication,
-  server: any
+  server: any,
+  setting?: { [key: string]: any }
 ) => {
   // ウィンドウのコンソールログを出力
   const mainWindow = await electronApp.firstWindow();
-  mainWindow.on('console', console.log);
 
-  await mainWindow.evaluate(() => {
+  await mainWindow.evaluate((setting) => {
     // ログイン状態を初期化
     window.localStorage.clear();
 
+    if (setting) {
+      window.localStorage.setItem('settings', JSON.stringify(setting));
+    }
+
     // react-routerのページ遷移を実行するために、ナビゲーションのイベントを発火
     window.history.pushState({}, '', '/');
-  });
+  }, setting);
 
   // ログインボタンをクリック
   const loginButton = await mainWindow.getByRole('button', {
