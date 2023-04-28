@@ -1,5 +1,5 @@
 import { type ElectronApplication } from 'playwright';
-import { hasOperationName } from './gaphql';
+import { mockGitHubGraphQL } from '../mock/graphql';
 
 export const loginWithGitHub = async (
   electronApp: ElectronApplication,
@@ -51,25 +51,18 @@ export const loginWithGitHub = async (
   });
 
   // ユーザー情報の取得をモック
-  mainWindow.route('https://api.github.com/graphql', (route) => {
-    const body = route.request().postDataJSON();
-    if (hasOperationName(body.query, 'LoginUser')) {
-      return route.fulfill({
-        status: 200,
-        headers: {
-          contentType: 'application/json',
+  mockGitHubGraphQL({
+    page: mainWindow,
+    operation: 'LoginUser',
+    res: {
+      body: {
+        viewer: {
+          login: 'test',
+          avatarUrl:
+            'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=test',
         },
-        body: JSON.stringify({
-          data: {
-            viewer: {
-              login: 'test',
-              avatarUrl:
-                'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=test',
-            },
-          },
-        }),
-      });
-    }
+      },
+    },
   });
 
   // ユーザーがGitHubでのログインを完了した状態を再現
