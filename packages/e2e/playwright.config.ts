@@ -7,4 +7,5 @@ export default defineConfig({
   testDir: './playwright',
   /* Run tests in files in parallel */
   fullyParallel: true,
+  snapshotPathTemplate: '{testDir}/__screenshots__/{arg}{ext}',
 });

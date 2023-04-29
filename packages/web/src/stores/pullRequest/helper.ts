@@ -10,7 +10,7 @@ import {
  * ステータス:
  *   requestedReview(レビュー待ち): requestedReviewer に自分が含まれている
  *   approved(承認済み): 自分の state: APPROVED のレビューが存在する
- *   reviewing(レビュー中): 上記以外のプルリクエスト
+ *   reviewed(レビュー済み): 上記以外のプルリクエスト
  */
 export const getPullRequestStatus = (
   pr: SearchPullRequestFragment,
