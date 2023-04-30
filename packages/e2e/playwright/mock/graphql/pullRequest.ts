@@ -2,7 +2,7 @@ type SearchPullRequest = {
   headRefName: string;
   title: string;
   url: string;
-  reviewDecision: string | null;
+  reviewDecision: 'APPROVED' | 'CHANGES_REQUESTED' | 'REVIEW_REQUIRED' | null;
   author: {
     avatarUrl: string;
     login: string;
