@@ -5,6 +5,7 @@ import { loginWithGitHub } from './helpers/login';
 import { waitForLoadedImages } from './helpers/wait';
 import { mockGitHubGraphQL } from './mock/graphql';
 import { createSearchPullRequest } from './mock/graphql/pullRequest';
+import { loginUser } from './mock/user';
 
 // TODO: テスト全体で共通化する
 const server = jsonServer.create();
@@ -19,12 +20,7 @@ test('ログインユーザーがレビュアーとなっているプルリク�
   const mainWindow = await electronApp.firstWindow();
 
   // プルリクエスト一覧を取得するGraphQLのリクエストをモックする
-  const loginUserAuthor = {
-    login: 't-yng',
-    avatarUrl:
-      'https://avatars.githubusercontent.com/u/11068883?u=36aaadc6fa8cb52c40c67c348958a9bf2934261e&v=4',
-  };
-  const anotherAuthor = {
+  const anotherUser = {
     login: 'test',
     avatarUrl:
       'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=test',
@@ -42,7 +38,7 @@ test('ログインユーザーがレビュアーとなっているプルリク�
               headRefName: 'test/demo-1',
               title: 'レビュー待ちのプルリクエスト',
               url: 'https://github.com/t-yng/review-cat/pull/84',
-              author: anotherAuthor,
+              author: anotherUser,
               repository: {
                 nameWithOwner: 't-yng/review-cat',
                 openGraphImageUrl:
@@ -54,7 +50,7 @@ test('ログインユーザーがレビュアーとなっているプルリク�
                   {
                     requestedReviewer: {
                       __typename: 'User',
-                      login: loginUserAuthor.login,
+                      login: loginUser.login,
                     },
                   },
                 ],
@@ -65,7 +61,7 @@ test('ログインユーザーがレビュアーとなっているプルリク�
               headRefName: 'test/demo-2',
               title: 'レビュー済みのプルリクエスト',
               url: 'https://github.com/t-yng/review-cat/pull/85',
-              author: anotherAuthor,
+              author: anotherUser,
               repository: {
                 nameWithOwner: 't-yng/review-cat',
                 openGraphImageUrl:
@@ -77,7 +73,7 @@ test('ログインユーザーがレビュアーとなっているプルリク�
                     __typename: 'PullRequestReview',
                     state: 'COMMENTED',
                     author: {
-                      login: loginUserAuthor.login,
+                      login: loginUser.login,
                     },
                   },
                 ],
@@ -92,7 +88,7 @@ test('ログインユーザーがレビュアーとなっているプルリク�
               headRefName: 'test/demo-3',
               title: '承認済みのプルリクエスト',
               url: 'https://github.com/t-yng/review-cat/pull/86',
-              author: anotherAuthor,
+              author: anotherUser,
               repository: {
                 nameWithOwner: 't-yng/review-cat',
                 openGraphImageUrl:
@@ -104,14 +100,14 @@ test('ログインユーザーがレビュアーとなっているプルリク�
                     __typename: 'PullRequestReview',
                     state: 'COMMENTED',
                     author: {
-                      login: loginUserAuthor.login,
+                      login: loginUser.login,
                     },
                   },
                   {
                     __typename: 'PullRequestReview',
                     state: 'APPROVED',
                     author: {
-                      login: loginUserAuthor.login,
+                      login: loginUser.login,
                     },
                   },
                 ],
@@ -159,11 +155,6 @@ test('ログインユーザーが作成したプルリクエストの一覧を�
   const mainWindow = await electronApp.firstWindow();
 
   // プルリクエスト一覧を取得するGraphQLのリクエストをモックする
-  const loginUserAuthor = {
-    login: 't-yng',
-    avatarUrl:
-      'https://avatars.githubusercontent.com/u/11068883?u=36aaadc6fa8cb52c40c67c348958a9bf2934261e&v=4',
-  };
   const anotherAuthor = {
     login: 'test',
     avatarUrl:
@@ -182,7 +173,7 @@ test('ログインユーザーが作成したプルリクエストの一覧を�
               headRefName: 'test/demo-1',
               title: 'レビュー待ちのプルリクエスト',
               url: 'https://github.com/t-yng/review-cat/pull/84',
-              author: loginUserAuthor,
+              author: loginUser,
               repository: {
                 nameWithOwner: 't-yng/review-cat',
                 openGraphImageUrl:
@@ -205,7 +196,7 @@ test('ログインユーザーが作成したプルリクエストの一覧を�
               headRefName: 'test/demo-2',
               title: 'レビュー済みのプルリクエスト',
               url: 'https://github.com/t-yng/review-cat/pull/85',
-              author: loginUserAuthor,
+              author: loginUser,
               repository: {
                 nameWithOwner: 't-yng/review-cat',
                 openGraphImageUrl:
@@ -233,7 +224,7 @@ test('ログインユーザーが作成したプルリクエストの一覧を�
               headRefName: 'test/demo-3',
               title: '承認済みのプルリクエスト',
               url: 'https://github.com/t-yng/review-cat/pull/86',
-              author: loginUserAuthor,
+              author: loginUser,
               repository: {
                 nameWithOwner: 't-yng/review-cat',
                 openGraphImageUrl:

@@ -1,5 +1,6 @@
 import { type ElectronApplication } from 'playwright';
 import { mockGitHubGraphQL } from '../mock/graphql';
+import { loginUser } from '../mock/user';
 
 export const loginWithGitHub = async (
   electronApp: ElectronApplication,
@@ -57,9 +58,7 @@ export const loginWithGitHub = async (
     response: {
       body: {
         viewer: {
-          login: 't-yng',
-          avatarUrl:
-            'https://avatars.githubusercontent.com/u/11068883?u=36aaadc6fa8cb52c40c67c348958a9bf2934261e&v=4',
+          ...loginUser,
         },
       },
     },
