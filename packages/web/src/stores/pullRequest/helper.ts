@@ -10,7 +10,7 @@ import {
  * ステータス:
  *   requestedReview(レビュー待ち): requestedReviewer に自分が含まれている
  *   approved(承認済み): 自分の state: APPROVED のレビューが存在する
- *   reviewing(レビュー中): 上記以外のプルリクエスト
+ *   reviewed(レビュー済み): 上記以外のプルリクエスト
  */
 export const getPullRequestStatus = (
   pr: SearchPullRequestFragment,
@@ -29,12 +29,22 @@ export const getPullRequestStatus = (
     new Set([...reviewRequestedAuthors, ...reviewAuthors])
   );
 
+  const approvedReviewAuthors =
+    pr.reviews?.nodes
+      ?.filter((n) => n?.state === 'APPROVED')
+      .map((n) => n?.author?.login) ?? [];
+
   // PRのオーナーが自分の場合のプルリクのステータス
   if (pr.author?.login === loginUser.name) {
+    // approvedしているユーザーがレビュアーに含まれていない
+    const approved =
+      approvedReviewAuthors.some(
+        (approvedAuthor) => !reviewers.includes(approvedAuthor)
+      ) || pr.reviewDecision === 'APPROVED';
     // レビューリクエストに全てのレビュアーが含まれていたらレビュー待ちと判定
     if (reviewRequestedAuthors.length === reviewers.length) {
       return pullRequestStatus.waitingReview;
-    } else if (pr.reviewDecision === 'APPROVED') {
+    } else if (approved) {
       return pullRequestStatus.approved;
     } else {
       return pullRequestStatus.reviewed;
@@ -42,11 +52,6 @@ export const getPullRequestStatus = (
   }
   // PRのオーナーが自分以外の場合のプルリクのステータス
   else {
-    const approvedReviewAuthors =
-      pr.reviews?.nodes
-        ?.filter((n) => n?.state === 'APPROVED')
-        .map((n) => n?.author?.login) ?? [];
-
     // reviewRequests に自分が含まれている場合はレビュー待ちと判定
     if (reviewRequestedAuthors.includes(loginUser.name)) {
       return pullRequestStatus.waitingReview;

@@ -8,11 +8,12 @@
   },
   "devDependencies": {
     "@playwright/test": "1.32.3",
-    "json-server": "0.17.3",
+    "body-parser": "1.20.2",
+    "express": "4.18.2",
     "main": "*",
     "playwright": "1.32.3"
   },
   "scripts": {
-    "test": "yarn workspace web dev & yarn workspace main build:test && playwright test && kill $(lsof -t -i:3000)"
+    "test": "f() { yarn workspace web dev & yarn workspace main build:test && playwright test --workers=1 \"$@\" && kill $(lsof -t -i:3000); }; f"
   }
 }
