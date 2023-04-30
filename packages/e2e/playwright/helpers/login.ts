@@ -1,10 +1,11 @@
 import { type ElectronApplication } from 'playwright';
 import { mockGitHubGraphQL } from '../mock/graphql';
+import { type MockServer } from '../mock/server';
 import { loginUser } from '../mock/user';
 
 export const loginWithGitHub = async (
   electronApp: ElectronApplication,
-  server: any,
+  server: MockServer,
   setting?: { [key: string]: any }
 ) => {
   // ウィンドウのコンソールログを出力
