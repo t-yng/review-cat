@@ -1,0 +1,53 @@
+name: create_release_pr
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'select release semantic version (patch, minor, major)'
+        required: true
+        type: choice
+        options:
+          - 'patch'
+          - 'minor'
+          - 'major'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      # アップデート後のバージョンを環境変数にセット
+      - name: Get new version
+        id: new-version
+        run: |
+          echo "NEW_VERSION=$(npm --no-git-tag-version version $RELEASE_TYPE)" >> $GITHUB_ENV
+
+      # package.jsonのバージョンをアップデートしてコミット
+      - name: Update package.json version
+        run: |
+          NEW_VERSION=$(npm --no-git-tag-version version ${{ env.RELEASE_VERSION }})
+          git add package.json
+          git commit -m "chore: release $NEW_VERSION"
+        env:
+          RELEASE_VERSION: ${{ github.event.inputs.release-version }}
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: release/v${{ env.NEW_VERSION }}
+          title: release ${{ env.NEW_VERSION }}
+          labels: release
+
+      - name: Enable Pull Request Automerge
+        run: gh pr merge --merge --auto "${{ steps.cpr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
