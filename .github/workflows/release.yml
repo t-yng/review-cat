@@ -2,6 +2,8 @@ name: release
 
 on:
   pull_request:
+    types:
+      - closed
     branches:
       - main
 
