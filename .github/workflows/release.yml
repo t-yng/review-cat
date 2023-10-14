@@ -1,9 +1,16 @@
 name: release
 
 on:
-  push:
-    branches:
-      - production
+  workflow_dispatch:
+    inputs:
+      release-typ:
+        description: 'select release type (patch, minor, major)'
+        required: true
+        type: choice
+        options:
+          - 'patch'
+          - 'minor'
+          - 'major'
 
 jobs:
   release:
@@ -15,9 +22,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
+
       - uses: actions/cache@v2
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
@@ -25,30 +34,63 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+
       - name: Install dependencies
         run: yarn install
+
       - name: Build Application
         run: yarn build
         env:
           GITHUB_APP_CLIENT_ID: ${{ secrets.PROD_GITHUB_APP_CLIENT_ID }}
           GITHUB_APP_CLIENT_SECRET: ${{ secrets.PROD_GITHUB_APP_CLIENT_SECRET }}
+
+      # アプリケーションのパッケージング
       - name: Package app
         run: yarn package
-      - name: Get npm version
-        id: package-version
+
+      # gitを設定
+      - name: Git configuration
         run: |
-          VERSION=$(node -pe "require('./package.json').version")
-          echo "::set-output name=current-version::$VERSION"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+
+      # アップデート後のバージョンを環境変数にセット
+      - name: Get new version
+        id: new-version
+        run: |
+          echo "NEW_VERSION=$(npm --no-git-tag-version version $RELEASE_TYPE)" >> $GITHUB_ENV
+        env:
+          RELEASE_TYPE: ${{ github.event.inputs.release-typ }}
+
+      # package.jsonのバージョンをアップデートしてコミット
+      - name: Update package.json version
+        run: |
+          git add package.json
+          git commit -m "chore: release ${{ env.NEW_VERSION }}"
+          git tag ${{ env.NEW_VERSION }}
+        env:
+          RELEASE_TYPE: ${{ github.event.inputs.release-typ }}
+
+      # 変更をリポジトリにプッシュ
+      - name: Push changes to repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push origin && git push --tags
+
+      # リリースノートを生成して最新バージョンのアプリケーションを添付
       - name: Release
         uses: softprops/action-gh-release@v1
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
-          tag_name: v${{ steps.package-version.outputs.current-version }}
+          tag_name: v${{ env.NEW_VERSION }}
           generate_release_notes: true
           files: |
-            ./packages/main/app/ReviewCat-${{ steps.package-version.outputs.current-version }}.dmg
+            ./packages/main/app/ReviewCat-${{ env.NEW_VERSION }}.dmg
+
+      # slackに通知
       - name: Notify to Slack
         uses: 8398a7/action-slack@v3
         with:
