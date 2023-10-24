@@ -1,4 +1,6 @@
 #!/bin/sh
+[ -n "$HUSKY_SKIP_HOOKS" ] && exit 0
+
 . "$(dirname "$0")/_/husky.sh"
 
 export FORCE_COLOR=1;
