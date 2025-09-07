@@ -1,9 +1,14 @@
+import { config } from 'dotenv';
 import path from 'path';
 import { app, ipcMain, shell } from 'electron';
 import { menubar } from 'menubar';
 import { auth } from './lib';
 import { oAuthOptions } from './constants/auth';
 import axios from 'axios';
+
+if (process.env.NODE_ENV === 'development') {
+  config({ path: path.join(__dirname, '../.env') });
+}
 
 if (process.env.NODE_ENV === 'test') {
   axios.defaults.proxy = {
