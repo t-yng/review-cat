@@ -11,7 +11,7 @@ type SearchRepositoryProps = {
 
 export const SearchRepository: FC<SearchRepositoryProps> = memo(
   ({ onSearch }) => {
-    const { loginUser } = useAuth();
+    const { user } = useAuth();
     const [account, setAccount] = useState<string | null>(null);
     const { accounts } = useGitHubAccounts();
     const { search } = useSearchRepository();
@@ -28,11 +28,11 @@ export const SearchRepository: FC<SearchRepositoryProps> = memo(
           alert('アカウントを選択してください');
           return;
         }
-        const isOrganization = account !== loginUser?.name;
+        const isOrganization = account !== user?.name;
         const repositories = await search({ account, keyword, isOrganization });
         onSearch(repositories);
       },
-      [account, loginUser, onSearch, search]
+      [account, user, onSearch, search]
     );
 
     const handleAccountSelect = useCallback((account: string) => {

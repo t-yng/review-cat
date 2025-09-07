@@ -1,22 +1,15 @@
-import { FC, PropsWithChildren, Suspense, useEffect, useState } from 'react';
+import { FC, PropsWithChildren, Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/stores';
 
 export const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
-  const { autoSignIn, user } = useAuth();
-  const [initialized, setInitialized] = useState(false);
+  const { user, userInitialized } = useAuth();
 
-  useEffect(() => {
-    autoSignIn().finally(() => {
-      setInitialized(true);
-    });
-  }, []);
-
-  if (!initialized) {
+  if (!userInitialized) {
     return <div>Loading...</div>;
   }
 
-  return initialized && user ? (
+  return userInitialized && user ? (
     <Suspense fallback="Loading...">{children}</Suspense>
   ) : (
     <Navigate to="/login" replace />

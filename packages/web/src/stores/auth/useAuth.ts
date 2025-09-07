@@ -1,35 +1,16 @@
 import { storage } from '@/lib';
-import { User } from '@/models';
 import { useCallback, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { userAtom, userInitializedAtom } from './atom';
 import { fetchUser } from './request';
 import { useToken } from './useToken';
 
 export const useAuth = () => {
   const { token, setToken, removeToken } = useToken();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useRecoilState(userAtom);
+  const [userInitialized, setUserInitialized] =
+    useRecoilState(userInitializedAtom);
   const [loading, setLoading] = useState(false);
-
-  const autoSignIn = useCallback(async () => {
-    setLoading(true);
-
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
-    if (token) {
-      try {
-        const user = await fetchUser();
-        setUser(user);
-      } catch (error) {
-        console.error(error);
-        signOut();
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-  }, []);
 
   const signIn = useCallback(
     async (callback: () => void) => {
@@ -57,8 +38,31 @@ export const useAuth = () => {
         callback();
       }
     },
-    [setUser, setToken]
+    [setUser, removeToken]
   );
 
-  return { user, signIn, signOut, autoSignIn, loading };
+  const autoSignIn = useCallback(async () => {
+    setLoading(true);
+
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    if (token) {
+      try {
+        const user = await fetchUser();
+        setUser(user);
+      } catch (error) {
+        console.error(error);
+        signOut();
+        setUser(null);
+      } finally {
+        setLoading(false);
+        setUserInitialized(true);
+      }
+    }
+  }, [token, setUser, setLoading, signOut, setUserInitialized]);
+
+  return { user, signIn, signOut, autoSignIn, loading, userInitialized };
 };

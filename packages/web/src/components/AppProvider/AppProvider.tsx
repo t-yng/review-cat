@@ -6,18 +6,23 @@ import { useAuth, useWatchPullRequests } from '@/stores';
 const FETCH_PULL_REQUESTS_INTERVAL = 60 * 1000; // ms
 
 export const AppProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { isLoggedIn } = useAuth();
+  const { userInitialized, autoSignIn, user } = useAuth();
   const { startPolling, stopPolling } = useWatchPullRequests();
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (!userInitialized) {
+      autoSignIn();
+      return;
+    }
+
+    if (user) {
       startPolling(FETCH_PULL_REQUESTS_INTERVAL);
     }
 
     return () => {
       stopPolling();
     };
-  }, [isLoggedIn, startPolling, stopPolling]);
+  }, [userInitialized, autoSignIn, user, startPolling, stopPolling]);
 
   return <>{children}</>;
 };

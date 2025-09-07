@@ -17,7 +17,7 @@ import {
 export const useWatchPullRequests = () => {
   const setFirstLoading = useSetRecoilState(firstLoadingState);
   const setPullRequests = useSetRecoilState(pullRequestsState);
-  const { loginUser } = useAuth();
+  const { user } = useAuth();
   const { setting } = useSetting();
 
   const watchedQuery = useMemo(() => {
@@ -39,25 +39,25 @@ export const useWatchPullRequests = () => {
       ) ?? []) as Array<SearchPullRequest>;
 
       const pullRequests: Array<PullRequest> = searchPullRequests.map((pr) => {
-        return toModelFromSearchPullRequest(pr, loginUser as User);
+        return toModelFromSearchPullRequest(pr, user as User);
       });
 
       return pullRequests;
     },
-    [loginUser]
+    [user]
   );
 
   const onResponse = useCallback(
     (result: ApolloQueryResult<SearchPullRequestsQuery>) => {
-      if (loginUser == null) return;
+      if (user == null) return;
       const pullRequests = parseQueryResponse(result.data);
       setPullRequests((prevPullRequests) => {
-        notifyPullRequests(loginUser, pullRequests, prevPullRequests);
+        notifyPullRequests(user, pullRequests, prevPullRequests);
         return pullRequests;
       });
       setFirstLoading(false);
     },
-    [loginUser, parseQueryResponse, setFirstLoading, setPullRequests]
+    [user, parseQueryResponse, setFirstLoading, setPullRequests]
   );
 
   const startPolling = useCallback(
