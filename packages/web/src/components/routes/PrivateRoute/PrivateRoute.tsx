@@ -3,9 +3,13 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/stores';
 
 export const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
-  const { isLoggedIn } = useAuth();
+  const { user, userInitialized } = useAuth();
 
-  return isLoggedIn ? (
+  if (!userInitialized) {
+    return <div>Loading...</div>;
+  }
+
+  return userInitialized && user ? (
     <Suspense fallback="Loading...">{children}</Suspense>
   ) : (
     <Navigate to="/login" replace />

@@ -1,42 +1,68 @@
 import { storage } from '@/lib';
-import { useCallback } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { isLoggedInSelector, loginUserState, tokenState } from './auth';
-import { fetchUser } from './effect';
+import { useCallback, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { userAtom, userInitializedAtom } from './atom';
+import { fetchUser } from './request';
+import { useToken } from './useToken';
 
 export const useAuth = () => {
-  const [loginUser, setLoginUser] = useRecoilState(loginUserState);
-  const setToken = useSetRecoilState(tokenState);
-  const isLoggedIn = useRecoilValue(isLoggedInSelector);
+  const { token, setToken, removeToken } = useToken();
+  const [user, setUser] = useRecoilState(userAtom);
+  const [userInitialized, setUserInitialized] =
+    useRecoilState(userInitializedAtom);
+  const [loading, setLoading] = useState(false);
 
   const signIn = useCallback(
     async (callback: () => void) => {
       const code = await window.ipc.loginWithGithub();
       const token = await window.ipc.getAccessToken(code);
-      // FIXME: 処理が漏れているので、後でリファクタする
       setToken(token);
-      storage.setGithubAccessToken(token);
+
       const user = await fetchUser();
-      setLoginUser(user);
+      setUser(user);
+
       if (callback != null) {
         callback();
       }
     },
-    [setLoginUser, setToken]
+    [setUser, setToken]
   );
 
   const signOut = useCallback(
-    (callback: () => void) => {
-      setToken(null);
-      setLoginUser(null);
-      storage.removeGitHubAccessToken();
+    (callback?: () => void) => {
+      removeToken();
+      setUser(null);
       storage.removeSettings();
+
       if (callback != null) {
         callback();
       }
     },
-    [setLoginUser, setToken]
+    [setUser, removeToken]
   );
 
-  return { loginUser, isLoggedIn, signIn, signOut };
+  const autoSignIn = useCallback(async () => {
+    setLoading(true);
+
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    if (token) {
+      try {
+        const user = await fetchUser();
+        setUser(user);
+      } catch (error) {
+        console.error(error);
+        signOut();
+        setUser(null);
+      } finally {
+        setLoading(false);
+        setUserInitialized(true);
+      }
+    }
+  }, [token, setUser, setLoading, signOut, setUserInitialized]);
+
+  return { user, signIn, signOut, autoSignIn, loading, userInitialized };
 };

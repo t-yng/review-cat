@@ -1,3 +1,9 @@
+const dotenv = require('dotenv');
+
+if (process.env.NODE_ENV === 'development') {
+  dotenv.config();
+}
+
 require('esbuild').build({
   bundle: true,
   // NOTE: electronをバンドルすると実行パスチェックでエラーが発生するので、バンドルしない

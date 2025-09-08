@@ -68,12 +68,8 @@ const filterPullRequests = (
 export const PullRequestListContainer: FC = () => {
   const { pullRequests, firstLoading } = usePullRequests();
   const { setting } = useSetting();
-  const { loginUser } = useAuth();
-  const filteredPullRequests = filterPullRequests(
-    pullRequests,
-    setting,
-    loginUser
-  );
+  const { user } = useAuth();
+  const filteredPullRequests = filterPullRequests(pullRequests, setting, user);
   const repositories = groupByRepository(filteredPullRequests);
 
   if (firstLoading) {

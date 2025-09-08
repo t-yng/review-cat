@@ -17,7 +17,7 @@ import { pullRequestStatus } from '@/models';
 export const LeftNav: FC = () => {
   const navigate = useNavigate();
   const avatarRef = useRef<HTMLElement>(null);
-  const { loginUser, signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const [visibleUserMenu, setVisibleUserMenu] = useState(false);
   const { pullRequests, firstLoading } = usePullRequests();
 
@@ -54,12 +54,12 @@ export const LeftNav: FC = () => {
   return (
     <nav className={navStyle} ref={avatarRef}>
       <h1>
-        {loginUser != null && (
+        {user != null && (
           <GitHubAvatar
-            src={loginUser.avatarUrl}
+            src={user.avatarUrl}
             onClick={handleClickUserIcon}
             className={`${iconStyle} ${userIconStyle}`}
-            alt={loginUser.name}
+            alt={user.name}
           />
         )}
       </h1>
@@ -81,8 +81,8 @@ export const LeftNav: FC = () => {
           )}
         </Link>
       </div>
-      {loginUser != null && visibleUserMenu && (
-        <UserMenu user={loginUser} onClickSignOut={handleSignOut} />
+      {user != null && visibleUserMenu && (
+        <UserMenu user={user} onClickSignOut={handleSignOut} />
       )}
     </nav>
   );
