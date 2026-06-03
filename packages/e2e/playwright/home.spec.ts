@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { launchElectronApp } from './helpers/electron';
 import { loginWithGitHub } from './helpers/login';
-import { waitForLoadedImages } from './helpers/wait';
+import { waitForRenderedImages } from './helpers/wait';
 import { mockGitHubGraphQL } from './mock/graphql';
 import { createSearchPullRequest } from './mock/graphql/pullRequest';
 import { server } from './mock/server';
@@ -131,7 +131,7 @@ test.describe('ホーム画面', () => {
 
     await mainWindow.waitForURL('http://localhost:3000/');
     // 画像の読み込みを待つ
-    await waitForLoadedImages(mainWindow);
+    await waitForRenderedImages(mainWindow);
 
     await expect(
       mainWindow.getByText('レビュー待ちのプルリクエスト')
@@ -272,7 +272,7 @@ test.describe('ホーム画面', () => {
 
     await mainWindow.waitForURL('http://localhost:3000/');
     // 画像の読み込みを待つ
-    await waitForLoadedImages(mainWindow);
+    await waitForRenderedImages(mainWindow);
 
     await expect(
       mainWindow.getByText('レビュー待ちのプルリクエスト')

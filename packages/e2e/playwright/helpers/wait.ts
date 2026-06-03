@@ -1,19 +1,13 @@
 import { type Page } from 'playwright';
 
 /**
- * ページ内の全ての画像が読み込み完了するのを待つ
+ * ページ内の全ての画像が描画されるのを待つ
  * @param page
  * @returns
  */
-export const waitForLoadedImages = async (page: Page) => {
-  return await Promise.all(
-    (
-      await page.getByRole('img').all()
-    ).map(async (img) => {
-      const src = await img.getAttribute('src');
-      if (src) {
-        return page.waitForResponse(src);
-      }
-    })
-  );
+export const waitForRenderedImages = async (page: Page) => {
+  await page.waitForFunction(() => {
+    const images = Array.from(document.querySelectorAll('img'));
+    return images.every((img) => img.complete && img.naturalHeight > 0);
+  });
 };
