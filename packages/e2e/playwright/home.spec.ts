@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import jsonServer from 'json-server';
 import { launchElectronApp } from './helpers/electron';
 import { loginWithGitHub } from './helpers/login';
 import { waitForLoadedImages } from './helpers/wait';
