@@ -15,3 +15,6 @@ allowBuilds:
   fsevents: true
   msw: true
   playwright: true
+
+configDependencies:
+  '@pnpm/plugin-types-fixer': 0.1.0
