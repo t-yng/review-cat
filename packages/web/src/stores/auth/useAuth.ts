@@ -42,7 +42,6 @@ export const useAuth = () => {
     (callback?: () => void) => {
       removeToken();
       setUser(null);
-      storage.removeSettings();
 
       if (callback != null) {
         callback();
