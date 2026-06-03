@@ -3,7 +3,7 @@
  */
 module.exports = {
   transform: {
-    '^.+\\.(t|j)sx?$': ['@swc-node/jest'],
+    '^.+\\.(t|j)sx?$': ['@swc/jest'],
   },
   moduleFileExtensions: ['ts', 'js'],
   testRegex: '(\\.|/)(test|spec)\\.[jt]s?$',

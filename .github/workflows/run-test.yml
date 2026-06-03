@@ -9,15 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
-      - run: yarn install
-      - run: yarn lint:all
-      - run: yarn type-check
-      - run: yarn test:coverage
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm lint:all
+      - run: pnpm type-check
+      - run: pnpm test:coverage
       - name: Upload main coverage to Codecov
         uses: codecov/codecov-action@v3
         with:

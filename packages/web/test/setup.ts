@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 import { server } from './mocks/api/server';
 
 process.env.GITHUB_APP_CLIENT_ID = 'usrrgi8hwwncrrqlei1o';

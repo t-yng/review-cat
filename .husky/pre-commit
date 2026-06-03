@@ -4,7 +4,7 @@
 export FORCE_COLOR=1;
 
 echo "> lint for web";
-yarn workspace web lint-staged -p false
+pnpm --filter web lint-staged
 
 echo "> lint for main";
-yarn workspace main lint-staged -p false
+pnpm --filter main lint-staged

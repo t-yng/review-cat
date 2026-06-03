@@ -4,10 +4,14 @@
 module.exports = {
   transform: {
     '^.+\\.(t|j)sx?$': [
-      '@swc-node/jest',
+      '@swc/jest',
       {
-        react: {
-          runtime: 'automatic',
+        jsc: {
+          transform: {
+            react: {
+              runtime: 'automatic',
+            },
+          },
         },
       },
     ],
