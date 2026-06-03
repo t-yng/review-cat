@@ -33,7 +33,7 @@ export const mockGitHubGraphQL = ({
               }),
       });
     } else {
-      // 指定したoperationが含まれない場合はリクエストを後続に流す
+      // Pass the request through if the specified operation is not included
       route.fallback();
     }
   });
@@ -53,9 +53,9 @@ const getMutationOperationName = (query: string): string => {
 };
 
 /**
- * クエリに指定したoperationNameが含まれるか判定する
- * @param query GraphQLクエリ
- * @param operationName 判定対象のoperationName
+ * Determine if the specified operationName is included in the query
+ * @param query GraphQL query
+ * @param operationName The operationName to check
  * @returns
  */
 const hasOperationName = (query: string, operationName: string) => {

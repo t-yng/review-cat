@@ -4,7 +4,7 @@ import { PullRequest, pullRequestStatus } from '../../../src/models';
 
 export const createPullRequest = (pullRequest?: Partial<PullRequest>) => {
   const defaultValue: PullRequest = {
-    title: 'テストPRです',
+    title: 'Test PR',
     url: 'https://github.com/higeOhige/review-cat/pull/84',
     author: createUser(),
     repository: createRepository(),

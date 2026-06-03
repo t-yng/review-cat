@@ -33,7 +33,7 @@ describe('RepositorySection', () => {
   };
 
   describe('sortPullRequests', () => {
-    it('ステータスに応じてプルリクの一覧をソートする', () => {
+    it('Sorts the pull request list according to status', () => {
       const pullRequests = [
         pullRequestStatus.approved,
         pullRequestStatus.waitingReview,
@@ -50,9 +50,9 @@ describe('RepositorySection', () => {
       render(<RepositorySection repository={repository} />);
       const pullRequestItems = screen.getAllByRole('listitem');
 
-      expect(pullRequestItems[0]).toHaveTextContent('レビュー待ち');
-      expect(pullRequestItems[1]).toHaveTextContent('レビュー済み');
-      expect(pullRequestItems[2]).toHaveTextContent('承認済み');
+      expect(pullRequestItems[0]).toHaveTextContent('Waiting for review');
+      expect(pullRequestItems[1]).toHaveTextContent('Reviewed');
+      expect(pullRequestItems[2]).toHaveTextContent('Approved');
     });
   });
 });

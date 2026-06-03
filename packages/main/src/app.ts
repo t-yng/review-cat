@@ -47,7 +47,7 @@ const menubarApp = menubar({
 });
 
 const hideDockIcon = () => {
-  // menubar の showDockIcon:false が正常に動作しないので、自前でドックアイコンを非表示にしている
+  // menubar's showDockIcon:false does not work properly, so dock icon is hidden manually
   // @see: https://github.com/maxogden/menubar/issues/306
   if (app.dock && app.dock.hide) {
     app.dock.hide();
@@ -71,10 +71,10 @@ menubarApp.on('ready', () => {
 });
 
 menubarApp.on('after-create-window', () => {
-  // 外部リンクに遷移するときに新しいウィンドウを表示せずにデフォルトのブラウザで表示する
+  // When navigating to external links, open in the default browser without showing a new window
   menubarApp.window?.webContents.setWindowOpenHandler(({ url }) => {
-    // NOTE: 外部リンクを開く時にウィンドウを閉じないようにブラウザにフォーカスを当てないようにする
-    //       ただし、Chromeの場合はバグでフォーカスが当たってしまうので注意
+    // NOTE: To prevent the window from closing when opening external links, do not focus the browser
+    //       However, note that Chrome has a bug where focus is applied
     // @see: vhttps://github.com/electron/electron/issues/12492
     if (url.startsWith('https:')) {
       shell.openExternal(url, { activate: false });

@@ -46,7 +46,7 @@ const Settings: FC<SettingsProps> = memo(
     return (
       <>
         <div className={settingSectionStyle}>
-          <h2 className={settingSectionTitleStyle}>通知</h2>
+          <h2 className={settingSectionTitleStyle}>Notifications</h2>
           <div className={settingItemListStyle}>
             <div className={settingItemStyle}>
               <input
@@ -59,13 +59,13 @@ const Settings: FC<SettingsProps> = memo(
                 htmlFor="notify-review-requested"
                 className={settingItemLabelStyle}
               >
-                レビューリクエスト時に通知を受け取る
+                Receive notifications for review requests
               </label>
             </div>
           </div>
         </div>
         <div className={settingSectionStyle}>
-          <h2 className={settingSectionTitleStyle}>PRの表示</h2>
+          <h2 className={settingSectionTitleStyle}>PR Display</h2>
           <div className={settingItemListStyle}>
             <div className={settingItemStyle}>
               <input
@@ -78,7 +78,7 @@ const Settings: FC<SettingsProps> = memo(
                 htmlFor="shows-requested-review-pr"
                 className={settingItemLabelStyle}
               >
-                レビュー待ちのPRを表示
+                Show waiting for review PRs
               </label>
             </div>
             <div className={settingItemStyle}>
@@ -92,7 +92,7 @@ const Settings: FC<SettingsProps> = memo(
                 htmlFor="shows-in-review-pr"
                 className={settingItemLabelStyle}
               >
-                レビュー中のPRを表示
+                Show in-review PRs
               </label>
             </div>
             <div className={settingItemStyle}>
@@ -106,7 +106,7 @@ const Settings: FC<SettingsProps> = memo(
                 htmlFor="shows-approved-pr"
                 className={settingItemLabelStyle}
               >
-                承認済みのPRを表示
+                Show approved PRs
               </label>
             </div>
             <div className={settingItemStyle}>
@@ -117,19 +117,19 @@ const Settings: FC<SettingsProps> = memo(
                 defaultChecked={settings.showsMyPR}
               />
               <label htmlFor="shows-my-pr" className={settingItemLabelStyle}>
-                自分が作成したPRを表示
+                Show PRs created by me
               </label>
             </div>
           </div>
         </div>
         <div className={settingSectionStyle}>
-          <h2 className={settingSectionTitleStyle}>リポジトリ一覧</h2>
+          <h2 className={settingSectionTitleStyle}>Repository list</h2>
           <div className={`${settingItemListStyle} ${repositoryListStyle}`}>
             {settings.subscribedRepositories.map((repository) => (
               <div className={repositoryListItemStyle} key={repository}>
                 <span className={ellipsisStyle}>{repository}</span>
                 <button
-                  aria-label="リポジトリを削除"
+                  aria-label="Delete repository"
                   onClick={() => onClickDeleteRepository(repository)}
                   className={deleteButtonStyle}
                 >
@@ -143,7 +143,7 @@ const Settings: FC<SettingsProps> = memo(
               }}
               className={addRepositoryStyle}
             >
-              + 追加
+              + Add
             </button>
             <SelectRepositoryModal
               isOpen={isOpenModal}
@@ -152,7 +152,7 @@ const Settings: FC<SettingsProps> = memo(
           </div>
         </div>
         <div className={settingSectionStyle}>
-          <h2 className={settingSectionTitleStyle}>起動</h2>
+          <h2 className={settingSectionTitleStyle}>Launch</h2>
           <div className={settingItemStyle}>
             <input
               type="checkbox"
@@ -161,7 +161,7 @@ const Settings: FC<SettingsProps> = memo(
               defaultChecked={settings.autoLaunched}
             />
             <label htmlFor="auto-launch" className={settingItemLabelStyle}>
-              ログイン時に自動で起動する
+              Launch automatically at login
             </label>
           </div>
         </div>

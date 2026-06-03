@@ -5,29 +5,29 @@ const shouldNotify = (
   newPullRequest: PullRequest,
   beforePullRequest?: PullRequest
 ) => {
-  // プルリクエストのステータスが変更されていない場合は通知しない
+  // Do not notify if the pull request status has not changed
   if (beforePullRequest?.status === newPullRequest.status) {
     return false;
   }
 
-  // 自分が作成したプルリクエストの場合はレビュー済みになった状態で通知する
+  // For pull requests created by self, notify when the status becomes reviewed
   if (newPullRequest.author.name === loginUser.name) {
     return newPullRequest.status === pullRequestStatus.reviewed;
   }
 
-  // 自分がレビュアーのプルリクエストの場合
+  // For pull requests where self is the reviewer
   return newPullRequest.status === pullRequestStatus.waitingReview;
 };
 
 /**
- * デスクトップ通知をする
- * NOTE: ElectronではレンダラープロセスでHTML5のNotification APIを利用すると
- *       プラットフォームのネイティブ通知が実行される。
- *       許可などの管理もプラットフォームに依存するので、コード上での許可の確認は不要
+ * Send desktop notification
+ * NOTE: In Electron, using the HTML5 Notification API in the renderer process
+ *       executes a platform native notification.
+ *       Permission management depends on the platform, so no need to check permissions in code
  * @param pullRequest
  */
 const notifyPullRequest = (pullRequest: PullRequest) => {
-  new Notification('新着のレビューリクエスト', {
+  new Notification('New review request', {
     body: `${pullRequest.title}\n${pullRequest.url}`,
     requireInteraction: true,
   });

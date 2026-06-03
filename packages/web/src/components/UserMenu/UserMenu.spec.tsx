@@ -29,7 +29,7 @@ describe('UserMenu', () => {
     );
   };
 
-  it('ユーザー名を表示する', () => {
+  it('Displays the username', () => {
     const user = {
       avatarUrl: '',
       name: 'test',
@@ -41,19 +41,19 @@ describe('UserMenu', () => {
     expect(userName).toBeInTheDocument();
   });
 
-  it('設定画面へ遷移するリンクを表示する', () => {
+  it('Displays a link to navigate to the settings screen', () => {
     renderUserMenu(undefined);
-    const link = screen.getByText('設定').closest('a');
+    const link = screen.getByText('Settings').closest('a');
 
     expect(link).toHaveAttribute('href', '/settings');
   });
 
-  it('ログアウトがクリックされた時に、onClickSignOut を実行する', async () => {
+  it('Executes onClickSignOut when sign out is clicked', async () => {
     const handleClickSignOutMock = jest.fn();
 
     renderUserMenu({ onClickSignOut: handleClickSignOutMock });
 
-    const signOutButton = screen.getByText('ログアウト');
+    const signOutButton = screen.getByText('Sign out');
     await user.click(signOutButton);
 
     expect(handleClickSignOutMock).toBeCalled();

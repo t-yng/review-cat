@@ -22,7 +22,7 @@ const AddRepositoryButton = memo<AddRepositoryButtonProps>(
       <button
         onClick={() => onClick(repository.nameWithOwner)}
         className={classNames(iconButtonStyle, themeFocusVisibleOutline)}
-        aria-label="リポジトリを設定に追加する"
+        aria-label="Add repository to settings"
       >
         <PlusCircleIcon className={iconStyle} size={24} />
       </button>
@@ -41,7 +41,7 @@ const DeleteRepositoryButton = memo<DeleteRepositoryButtonProps>(
       <button
         onClick={() => onClick(repository.nameWithOwner)}
         className={classNames(iconButtonStyle, themeFocusVisibleOutline)}
-        aria-label="設定からリポジトリを削除する"
+        aria-label="Remove repository from settings"
       >
         <CheckCircleFillIcon className={iconStyle} size={24} />
       </button>

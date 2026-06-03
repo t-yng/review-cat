@@ -44,25 +44,25 @@ describe('PullRequestListContainer', () => {
   describe('filterPullRequests', () => {
     it.each([
       {
-        statusText: 'レビュー待ち',
+        statusText: 'Waiting for review',
         showsRequestedReviewPR: false,
         showsInReviewPR: true,
         showsApprovedPR: true,
       },
       {
-        statusText: 'レビュー済み',
+        statusText: 'Reviewed',
         showsRequestedReviewPR: true,
         showsInReviewPR: false,
         showsApprovedPR: true,
       },
       {
-        statusText: '承認済み',
+        statusText: 'Approved',
         showsRequestedReviewPR: true,
         showsInReviewPR: true,
         showsApprovedPR: false,
       },
     ])(
-      '$statusText の表示をOFFにした時にプルリクスト一覧から除外する',
+      'Excludes from the pull request list when display of $statusText is turned OFF',
       (cases) => {
         const setting = createSetting({
           showsRequestedReviewPR: cases.showsRequestedReviewPR,
@@ -74,9 +74,10 @@ describe('PullRequestListContainer', () => {
 
         customRender(<PullRequestListContainer />);
 
-        const waitingReviewPullRequest = screen.queryByText('レビュー待ち');
-        const reviewedPullRequest = screen.queryByText('レビュー済み');
-        const approvedPullRequest = screen.queryByText('承認済み');
+        const waitingReviewPullRequest =
+          screen.queryByText('Waiting for review');
+        const reviewedPullRequest = screen.queryByText('Reviewed');
+        const approvedPullRequest = screen.queryByText('Approved');
 
         if (cases.showsRequestedReviewPR) {
           expect(waitingReviewPullRequest).toBeInTheDocument();

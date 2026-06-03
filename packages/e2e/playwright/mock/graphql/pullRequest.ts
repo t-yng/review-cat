@@ -40,10 +40,10 @@ export const createSearchPullRequest = (
   pullRequest?: Partial<SearchPullRequest>
 ) => {
   const defaultValue = {
-    // __typenameの値が無いとApolloで空オブジェクトになる
+    // Without a __typename value, Apollo returns an empty object
     __typename: 'PullRequest',
     headRefName: 'feat/tauri',
-    title: 'フレームワークをElectronからTauriへ移行',
+    title: 'Migrate framework from Electron to Tauri',
     url: 'https://github.com/t-yng/review-cat/pull/159',
     reviewDecision: null,
     author: {

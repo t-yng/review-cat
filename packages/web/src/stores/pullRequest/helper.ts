@@ -5,12 +5,12 @@ import {
 } from '@/gql/generated';
 
 /**
- * プルリクエストのステータス文字列を生成する
+ * Generate pull request status string
  *
- * ステータス:
- *   requestedReview(レビュー待ち): requestedReviewer に自分が含まれている
- *   approved(承認済み): 自分の state: APPROVED のレビューが存在する
- *   reviewed(レビュー済み): 上記以外のプルリクエスト
+ * Status:
+ *   requestedReview(waiting for review): self is included in requestedReviewer
+ *   approved: a review with own state: APPROVED exists
+ *   reviewed: pull requests other than the above
  */
 export const getPullRequestStatus = (
   pr: SearchPullRequestFragment,
@@ -34,14 +34,14 @@ export const getPullRequestStatus = (
       ?.filter((n) => n?.state === 'APPROVED')
       .map((n) => n?.author?.login) ?? [];
 
-  // PRのオーナーが自分の場合のプルリクのステータス
+  // Pull request status when the PR owner is self
   if (pr.author?.login === loginUser.name) {
-    // approvedしているユーザーがレビュアーに含まれていない
+    // User who has approved is not included in reviewers
     const approved =
       approvedReviewAuthors.some(
         (approvedAuthor) => !reviewers.includes(approvedAuthor)
       ) || pr.reviewDecision === 'APPROVED';
-    // レビューリクエストに全てのレビュアーが含まれていたらレビュー待ちと判定
+    // If all reviewers are in the review request, determine as waiting for review
     if (reviewRequestedAuthors.length === reviewers.length) {
       return pullRequestStatus.waitingReview;
     } else if (approved) {
@@ -50,13 +50,13 @@ export const getPullRequestStatus = (
       return pullRequestStatus.reviewed;
     }
   }
-  // PRのオーナーが自分以外の場合のプルリクのステータス
+  // Pull request status when the PR owner is someone else
   else {
-    // reviewRequests に自分が含まれている場合はレビュー待ちと判定
+    // If self is in reviewRequests, determine as waiting for review
     if (reviewRequestedAuthors.includes(loginUser.name)) {
       return pullRequestStatus.waitingReview;
     }
-    // 自分が承認済みのレビューがある場合は承認済みと判定
+    // If there is an approved review from self, determine as approved
     else if (approvedReviewAuthors.includes(loginUser.name)) {
       return pullRequestStatus.approved;
     } else {

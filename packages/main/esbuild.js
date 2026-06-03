@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === 'development') {
 
 require('esbuild').build({
   bundle: true,
-  // NOTE: electronをバンドルすると実行パスチェックでエラーが発生するので、バンドルしない
+  // NOTE: Bundling electron causes an error in the execution path check, so it is not bundled
   packages: 'external',
   entryPoints: ['src/app.ts', 'src/preload.ts'],
   outdir: 'dist',

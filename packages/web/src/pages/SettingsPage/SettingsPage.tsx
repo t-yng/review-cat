@@ -13,7 +13,7 @@ export const SettingsPage = () => {
     <BaseLayout>
       <div className={rootStyle}>
         <div className={titleWrapperStyle}>
-          <h1 className={titleStyle}>設定</h1>
+          <h1 className={titleStyle}>Settings</h1>
         </div>
         <div className={contentStyle}>
           <SettingsContainer />

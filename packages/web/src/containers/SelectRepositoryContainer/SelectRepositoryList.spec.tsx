@@ -29,7 +29,7 @@ describe('SelectRepositoryList', () => {
     return render(<SelectRepositoryList {...{ ...defaultProps, ...props }} />);
   };
 
-  it('リポジトリの一覧を表示する', () => {
+  it('Displays the repository list', () => {
     const repositories = [
       {
         nameWithOwner: 'test/testA',
@@ -47,8 +47,8 @@ describe('SelectRepositoryList', () => {
     }
   });
 
-  describe('リポジトリの追加', () => {
-    it('設定に未登録のリポジトリの場合は追加アイコンを表示する', () => {
+  describe('Repository addition', () => {
+    it('Displays add icon for repositories not registered in settings', () => {
       const repositories = [
         {
           nameWithOwner: 'test/testA',
@@ -58,14 +58,14 @@ describe('SelectRepositoryList', () => {
       renderSelectRepositoryList({ repositories, subscribedRepositories: [] });
 
       const addRepositoryButton = screen.getByRole('button', {
-        name: 'リポジトリを設定に追加する',
+        name: 'Add repository to settings',
       });
       const icon = queryByRole(addRepositoryButton, 'img', { hidden: true });
 
       expect(icon).toBeInTheDocument();
     });
 
-    it('追加アイコンをクリックすることでリポジトリを設定に追加するコールバック関数が呼ばれる', async () => {
+    it('Callback function to add repository to settings is called when add icon is clicked', async () => {
       const repositories = [
         {
           nameWithOwner: 'test/testA',
@@ -80,7 +80,7 @@ describe('SelectRepositoryList', () => {
       });
 
       const addRepositoryButton = screen.getByRole('button', {
-        name: 'リポジトリを設定に追加する',
+        name: 'Add repository to settings',
       });
       await user.click(addRepositoryButton);
 
@@ -88,8 +88,8 @@ describe('SelectRepositoryList', () => {
     });
   });
 
-  describe('リポジトリの削除', () => {
-    it('設定に登録済みのリポジトリは追加済みのアイコンを表示する', () => {
+  describe('Repository deletion', () => {
+    it('Displays already-added icon for repositories registered in settings', () => {
       const repositories = [
         {
           nameWithOwner: 'test/testA',
@@ -102,14 +102,14 @@ describe('SelectRepositoryList', () => {
       });
 
       const removeRepositoryButton = screen.getByRole('button', {
-        name: '設定からリポジトリを削除する',
+        name: 'Remove repository from settings',
       });
       const icon = queryByRole(removeRepositoryButton, 'img', { hidden: true });
 
       expect(icon).toBeInTheDocument();
     });
 
-    it('追加済みのアイコンをクリックすることでリポジトリを設定から削除するコールバック関数が呼ばれる', async () => {
+    it('Callback function to remove repository from settings is called when the already-added icon is clicked', async () => {
       const repositories = [
         {
           nameWithOwner: 'test/testA',
@@ -124,7 +124,7 @@ describe('SelectRepositoryList', () => {
       });
 
       const removeRepositoryButton = screen.getByRole('button', {
-        name: '設定からリポジトリを削除する',
+        name: 'Remove repository from settings',
       });
       await user.click(removeRepositoryButton);
 

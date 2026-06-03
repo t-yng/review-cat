@@ -7,7 +7,7 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 export const GitHubAvatar: React.FC<Props> = memo(
   ({ alt = '', className = '', ...others }) => {
-    // TODO: GitHub のアバター画像、パラメータ(`s={size}`)でサイズ調整できるのでうまいこと利用したい。
+    // TODO: GitHub avatar images can be size-adjusted via parameter (`s={size}`) — would like to utilize this properly.
     return (
       <img className={`${rootStyle} ${className}`} alt={alt} {...others} />
     );

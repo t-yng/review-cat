@@ -45,12 +45,13 @@ describe('SettingsContainer', () => {
     return customRender(<SettingsContainer />);
   };
 
-  describe('通知設定', () => {
-    it('チェックボックスがクリックされた時にコールバック関数が呼ばれる', async () => {
+  describe('Notification settings', () => {
+    it('Callback function is called when checkbox is clicked', async () => {
       renderSettingContainer();
 
-      const checkbox =
-        screen.getByLabelText('レビューリクエスト時に通知を受け取る');
+      const checkbox = screen.getByLabelText(
+        'Receive notifications for review requests'
+      );
       await user.click(checkbox);
 
       expect(updateNotifyReviewRequestedMock).toBeCalledWith(
@@ -59,28 +60,28 @@ describe('SettingsContainer', () => {
     });
   });
 
-  describe('PR表示の設定', () => {
+  describe('PR display settings', () => {
     it.each([
       {
-        label: 'レビュー待ちのPRを表示',
+        label: 'Show waiting for review PRs',
         expected: {
           requestedReview: !defaultSettings.showsRequestedReviewPR,
         },
       },
       {
-        label: 'レビュー中のPRを表示',
+        label: 'Show in-review PRs',
         expected: {
           inReview: !defaultSettings.showsInReviewPR,
         },
       },
       {
-        label: '承認済みのPRを表示',
+        label: 'Show approved PRs',
         expected: {
           approved: !defaultSettings.showsApprovedPR,
         },
       },
     ])(
-      '$label のチェックボックスがクリックされた時にコールバック関数が呼ばれる',
+      'Callback function is called when $label checkbox is clicked',
       async ({ label, expected }) => {
         renderSettingContainer();
 
@@ -92,11 +93,11 @@ describe('SettingsContainer', () => {
     );
   });
 
-  describe('起動設定', () => {
-    it('「ログイン時に自動で起動する」のチェックボックスをクリックされた時にコールバック関数が呼ばれる', async () => {
+  describe('Launch settings', () => {
+    it('Callback function is called when "Launch automatically at login" checkbox is clicked', async () => {
       renderSettingContainer();
 
-      const checkbox = screen.getByLabelText('ログイン時に自動で起動する');
+      const checkbox = screen.getByLabelText('Launch automatically at login');
       await user.click(checkbox);
 
       expect(updateAutoLaunchMock).toBeCalledWith(
@@ -105,8 +106,8 @@ describe('SettingsContainer', () => {
     });
   });
 
-  describe('リポジトリ一覧', () => {
-    it('監視しているリポジトリの一覧を表示する', async () => {
+  describe('Repository list', () => {
+    it('Displays the list of monitored repositories', async () => {
       renderSettingContainer();
 
       const repositories = defaultSettings.subscribedRepositories.map(
@@ -120,11 +121,11 @@ describe('SettingsContainer', () => {
       }
     });
 
-    it('削除アイコンをクリックした時にコールバック関数が呼ばれる', async () => {
+    it('Callback function is called when delete icon is clicked', async () => {
       renderSettingContainer();
 
       const deleteIcon = screen.getAllByRole('button', {
-        name: 'リポジトリを削除',
+        name: 'Delete repository',
       })[0];
       await user.click(deleteIcon);
 

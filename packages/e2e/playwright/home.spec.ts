@@ -7,7 +7,7 @@ import { createSearchPullRequest } from './mock/graphql/pullRequest';
 import { server } from './mock/server';
 import { loginUser } from './mock/user';
 
-test.describe('ホーム画面', () => {
+test.describe('Home screen', () => {
   test.beforeAll(() => {
     server.listen();
   });
@@ -16,11 +16,11 @@ test.describe('ホーム画面', () => {
     server.close();
   });
 
-  test('ログインユーザーがレビュアーとなっているプルリクエスト一覧を表示', async ({}, testInfo) => {
+  test('Displays list of pull requests where the logged-in user is a reviewer', async ({}, testInfo) => {
     const electronApp = await launchElectronApp();
     const mainWindow = await electronApp.firstWindow();
 
-    // プルリクエスト一覧を取得するGraphQLのリクエストをモックする
+    // Mock the GraphQL request to fetch the pull request list
     const anotherUser = {
       login: 'test',
       avatarUrl:
@@ -32,12 +32,12 @@ test.describe('ホーム画面', () => {
       response: {
         body: {
           search: {
-            // 自分がレビュアーとなっているプルリクエスト
+            // Pull requests where self is a reviewer
             nodes: [
-              // レビュー待ち
+              // Waiting for review
               createSearchPullRequest({
                 headRefName: 'test/demo-1',
-                title: 'レビュー待ちのプルリクエスト',
+                title: 'Waiting for review pull request',
                 url: 'https://github.com/t-yng/review-cat/pull/84',
                 author: anotherUser,
                 repository: {
@@ -57,10 +57,10 @@ test.describe('ホーム画面', () => {
                   ],
                 },
               }),
-              // レビュー済み
+              // Reviewed
               createSearchPullRequest({
                 headRefName: 'test/demo-2',
-                title: 'レビュー済みのプルリクエスト',
+                title: 'Reviewed pull request',
                 url: 'https://github.com/t-yng/review-cat/pull/85',
                 author: anotherUser,
                 repository: {
@@ -84,10 +84,10 @@ test.describe('ホーム画面', () => {
                   nodes: [],
                 },
               }),
-              // 承認済み
+              // Approved
               createSearchPullRequest({
                 headRefName: 'test/demo-3',
-                title: '承認済みのプルリクエスト',
+                title: 'Approved pull request',
                 url: 'https://github.com/t-yng/review-cat/pull/86',
                 author: anotherUser,
                 repository: {
@@ -124,42 +124,42 @@ test.describe('ホーム画面', () => {
       },
     });
 
-    // ログインする
+    // Log in
     await loginWithGitHub(electronApp, server, {
       subscribedRepositories: ['t-yng/review-cat'],
     });
 
     await mainWindow.waitForURL('http://localhost:3000/');
-    // 画像の読み込みを待つ
+    // Wait for images to load
     await waitForRenderedImages(mainWindow);
 
     await expect(
-      mainWindow.getByText('レビュー待ちのプルリクエスト')
+      mainWindow.getByText('Waiting for review pull request')
     ).toBeVisible();
     await expect(
-      mainWindow.getByText('レビュー待ち', { exact: true })
+      mainWindow.getByText('Waiting for review', { exact: true })
     ).toBeVisible();
     await expect(
-      mainWindow.getByText('レビュー済みのプルリクエスト')
+      mainWindow.getByText('Reviewed pull request')
     ).toBeVisible();
     await expect(
-      mainWindow.getByText('レビュー済み', { exact: true })
+      mainWindow.getByText('Reviewed', { exact: true })
     ).toBeVisible();
     await expect(
-      mainWindow.getByText('承認済みのプルリクエスト')
+      mainWindow.getByText('Approved pull request')
     ).toBeVisible();
     await expect(
-      mainWindow.getByText('承認済み', { exact: true })
+      mainWindow.getByText('Approved', { exact: true })
     ).toBeVisible();
 
     await expect(mainWindow).toHaveScreenshot(`${testInfo.title}.png`);
   });
 
-  test('ログインユーザーが作成したプルリクエストの一覧を表示', async ({}, testInfo) => {
+  test('Displays list of pull requests created by the logged-in user', async ({}, testInfo) => {
     const electronApp = await launchElectronApp();
     const mainWindow = await electronApp.firstWindow();
 
-    // プルリクエスト一覧を取得するGraphQLのリクエストをモックする
+    // Mock the GraphQL request to fetch the pull request list
     const anotherAuthor = {
       login: 'test',
       avatarUrl:
@@ -171,12 +171,12 @@ test.describe('ホーム画面', () => {
       response: {
         body: {
           search: {
-            // ログインユーザーが作成したプルリクエスト
+            // Pull requests created by the logged-in user
             nodes: [
-              // レビュー待ち
+              // Waiting for review
               createSearchPullRequest({
                 headRefName: 'test/demo-1',
-                title: 'レビュー待ちのプルリクエスト',
+                title: 'Waiting for review pull request',
                 url: 'https://github.com/t-yng/review-cat/pull/84',
                 author: loginUser,
                 repository: {
@@ -196,10 +196,10 @@ test.describe('ホーム画面', () => {
                   ],
                 },
               }),
-              // レビュー済み
+              // Reviewed
               createSearchPullRequest({
                 headRefName: 'test/demo-2',
-                title: 'レビュー済みのプルリクエスト',
+                title: 'Reviewed pull request',
                 url: 'https://github.com/t-yng/review-cat/pull/85',
                 author: loginUser,
                 repository: {
@@ -224,10 +224,10 @@ test.describe('ホーム画面', () => {
                   nodes: [],
                 },
               }),
-              // 承認済み
+              // Approved
               createSearchPullRequest({
                 headRefName: 'test/demo-3',
-                title: '承認済みのプルリクエスト',
+                title: 'Approved pull request',
                 url: 'https://github.com/t-yng/review-cat/pull/86',
                 author: loginUser,
                 repository: {
@@ -265,32 +265,32 @@ test.describe('ホーム画面', () => {
       },
     });
 
-    // ログインする
+    // Log in
     await loginWithGitHub(electronApp, server, {
       subscribedRepositories: ['t-yng/review-cat'],
     });
 
     await mainWindow.waitForURL('http://localhost:3000/');
-    // 画像の読み込みを待つ
+    // Wait for images to load
     await waitForRenderedImages(mainWindow);
 
     await expect(
-      mainWindow.getByText('レビュー待ちのプルリクエスト')
+      mainWindow.getByText('Waiting for review pull request')
     ).toBeVisible();
     await expect(
-      mainWindow.getByText('レビュー待ち', { exact: true })
+      mainWindow.getByText('Waiting for review', { exact: true })
     ).toBeVisible();
     await expect(
-      mainWindow.getByText('レビュー済みのプルリクエスト')
+      mainWindow.getByText('Reviewed pull request')
     ).toBeVisible();
     await expect(
-      mainWindow.getByText('レビュー済み', { exact: true })
+      mainWindow.getByText('Reviewed', { exact: true })
     ).toBeVisible();
     await expect(
-      mainWindow.getByText('承認済みのプルリクエスト')
+      mainWindow.getByText('Approved pull request')
     ).toBeVisible();
     await expect(
-      mainWindow.getByText('承認済み', { exact: true })
+      mainWindow.getByText('Approved', { exact: true })
     ).toBeVisible();
 
     await expect(mainWindow).toHaveScreenshot(`${testInfo.title}.png`);

@@ -18,12 +18,12 @@ describe('lib/notification', () => {
     window.Notification = NotificationOriginal;
   });
 
-  describe('自分がレビュアーのプルリクエストの場合', () => {
+  describe('When the logged-in user is a reviewer of the pull request', () => {
     const loginUser = createUser({ name: 'notification-test' });
 
-    it('新しい「レビュー待ち」のプルリクエストが存在したらデスクトップ通知をする', () => {
+    it('Send desktop notification when a new "waiting for review" pull request exists', () => {
       const newPullRequest = createPullRequest({
-        title: '新しいPR',
+        title: 'New PR',
         url: 'https://github.com/higeOhige/review-cat/pull/100',
         status: pullRequestStatus.waitingReview,
       });
@@ -41,7 +41,7 @@ describe('lib/notification', () => {
       );
     });
 
-    it('更新後のプルリクエストが「レビュー待ち」に更新された時にデスクトップ通知をする', () => {
+    it('Send desktop notification when the updated pull request changes to "waiting for review"', () => {
       const pullRequest = createPullRequest();
       const newPullRequests: PullRequest[] = [
         { ...pullRequest, status: pullRequestStatus.waitingReview },
@@ -59,7 +59,7 @@ describe('lib/notification', () => {
       );
     });
 
-    it('更新後のプルリクエストが「レビュー済み」の場合はデスクトップ通知をしない', () => {
+    it('Do not send desktop notification when the updated pull request is "reviewed"', () => {
       const pullRequest = createPullRequest();
       const newPullRequests: PullRequest[] = [
         { ...pullRequest, status: pullRequestStatus.approved },
@@ -73,13 +73,13 @@ describe('lib/notification', () => {
     });
   });
 
-  describe('自分が作成したプルリクエストの場合', () => {
+  describe('When the pull request is created by self', () => {
     const loginUser = createUser({ name: 'notification-test' });
     const pullRequest = createPullRequest({
       author: loginUser,
     });
 
-    it('更新後のプルリクエストが「レビュー済み」になった時にデスクトップ通知する', () => {
+    it('Send desktop notification when the updated pull request becomes "reviewed"', () => {
       const newPullRequests: PullRequest[] = [
         { ...pullRequest, status: pullRequestStatus.reviewed },
       ];
@@ -91,7 +91,7 @@ describe('lib/notification', () => {
       expect(NotificationMock).toBeCalled();
     });
 
-    it('更新前後で「レビュー済み」のままの場合はデスクトップ通知をしない', () => {
+    it('Do not send desktop notification if the status remains "reviewed" before and after update', () => {
       const newPullRequests: PullRequest[] = [
         { ...pullRequest, status: pullRequestStatus.reviewed },
       ];

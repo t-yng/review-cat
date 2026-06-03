@@ -28,7 +28,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div style={{ padding: 16, color: 'red' }}>
-          <strong>エラーが発生しました:</strong>
+          <strong>An error occurred:</strong>
           <pre style={{ marginTop: 8, fontSize: 12, whiteSpace: 'pre-wrap' }}>
             {this.state.error?.message}
           </pre>
