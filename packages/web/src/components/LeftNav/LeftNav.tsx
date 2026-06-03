@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { GitPullRequestIcon } from '@primer/octicons-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/stores';
@@ -14,16 +14,32 @@ import {
 import { usePullRequests } from '@/stores';
 import { pullRequestStatus } from '@/models';
 
+const PullRequestCountBadge: FC = () => {
+  const { pullRequests } = usePullRequests();
+  const requestedReviewPullRequests = pullRequests.filter(
+    (pr) => pr.status === pullRequestStatus.waitingReview
+  );
+
+  if (requestedReviewPullRequests.length === 0) {
+    return null;
+  }
+
+  return (
+    <span
+      aria-label={`PRが${requestedReviewPullRequests.length}個あります`}
+      className={statusCountBadge}
+      data-testid="pr-count-badge"
+    >
+      {requestedReviewPullRequests.length}
+    </span>
+  );
+};
+
 export const LeftNav: FC = () => {
   const navigate = useNavigate();
   const avatarRef = useRef<HTMLElement>(null);
   const { user, signOut } = useAuth();
   const [visibleUserMenu, setVisibleUserMenu] = useState(false);
-  const { pullRequests, firstLoading } = usePullRequests();
-
-  const requestedReviewPullRequests = pullRequests.filter(
-    (pr) => pr.status === pullRequestStatus.waitingReview
-  );
 
   useEffect(() => {
     const handleClickBody = (event: MouseEvent) => {
@@ -70,15 +86,9 @@ export const LeftNav: FC = () => {
             className={iconStyle}
             aria-label="プルリクエスト一覧へ移動"
           />
-          {!firstLoading && requestedReviewPullRequests.length > 0 && (
-            <span
-              aria-label={`PRが${requestedReviewPullRequests.length}個あります`}
-              className={statusCountBadge}
-              data-testid="pr-count-badge"
-            >
-              {requestedReviewPullRequests.length}
-            </span>
-          )}
+          <Suspense fallback={null}>
+            <PullRequestCountBadge />
+          </Suspense>
         </Link>
       </div>
       {user != null && visibleUserMenu && (

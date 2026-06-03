@@ -29,7 +29,7 @@
     ]
   },
   "dependencies": {
-    "@apollo/client": "^3.4.10",
+    "@apollo/client": "^3.11",
     "@headlessui/react": "0.0.0-insiders.d55c77e",
     "@primer/octicons-react": "^15.0.0",
     "@swc/core": "^1.3.24",

@@ -29,7 +29,6 @@ describe('LeftNav', () => {
     beforeEach(() => {
       usePullRequestsMock.mockReturnValue({
         pullRequests: defaultPullRequests as PullRequest[],
-        firstLoading: false,
       });
     });
 
@@ -60,7 +59,6 @@ describe('LeftNav', () => {
     it('リクエスト待ちのプルリクが0件の場合はバッジを表示しない', () => {
       usePullRequestsMock.mockReturnValue({
         pullRequests: [],
-        firstLoading: false,
       });
       renderLeftNav();
 

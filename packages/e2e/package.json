@@ -14,6 +14,6 @@
     "playwright": "1.32.3"
   },
   "scripts": {
-    "test": "f() { yarn workspace web dev & yarn workspace main build:test && playwright test --workers=1 \"$@\" && kill $(lsof -t -i:3000); }; f"
+    "test": "f() { yarn workspace web dev & yarn workspace main build:test && playwright test --workers=1 \"$@\"; STATUS=$?; kill $(lsof -t -i:3000); exit $STATUS; }; f"
   }
 }

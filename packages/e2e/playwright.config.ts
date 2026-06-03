@@ -6,4 +6,5 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './playwright',
   snapshotPathTemplate: '{testDir}/__screenshots__/{arg}{ext}',
+  reporter: 'html',
 });
