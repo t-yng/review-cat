@@ -18,7 +18,7 @@ describe('stores/pullRequest/helper', () => {
       mockPullRequest = mock<SearchPullRequestFragment>();
     });
 
-    it('requestedReviewer に自分が含まれているときにプルリクエストをレビュー待ちの状態にする', () => {
+    it('Sets the pull request to waiting for review status when self is included in requestedReviewer', () => {
       when(mockPullRequest.reviewRequests).thenReturn({
         totalCount: 1,
         nodes: [
@@ -42,7 +42,7 @@ describe('stores/pullRequest/helper', () => {
       expect(status).toBe(pullRequestStatus.waitingReview);
     });
 
-    it('自身の承認済みのレビューが存在するときに対象のプルリクエストを承認済みにする', () => {
+    it('Marks the target pull request as approved when an approved review from self exists', () => {
       when(mockPullRequest.reviews).thenReturn({
         nodes: [
           {
@@ -62,7 +62,7 @@ describe('stores/pullRequest/helper', () => {
       expect(status).toBe(pullRequestStatus.approved);
     });
 
-    it('上記以外の場合はプルリクエストをレビュー済みの状態にする', () => {
+    it('Sets the pull request to reviewed status in all other cases', () => {
       when(mockPullRequest.reviews).thenReturn({
         nodes: [],
       });

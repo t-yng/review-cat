@@ -40,23 +40,23 @@ describe('LeftNav', () => {
       return customRender(<LeftNav />);
     };
 
-    it('プルリク一覧へのリンクとなっている', () => {
+    it('Is a link to the pull request list', () => {
       renderLeftNav();
-      const pullRequestIcon = screen.getByLabelText('プルリクエスト一覧へ移動');
+      const pullRequestIcon = screen.getByLabelText('Go to pull request list');
       const link = pullRequestIcon.closest('a');
 
       expect(link).toBeInTheDocument();
       expect(link).toHaveAttribute('href', '/');
     });
 
-    it('レビューリクエストのプルリク数を表示する', () => {
+    it('Displays the number of review request pull requests', () => {
       renderLeftNav();
 
       const badge = screen.getByTestId('pr-count-badge');
       expect(badge).toHaveTextContent('2');
     });
 
-    it('リクエスト待ちのプルリクが0件の場合はバッジを表示しない', () => {
+    it('Does not display badge when there are 0 pending request pull requests', () => {
       usePullRequestsMock.mockReturnValue({
         pullRequests: [],
       });

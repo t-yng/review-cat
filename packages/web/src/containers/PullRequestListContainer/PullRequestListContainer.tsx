@@ -10,7 +10,7 @@ import {
 } from '@/models';
 
 /**
- * プルリクエストをリポジトリ毎にまとめる
+ * Groups pull requests by repository
  */
 const groupByRepository = (pullRequests: Array<PullRequest>): Repositories => {
   return pullRequests.reduce(
@@ -48,7 +48,7 @@ const filterPullRequests = (
   loginUser: User | null
 ) => {
   return pullRequests.filter((pr) => {
-    // 自分のプルリクエストの表示設定がOFFの場合は自分のプルリクエストを除外
+    // If the display setting for own pull requests is OFF, exclude own pull requests
     if (pr.author.name === loginUser?.name && !settings.showsMyPR) {
       return false;
     }

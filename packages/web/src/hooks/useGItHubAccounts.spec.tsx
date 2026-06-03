@@ -37,7 +37,7 @@ const graphQLMocks: MockedProviderProps['mocks'] = [
 ];
 
 describe('useGitHubAccounts', () => {
-  it('ログイン中のユーザーアカウントを一覧に含める', async () => {
+  it('Includes the logged-in user account in the list', async () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedProvider mocks={graphQLMocks}>{children}</MockedProvider>
     );
@@ -50,7 +50,7 @@ describe('useGitHubAccounts', () => {
     });
   });
 
-  it('ログイン中のユーザーが所属する組織アカウントを一覧に含める', async () => {
+  it('Includes organization accounts the logged-in user belongs to in the list', async () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedProvider mocks={graphQLMocks}>{children}</MockedProvider>
     );

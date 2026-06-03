@@ -10,7 +10,7 @@ describe('auth', () => {
       loadUrlSpy.mockReset();
     });
 
-    it('GithubのOAuth認証画面を表示すること', () => {
+    it('Displays the GitHub OAuth authentication screen', () => {
       auth.loginWithGithub(oAuthOptions);
       expect(loadUrlSpy).toHaveBeenCalled();
       expect(loadUrlSpy).toHaveBeenCalledWith(
@@ -18,7 +18,7 @@ describe('auth', () => {
       );
     });
 
-    it('認証後のリダイレクトURLから code を取得できること', async () => {
+    it('Can retrieve the code from the redirect URL after authentication', async () => {
       const code = '123456';
       jest
         .spyOn<WebContents, any>(new BrowserWindow().webContents, 'on')

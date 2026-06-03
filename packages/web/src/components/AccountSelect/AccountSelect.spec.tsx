@@ -17,7 +17,7 @@ const renderAccountSelect = (_props?: Partial<AccountSelectProps>) => {
 };
 
 describe('AccountSelect', () => {
-  it('セレクトボックスをクリックしたときにアカウントの一覧が表示されること', async () => {
+  it('Account list is displayed when select box is clicked', async () => {
     const accounts = ['test1', 'test2'];
     const { container } = renderAccountSelect({ accounts });
 
@@ -29,14 +29,14 @@ describe('AccountSelect', () => {
   });
 
   describe('accounts', () => {
-    it('配列先頭のアカウントを初期表示すること', () => {
+    it('Initially displays the first account in the array', () => {
       const accounts = ['test1', 'test2'];
       renderAccountSelect({ accounts });
 
       expect(screen.queryByText(accounts[0])).toBeInTheDocument();
     });
 
-    it('一覧のアカウントを選択したときに選択中のアカウントを変更すること', async () => {
+    it('Changes the selected account when an account is selected from the list', async () => {
       const accounts = ['test1', 'test2'];
       const onSelectMock = jest.fn();
       const { container } = renderAccountSelect({
@@ -48,8 +48,8 @@ describe('AccountSelect', () => {
         async () => await ClickButton.play({ canvasElement: container })
       );
 
-      // NOTE: js-dom環境で実行するとボタンクリックでDOMの更新が行われないため、↑でボタンクリックを実行する
-      //       @headlessui/reactのも問題かもしれない
+      // NOTE: In js-dom environment, DOM updates don't occur on button click, so execute button click above
+      //       This may also be an issue with @headlessui/react
       await act(
         async () => await ClickAnotherAccount.play({ canvasElement: container })
       );

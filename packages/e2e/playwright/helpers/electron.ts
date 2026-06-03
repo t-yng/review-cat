@@ -1,18 +1,18 @@
 import { _electron as electron } from 'playwright';
 
 export const launchElectronApp = async () => {
-  // アプリを起動
+  // Launch the app
   const electronApp = await electron.launch({
     args: [require.resolve('main/dist/app.js')],
   });
 
-  // メインプロセスのログを出力
+  // Output main process logs
   const mainProcess = electronApp.process();
   mainProcess.stdout?.on('data', (data) => {
     console.log(data.toString());
   });
 
-  // ウィンドウのコンソールログを出力
+  // Output window console logs
   const mainWindow = await electronApp.firstWindow();
   mainWindow.on('console', console.log);
 

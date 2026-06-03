@@ -13,7 +13,7 @@ describe('stores/setting', () => {
     jest.clearAllMocks();
   });
 
-  it('設定情報を更新する時にストレージに更新後の設定情報が保存される', () => {
+  it('When updating settings, the updated settings are saved to storage', () => {
     const { result } = customRenderHook(() => useRecoilState(settingState));
 
     const updated: Settings = {

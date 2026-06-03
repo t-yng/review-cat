@@ -20,7 +20,7 @@ jest.mock('../../components/SearchRepository', () => ({
   SearchRepository: (props: any) => {
     return (
       <div>
-        <button onClick={() => props.onSearch(repositories)}>検索</button>
+        <button onClick={() => props.onSearch(repositories)}>Search</button>
         {props.children}
       </div>
     );
@@ -33,9 +33,9 @@ describe('SelectRepositoryContainer', () => {
     return customRender(<SelectRepositoryContainer />);
   };
 
-  it('検索結果のリポジトリ一覧を表示する', async () => {
+  it('Displays the repository list from search results', async () => {
     renderSelectRepositoryContainer();
-    const button = screen.getByText('検索');
+    const button = screen.getByText('Search');
 
     await act(async () => await user.click(button));
 

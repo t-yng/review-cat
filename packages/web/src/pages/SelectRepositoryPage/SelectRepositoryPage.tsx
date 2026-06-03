@@ -12,7 +12,7 @@ export const SelectRepositoryPage = () => {
 
   const handleClick = useCallback(() => {
     if (setting.subscribedRepositories.length === 0) {
-      alert('レビュー対象のリポジトリを1つ以上選択してください。');
+      alert('Please select at least one repository to review.');
     } else {
       navigate('/', { replace: true });
     }
@@ -21,10 +21,10 @@ export const SelectRepositoryPage = () => {
   return (
     <BaseLayout>
       <div className={containerStyle}>
-        <h1 className={titleStyle}>リポジトリを選択</h1>
+        <h1 className={titleStyle}>Select Repository</h1>
         <SelectRepositoryContainer />
         <Button className={completeButtonStyle} onClick={handleClick}>
-          完了
+          Done
         </Button>
       </div>
     </BaseLayout>

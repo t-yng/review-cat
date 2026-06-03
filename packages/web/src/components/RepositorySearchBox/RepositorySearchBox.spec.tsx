@@ -6,7 +6,7 @@ describe('RepositorySearchBox', () => {
   const user = userEvent.setup();
 
   describe('onSearch', () => {
-    it('Enterを押した時に入力テキストを引数にして呼ばれること', async () => {
+    it('Called with input text as argument when Enter is pressed', async () => {
       const onSearchMock = jest.fn();
       render(<RepositorySearchBox onSearch={onSearchMock} />);
 

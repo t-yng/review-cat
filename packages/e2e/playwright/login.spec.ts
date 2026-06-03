@@ -4,7 +4,7 @@ import { loginWithGitHub } from './helpers/login';
 import { server } from './mock/server';
 import { loginUser } from './mock/user';
 
-test.describe('ログイン', () => {
+test.describe('Login', () => {
   test.beforeAll(() => {
     server.listen();
   });
@@ -14,14 +14,14 @@ test.describe('ログイン', () => {
     console.log('close server');
   });
 
-  test('GitHubでログインできる', async () => {
-    // アプリを起動
+  test('Can log in with GitHub', async () => {
+    // Launch the app
     const electronApp = await launchElectronApp();
 
-    // GitHubログイン
+    // GitHub login
     await loginWithGitHub(electronApp, server);
 
-    // ログインに成功してページ遷移が行われていることを確認
+    // Confirm that login succeeded and page navigation occurred
     const mainWindow = await electronApp.firstWindow();
     await expect(
       mainWindow.getByRole('img', { name: loginUser.login })

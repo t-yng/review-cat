@@ -40,7 +40,7 @@ describe('lib/storage', () => {
 
   describe('GithubAccessToken', () => {
     describe('getGithubAccessToken', () => {
-      it('localStorageからアクセストークンが取得できること', () => {
+      it('Can retrieve the access token from localStorage', () => {
         const token = 'token';
         mockLocalStorageGetItem('gh_atk', token);
 
@@ -50,7 +50,7 @@ describe('lib/storage', () => {
     });
 
     describe('setGithubAccessToken', () => {
-      it('localStorageにアクセストークンがセットできること', () => {
+      it('Can set the access token in localStorage', () => {
         const token = 'token';
         const mockSetItem = mockLocalStorageSetItem();
 
@@ -72,13 +72,13 @@ describe('lib/storage', () => {
     };
 
     describe('getSettings', () => {
-      it('localStorageから設定情報が取得できること', () => {
+      it('Can retrieve settings from localStorage', () => {
         mockLocalStorageGetItem('settings', JSON.stringify(settings));
         const result = storage.getSettings();
         expect(result).toEqual(settings);
       });
 
-      it('値が存在しないときに null を返すこと', () => {
+      it('Returns null when no value exists', () => {
         mockLocalStorageGetItem('settings', null);
         const result = storage.getSettings();
         expect(result).toBeNull();
@@ -86,13 +86,13 @@ describe('lib/storage', () => {
     });
 
     describe('setSettings', () => {
-      it('localStorageに設定情報をセットできること', () => {
+      it('Can set settings in localStorage', () => {
         const mockSetItem = mockLocalStorageSetItem();
 
         storage.setSettings(settings);
         expect(mockSetItem).toBeCalledWith(
           'settings',
-          JSON.stringify(settings) // NOTE: stringifyは順番が保証されないのでテストがコケる可能性があります。
+          JSON.stringify(settings) // NOTE: stringify does not guarantee order, so tests may fail.
         );
       });
     });

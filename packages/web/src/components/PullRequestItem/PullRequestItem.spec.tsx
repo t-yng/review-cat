@@ -6,7 +6,7 @@ import { PullRequest, pullRequestStatus, User } from '../../models';
 
 describe('PullRequestItem', () => {
   describe('link', () => {
-    it('リンク先がプルリクエストのURLになっている', () => {
+    it('Link destination is the pull request URL', () => {
       const authorMock = mock<User>();
       when(authorMock.avatarUrl).thenReturn(
         'https://example.com/images/avatar.jpg'
@@ -32,17 +32,17 @@ describe('PullRequestItem', () => {
     it.each([
       {
         status: pullRequestStatus.waitingReview,
-        expected: 'レビュー待ち',
+        expected: 'Waiting for review',
       },
       {
         status: pullRequestStatus.reviewed,
-        expected: 'レビュー済み',
+        expected: 'Reviewed',
       },
       {
         status: pullRequestStatus.approved,
-        expected: '承認済み',
+        expected: 'Approved',
       },
-    ])('$status のときに $expected を表示する', ({ status, expected }) => {
+    ])('Displays $expected when $status', ({ status, expected }) => {
       const authorMock = mock<User>();
       when(authorMock.avatarUrl).thenReturn(
         'https://example.com/images/avatar.jpg'

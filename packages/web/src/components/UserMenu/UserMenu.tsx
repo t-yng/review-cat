@@ -22,14 +22,14 @@ export const UserMenu: FC<UserMenuProps> = memo(({ user, onClickSignOut }) => {
       <div className={`${listItemStyle} ${userNameStyle}`}>{user.name}</div>
       <Link to="/settings" className={`${listItemStyle} ${actionItemStyle}`}>
         <GearIcon className={actionIconStyle} />
-        <span className={actionLabelStyle}>設定</span>
+        <span className={actionLabelStyle}>Settings</span>
       </Link>
       <button
         className={`${listItemStyle} ${actionItemStyle}`}
         onClick={onClickSignOut}
       >
         <SignOutIcon className={actionIconStyle} />
-        <span className={actionLabelStyle}>ログアウト</span>
+        <span className={actionLabelStyle}>Sign out</span>
       </button>
     </div>
   );

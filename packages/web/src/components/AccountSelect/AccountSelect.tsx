@@ -22,8 +22,8 @@ export const AccountSelect: FC<AccountSelectProps> = memo(
   ({ accounts, onSelect }) => {
     const [selectedAccount, setSelectedAccount] = useState(accounts[0]);
 
-    // NOTE: useStateの初期値は最初のレンダリングの時だけ反映される
-    //       propsが更新されたタイミングでは初期値は反映されない
+    // NOTE: The initial value of useState is only applied on the first render
+    //       The initial value is not applied when props are updated
     useEffect(() => {
       setSelectedAccount(accounts[0]);
     }, [accounts]);

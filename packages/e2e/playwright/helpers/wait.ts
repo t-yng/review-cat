@@ -1,7 +1,7 @@
 import { type Page } from 'playwright';
 
 /**
- * ページ内の全ての画像が描画されるのを待つ
+ * Wait for all images on the page to be rendered
  * @param page
  * @returns
  */

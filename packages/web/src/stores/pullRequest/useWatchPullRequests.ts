@@ -12,7 +12,7 @@ import {
   SearchPullRequestsQueryVariables,
 } from '@/gql/generated';
 
-// 頻度が多いと Github GraphQL API のレート制限に影響するので、投げるクエリのスコアを計算して調整してください。
+// High frequency affects the rate limit of the Github GraphQL API, so calculate the score of the query being sent and adjust accordingly.
 // @see: https://docs.github.com/ja/graphql/overview/resource-limitations
 const FETCH_PULL_REQUESTS_INTERVAL = 60 * 1000; // ms
 

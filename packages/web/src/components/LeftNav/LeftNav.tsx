@@ -26,7 +26,7 @@ const PullRequestCountBadge: FC = () => {
 
   return (
     <span
-      aria-label={`PRが${requestedReviewPullRequests.length}個あります`}
+      aria-label={`There are ${requestedReviewPullRequests.length} PRs`}
       className={statusCountBadge}
       data-testid="pr-count-badge"
     >
@@ -84,7 +84,7 @@ export const LeftNav: FC = () => {
           <GitPullRequestIcon
             size={24}
             className={iconStyle}
-            aria-label="プルリクエスト一覧へ移動"
+            aria-label="Go to pull request list"
           />
           <Suspense fallback={null}>
             <PullRequestCountBadge />

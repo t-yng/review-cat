@@ -25,7 +25,7 @@ export const SearchRepository: FC<SearchRepositoryProps> = memo(
     const handleSearch = useCallback(
       async (keyword: string) => {
         if (account == null) {
-          alert('アカウントを選択してください');
+          alert('Please select an account');
           return;
         }
         const isOrganization = account !== user?.name;

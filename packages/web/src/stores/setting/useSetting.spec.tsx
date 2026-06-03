@@ -16,15 +16,15 @@ describe('useSetting', () => {
     return customRenderHook(() => useSetting());
   };
 
-  describe('設定情報の読み込み', () => {
-    it('ストレージに設定情報が存在しないときにデフォルトの値を初期値として返す', () => {
+  describe('Loading settings', () => {
+    it('Returns default value as initial value when no settings exist in storage', () => {
       mockStorage.getSettings.mockReturnValue(null);
       const { result } = renderUseSetting();
 
       expect(result.current.setting).not.toBeNull();
     });
 
-    it('ストレージから設定情報を読み込む', () => {
+    it('Loads settings from storage', () => {
       const savedSettings: Settings = {
         notifyReviewRequested: true,
         showsRequestedReviewPR: true,
@@ -42,8 +42,8 @@ describe('useSetting', () => {
     });
   });
 
-  describe('設定情報の保存', () => {
-    it('レビューリクエストの通知設定を更新する', () => {
+  describe('Saving settings', () => {
+    it('Updates notification settings for review requests', () => {
       const { result } = renderUseSetting();
 
       const updated = !result.current.setting.notifyReviewRequested;
@@ -54,7 +54,7 @@ describe('useSetting', () => {
       expect(result.current.setting.notifyReviewRequested).toBe(updated);
     });
 
-    it('PRの表示設定を更新する', () => {
+    it('Updates PR display settings', () => {
       const { result } = renderUseSetting();
       const setting = result.current.setting;
 
@@ -76,7 +76,7 @@ describe('useSetting', () => {
       expect(result.current.setting.showsApprovedPR).toBe(updatedApproved);
     });
 
-    it('自動起動設定を更新する', () => {
+    it('Updates auto-launch setting', () => {
       window.ipc = {
         updateAutoLaunch: jest.fn(),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -93,7 +93,7 @@ describe('useSetting', () => {
       expect(window.ipc.updateAutoLaunch).toBeCalledWith(!updateValue);
     });
 
-    it('PRを監視するリポジトリを追加する', () => {
+    it('Adds repository to monitor for PRs', () => {
       const { result } = renderUseSetting();
 
       const repositories = ['test/test1', 'test/test2'];
@@ -109,7 +109,7 @@ describe('useSetting', () => {
       );
     });
 
-    it('PRを監視するリポジトリを削除する', () => {
+    it('Removes repository from PR monitoring', () => {
       const { result } = renderUseSetting();
 
       const repositories = ['test/test1', 'test/test2'];
