@@ -10,10 +10,10 @@
     "@playwright/test": "1.32.3",
     "body-parser": "1.20.2",
     "express": "4.18.2",
-    "main": "*",
+    "main": "workspace:*",
     "playwright": "1.32.3"
   },
   "scripts": {
-    "test": "f() { yarn workspace web dev & yarn workspace main build:test && playwright test --workers=1 \"$@\"; STATUS=$?; kill $(lsof -t -i:3000); exit $STATUS; }; f"
+    "test": "f() { pnpm --filter web dev & pnpm --filter main build:test && playwright test --workers=1 \"$@\"; STATUS=$?; kill $(lsof -t -i:3000); exit $STATUS; }; f"
   }
 }

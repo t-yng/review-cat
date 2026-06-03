@@ -3,24 +3,21 @@
   "license": "MIT",
   "version": "1.3.2",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "dev": "yarn workspace web dev & yarn workspace main dev",
-    "build": "yarn workspace web build && yarn workspace main build",
-    "package": "yarn workspace main package",
+    "dev": "pnpm --filter web dev & pnpm --filter main dev",
+    "build": "pnpm --filter web build && pnpm --filter main build",
+    "package": "pnpm --filter main package",
     "prepare": "husky install",
-    "lint:all": "yarn workspace web lint:all && yarn workspace main lint:all",
-    "format:all": "yarn workspace web format:all && yarn workspace main format:all",
-    "test": "yarn workspace web test && yarn workspace main test && yarn test:e2e",
-    "test:e2e": "yarn workspace e2e test",
-    "test:coverage": "yarn workspace web test --coverage && yarn workspace main test --coverage",
-    "type-check": "yarn workspace web type-check && yarn workspace main type-check"
+    "lint:all": "pnpm --filter web lint:all && pnpm --filter main lint:all",
+    "format:all": "pnpm --filter web format:all && pnpm --filter main format:all",
+    "test": "pnpm --filter web test && pnpm --filter main test && pnpm test:e2e",
+    "test:e2e": "pnpm --filter e2e test",
+    "test:coverage": "pnpm --filter web test --coverage && pnpm --filter main test --coverage",
+    "type-check": "pnpm --filter web type-check && pnpm --filter main type-check"
   },
   "devDependencies": {
-    "@review-cat/eslint-config-custom": "*",
-    "@review-cat/tsconfig": "*",
+    "@review-cat/eslint-config-custom": "workspace:*",
+    "@review-cat/tsconfig": "workspace:*",
     "@swc-node/jest": "1.5.5",
     "@swc/helpers": "^0.4.14",
     "@types/jest": "^29.2.5",

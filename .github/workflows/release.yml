@@ -15,24 +15,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: 'yarn'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install
 
       - name: Build Application
-        run: yarn build
+        run: pnpm build
         env:
           GITHUB_APP_CLIENT_ID: ${{ secrets.PROD_GITHUB_APP_CLIENT_ID }}
           GITHUB_APP_CLIENT_SECRET: ${{ secrets.PROD_GITHUB_APP_CLIENT_SECRET }}
 
       # アプリケーションのパッケージング
       - name: Package app
-        run: yarn package
+        run: pnpm package
 
       - name: set new version
         run: |
