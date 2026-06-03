@@ -1,2 +1,17 @@
 packages:
   - 'packages/*'
+
+enableGlobalVirtualStore: true
+
+# Whitelist of packages allowed to run install scripts (e.g. postinstall).
+# pnpm v10+ blocks install scripts by default as a security measure.
+# Set each entry to true (allow) or false (block).
+allowBuilds:
+  '@parcel/watcher': true
+  '@swc/core': true
+  core-js: true
+  electron: true
+  esbuild: true
+  fsevents: true
+  msw: true
+  playwright: true
