@@ -3,20 +3,30 @@ import { useCallback, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { userAtom, userInitializedAtom } from './atom';
 import { fetchUser } from './request';
-import { useToken } from './useToken';
 
 export const useAuth = () => {
-  const { token, setToken, removeToken } = useToken();
+  const [token, setToken] = useState<string | null>(
+    storage.getGithubAccessToken()
+  );
   const [user, setUser] = useRecoilState(userAtom);
   const [userInitialized, setUserInitialized] =
     useRecoilState(userInitializedAtom);
-  const [loading, setLoading] = useState(false);
+
+  const persistToken = useCallback((token: string) => {
+    setToken(token);
+    storage.setGithubAccessToken(token);
+  }, []);
+
+  const removeToken = useCallback(() => {
+    setToken(null);
+    storage.removeGitHubAccessToken();
+  }, []);
 
   const signIn = useCallback(
     async (callback: () => void) => {
       const code = await window.ipc.loginWithGithub();
       const token = await window.ipc.getAccessToken(code);
-      setToken(token);
+      persistToken(token);
 
       const user = await fetchUser();
       setUser(user);
@@ -25,7 +35,7 @@ export const useAuth = () => {
         callback();
       }
     },
-    [setUser, setToken]
+    [setUser, persistToken]
   );
 
   const signOut = useCallback(
@@ -42,27 +52,21 @@ export const useAuth = () => {
   );
 
   const autoSignIn = useCallback(async () => {
-    setLoading(true);
-
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
     if (token) {
       try {
         const user = await fetchUser();
         setUser(user);
       } catch (error) {
-        console.error(error);
+        console.error('Failed to fetch user:', error);
         signOut();
-        setUser(null);
       } finally {
-        setLoading(false);
         setUserInitialized(true);
       }
+    } else {
+      setUserInitialized(true);
+      return;
     }
-  }, [token, setUser, setLoading, signOut, setUserInitialized]);
+  }, [token, setUser, signOut, setUserInitialized]);
 
-  return { user, signIn, signOut, autoSignIn, loading, userInitialized };
+  return { user, signIn, signOut, autoSignIn, userInitialized };
 };
