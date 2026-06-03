@@ -1,100 +1,64 @@
-import { useCallback, useMemo } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { ApolloQueryResult } from '@apollo/client';
+import { useCallback, useEffect, useRef } from 'react';
+import { useQuery } from '@apollo/client';
 import { PullRequest, User } from '@/models';
 import { useSetting, useAuth } from '@/stores';
 import { buildSearchPullRequestsQuery } from '@/lib';
-import { client } from '@/lib/apollo';
-import { firstLoadingState, pullRequestsState } from './pullRequest';
 import { notifyPullRequests } from '@/lib/notification';
 import { toModelFromSearchPullRequest } from './helper';
 import {
   SearchPullRequestFragment as SearchPullRequest,
   SearchPullRequestsDocument,
   SearchPullRequestsQuery,
+  SearchPullRequestsQueryVariables,
 } from '@/gql/generated';
 
+// 頻度が多いと Github GraphQL API のレート制限に影響するので、投げるクエリのスコアを計算して調整してください。
+// @see: https://docs.github.com/ja/graphql/overview/resource-limitations
+const FETCH_PULL_REQUESTS_INTERVAL = 60 * 1000; // ms
+
 export const useWatchPullRequests = () => {
-  const setFirstLoading = useSetRecoilState(firstLoadingState);
-  const setPullRequests = useSetRecoilState(pullRequestsState);
   const { user } = useAuth();
   const { setting } = useSetting();
+  const prevPullRequestsRef = useRef<PullRequest[]>([]);
 
-  const watchedQuery = useMemo(() => {
-    return client.watchQuery<SearchPullRequestsQuery>({
-      query: SearchPullRequestsDocument,
-      variables: {
-        search_query: buildSearchPullRequestsQuery(
-          setting.subscribedRepositories
-        ),
-      },
-      fetchPolicy: 'cache-and-network',
-    });
-  }, [setting.subscribedRepositories]);
-
-  const parseQueryResponse = useCallback(
-    (response: SearchPullRequestsQuery) => {
-      const searchPullRequests = (response.search.nodes?.filter(
-        (node) => node != null
-      ) ?? []) as Array<SearchPullRequest>;
-
-      const pullRequests: Array<PullRequest> = searchPullRequests.map((pr) => {
-        return toModelFromSearchPullRequest(pr, user as User);
-      });
-
-      return pullRequests;
+  const { data, startPolling, stopPolling } = useQuery<
+    SearchPullRequestsQuery,
+    SearchPullRequestsQueryVariables
+  >(SearchPullRequestsDocument, {
+    variables: {
+      search_query: buildSearchPullRequestsQuery(
+        setting.subscribedRepositories
+      ),
     },
-    [user]
-  );
+    fetchPolicy: 'cache-and-network',
+    skip: user == null,
+  });
 
-  const onResponse = useCallback(
-    (result: ApolloQueryResult<SearchPullRequestsQuery>) => {
-      if (result.error) {
-        console.error('[useWatchPullRequests] GraphQL error:', result.error);
-        setFirstLoading(false);
-        return;
-      }
+  const startWatching = useCallback(() => {
+    startPolling(FETCH_PULL_REQUESTS_INTERVAL);
+  }, [startPolling]);
 
-      if (user == null) {
-        console.warn(
-          '[useWatchPullRequests] onResponse called but user is null, skipping'
-        );
-        return;
-      }
+  const stopWatching = useCallback(() => {
+    stopPolling();
+  }, [stopPolling]);
 
-      const pullRequests = parseQueryResponse(result.data);
-      setPullRequests((prevPullRequests) => {
-        notifyPullRequests(user, pullRequests, prevPullRequests);
-        return pullRequests;
-      });
-      setFirstLoading(false);
-    },
-    [user, parseQueryResponse, setFirstLoading, setPullRequests]
-  );
+  useEffect(() => {
+    if (!data || !user) return;
 
-  const onError = useCallback(
-    (error: Error) => {
-      console.error('[useWatchPullRequests] subscription error:', error);
-      setFirstLoading(false);
-    },
-    [setFirstLoading]
-  );
+    const searchPullRequests = (data.search.nodes?.filter(
+      (node) => node != null
+    ) ?? []) as Array<SearchPullRequest>;
 
-  const startPolling = useCallback(
-    (interval: number) => {
-      watchedQuery.subscribe({ next: onResponse, error: onError });
-      watchedQuery.startPolling(interval);
-      setFirstLoading(true);
-    },
-    [watchedQuery, onResponse, onError, setFirstLoading]
-  );
+    const pullRequests: PullRequest[] = searchPullRequests.map((pr) =>
+      toModelFromSearchPullRequest(pr, user)
+    );
 
-  const stopPolling = useCallback(() => {
-    watchedQuery.stopPolling();
-  }, [watchedQuery]);
+    notifyPullRequests(user, pullRequests, prevPullRequestsRef.current);
+    prevPullRequestsRef.current = pullRequests;
+  }, [data, user]);
 
   return {
-    startPolling,
-    stopPolling,
+    startPolling: startWatching,
+    stopPolling: stopWatching,
   };
 };

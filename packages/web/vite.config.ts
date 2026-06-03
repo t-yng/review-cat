@@ -23,4 +23,7 @@ export default defineConfig(({ mode }) => ({
     emptyOutDir: true,
   },
   plugins: [reactRefresh(), vanillaExtractPlugin()],
+  optimizeDeps: {
+    include: ['@apollo/client', 'rehackt'],
+  },
 }));
