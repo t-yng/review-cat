@@ -12,9 +12,10 @@ export const AppProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!userInitialized) {
       autoSignIn();
-      return;
     }
+  }, [autoSignIn, userInitialized]);
 
+  useEffect(() => {
     if (user) {
       startPolling(FETCH_PULL_REQUESTS_INTERVAL);
     }
@@ -22,7 +23,7 @@ export const AppProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       stopPolling();
     };
-  }, [userInitialized, autoSignIn, user, startPolling, stopPolling]);
+  }, [user, startPolling, stopPolling]);
 
   return <>{children}</>;
 };

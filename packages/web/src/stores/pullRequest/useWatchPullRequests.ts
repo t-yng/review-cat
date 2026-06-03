@@ -49,7 +49,19 @@ export const useWatchPullRequests = () => {
 
   const onResponse = useCallback(
     (result: ApolloQueryResult<SearchPullRequestsQuery>) => {
-      if (user == null) return;
+      if (result.error) {
+        console.error('[useWatchPullRequests] GraphQL error:', result.error);
+        setFirstLoading(false);
+        return;
+      }
+
+      if (user == null) {
+        console.warn(
+          '[useWatchPullRequests] onResponse called but user is null, skipping'
+        );
+        return;
+      }
+
       const pullRequests = parseQueryResponse(result.data);
       setPullRequests((prevPullRequests) => {
         notifyPullRequests(user, pullRequests, prevPullRequests);
@@ -60,13 +72,21 @@ export const useWatchPullRequests = () => {
     [user, parseQueryResponse, setFirstLoading, setPullRequests]
   );
 
+  const onError = useCallback(
+    (error: Error) => {
+      console.error('[useWatchPullRequests] subscription error:', error);
+      setFirstLoading(false);
+    },
+    [setFirstLoading]
+  );
+
   const startPolling = useCallback(
     (interval: number) => {
-      watchedQuery.subscribe(onResponse);
+      watchedQuery.subscribe({ next: onResponse, error: onError });
       watchedQuery.startPolling(interval);
       setFirstLoading(true);
     },
-    [watchedQuery, onResponse, setFirstLoading]
+    [watchedQuery, onResponse, onError, setFirstLoading]
   );
 
   const stopPolling = useCallback(() => {

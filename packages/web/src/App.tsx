@@ -1,19 +1,19 @@
-import { Suspense } from 'react';
 import { RecoilRoot } from 'recoil';
 import { ApolloProvider } from '@apollo/client';
 import { AppRoute } from './components/routes';
 import { client } from './lib/apollo';
 import { AppProvider } from './components/AppProvider';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 const App = () => {
   return (
     <ApolloProvider client={client}>
       <RecoilRoot>
-        <Suspense fallback="Loading...">
+        <ErrorBoundary>
           <AppProvider>
             <AppRoute />
           </AppProvider>
-        </Suspense>
+        </ErrorBoundary>
       </RecoilRoot>
     </ApolloProvider>
   );
