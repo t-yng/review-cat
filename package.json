@@ -14,7 +14,9 @@
     "test": "pnpm --filter web test && pnpm --filter main test && pnpm test:e2e",
     "test:e2e": "pnpm --filter e2e test",
     "test:coverage": "pnpm --filter web test --coverage && pnpm --filter main test --coverage",
-    "type-check": "pnpm --filter web type-check && pnpm --filter main type-check"
+    "type-check": "pnpm --filter web type-check && pnpm --filter main type-check",
+    "worktree:new": "bash scripts/new-worktree.sh",
+    "worktree:remove": "bash scripts/remove-worktree.sh"
   },
   "devDependencies": {
     "@review-cat/eslint-config-custom": "workspace:*",
