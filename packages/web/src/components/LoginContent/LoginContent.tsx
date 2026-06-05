@@ -19,7 +19,9 @@ export const LoginContent: FC = () => {
     <div className={rootStyle}>
       <AppIcon />
       <div className={buttonContainerStyle}>
-        <Button onClick={handleClick}>Login To GitHub</Button>
+        <Button size="lg" onClick={handleClick}>
+          Login To GitHub
+        </Button>
       </div>
     </div>
   );
