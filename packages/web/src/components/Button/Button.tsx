@@ -1,16 +1,28 @@
 import { FC, HTMLAttributes } from 'react';
 import classNames from 'classnames';
-import { rootStyle } from './style.css';
+import { rootStyle, sizeStyles } from './style.css';
 import { themeFocusVisibleOutline } from '../../theme.css';
 
-export const Button: FC<HTMLAttributes<HTMLButtonElement>> = ({
+type ButtonSize = 'md' | 'lg';
+
+type ButtonProps = HTMLAttributes<HTMLButtonElement> & {
+  size?: ButtonSize;
+};
+
+export const Button: FC<ButtonProps> = ({
   children,
   className,
+  size = 'md',
   ...others
 }) => {
   return (
     <button
-      className={classNames(rootStyle, themeFocusVisibleOutline, className)}
+      className={classNames(
+        rootStyle,
+        sizeStyles[size],
+        themeFocusVisibleOutline,
+        className
+      )}
       {...others}
     >
       {children}

@@ -6,5 +6,5 @@ export const rootStyle = style({
 });
 
 export const buttonContainerStyle = style({
-  marginTop: `${space(8)}`,
+  marginTop: `${space(4)}`,
 });
