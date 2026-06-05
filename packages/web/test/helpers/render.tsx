@@ -29,7 +29,11 @@ export const customRender = (
   const user = userEvent.setup();
   const wrapper = ({ children }: { children: ReactNode }) => (
     <RecoilRoot>
-      <MemoryRouter>{children}</MemoryRouter>
+      <MemoryRouter
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
+        {children}
+      </MemoryRouter>
     </RecoilRoot>
   );
 
