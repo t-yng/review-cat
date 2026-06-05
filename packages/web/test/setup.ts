@@ -1,5 +1,6 @@
 import * as matchers from '@testing-library/jest-dom/matchers';
-import { vi, expect } from 'vitest';
+import { vi, expect, beforeAll, afterEach, afterAll } from 'vitest';
+import { cleanup } from '@testing-library/react';
 import { server } from './mocks/api/server';
 
 expect.extend(matchers);
@@ -25,6 +26,7 @@ beforeAll(() => {
 });
 
 afterEach(() => {
+  cleanup();
   server.resetHandlers();
 });
 

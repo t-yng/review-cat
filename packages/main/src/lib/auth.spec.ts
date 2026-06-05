@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { BrowserWindow, WebContents } from 'electron';
 import { auth } from '.';
 import { oAuthOptions } from '../constants/auth';

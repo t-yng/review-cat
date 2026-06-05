@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { mock, when, instance } from 'ts-mockito';
 import { getPullRequestStatus } from './helper';
 import { pullRequestStatus, User } from '../../models';
