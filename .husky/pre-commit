@@ -1,4 +1,5 @@
 export FORCE_COLOR=1;
+export CI=true;
 
 echo "> lint for web";
 pnpm --filter web lint-staged

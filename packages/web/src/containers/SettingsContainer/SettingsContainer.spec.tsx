@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+import { vi, type Mock } from 'vitest';
 import { customRender } from '@test/helpers/render';
 import userEvent from '@testing-library/user-event';
 import { SettingsContainer } from './SettingContainer';
@@ -14,12 +15,12 @@ const defaultSettings: Settings = {
   subscribedRepositories: ['test/testA', 'test/testB'],
 };
 
-const updateNotifyReviewRequestedMock: jest.Mock = jest.fn();
-const updateShowsPRMock: jest.Mock = jest.fn();
-const updateAutoLaunchMock = jest.fn();
-const removeSubscribedRepositoryMock: jest.Mock = jest.fn();
+const updateNotifyReviewRequestedMock: Mock = vi.fn();
+const updateShowsPRMock: Mock = vi.fn();
+const updateAutoLaunchMock = vi.fn();
+const removeSubscribedRepositoryMock: Mock = vi.fn();
 
-jest.mock('@/stores', () => ({
+vi.mock('@/stores', () => ({
   useSetting() {
     return {
       setting: defaultSettings,

@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
   SelectRepositoryList,
@@ -23,8 +24,8 @@ describe('SelectRepositoryList', () => {
         },
       ],
       subscribedRepositories: ['test/testA'],
-      addRepository: jest.fn(),
-      removeRepository: jest.fn(),
+      addRepository: vi.fn(),
+      removeRepository: vi.fn(),
     };
     return render(<SelectRepositoryList {...{ ...defaultProps, ...props }} />);
   };
@@ -72,7 +73,7 @@ describe('SelectRepositoryList', () => {
           url: '',
         },
       ];
-      const addRepositoryMock = jest.fn();
+      const addRepositoryMock = vi.fn();
       renderSelectRepositoryList({
         repositories,
         subscribedRepositories: [],
@@ -118,7 +119,7 @@ describe('SelectRepositoryList', () => {
           url: '',
         },
       ];
-      const removeRepositoryMock = jest.fn();
+      const removeRepositoryMock = vi.fn();
       renderSelectRepositoryList({
         repositories,
         subscribedRepositories: ['test/testA'],

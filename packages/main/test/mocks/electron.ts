@@ -1,18 +1,20 @@
+import { vi } from 'vitest';
+
 const browserWindowMock = {
-  loadURL: jest.fn(),
-  show: jest.fn(),
+  loadURL: vi.fn(),
+  show: vi.fn(),
   webContents: {
     on: () => {},
     session: {
-      clearStorageData: jest.fn(),
+      clearStorageData: vi.fn(),
     },
   },
   on: () => {},
-  close: jest.fn(),
-  hide: jest.fn(),
-  destroy: jest.fn(),
+  close: vi.fn(),
+  hide: vi.fn(),
+  destroy: vi.fn(),
 };
 
-export const BrowserWindow = jest.fn().mockImplementation(() => {
+export const BrowserWindow = vi.fn().mockImplementation(() => {
   return browserWindowMock;
 });

@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RepositorySearchBox } from './RepositorySearchBox';
@@ -7,7 +8,7 @@ describe('RepositorySearchBox', () => {
 
   describe('onSearch', () => {
     it('Called with input text as argument when Enter is pressed', async () => {
-      const onSearchMock = jest.fn();
+      const onSearchMock = vi.fn();
       render(<RepositorySearchBox onSearch={onSearchMock} />);
 
       const text = 'test';

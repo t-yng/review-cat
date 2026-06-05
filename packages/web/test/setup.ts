@@ -1,5 +1,8 @@
-import '@testing-library/jest-dom';
+import * as matchers from '@testing-library/jest-dom/matchers';
+import { vi, expect } from 'vitest';
 import { server } from './mocks/api/server';
+
+expect.extend(matchers);
 
 global.ResizeObserver = class ResizeObserver {
   observe() {}
@@ -15,9 +18,9 @@ beforeAll(() => {
   server.listen();
 
   window.ipc = {
-    loginWithGithub: jest.fn().mockResolvedValue('code'),
-    getAccessToken: jest.fn().mockResolvedValue('token'),
-    updateAutoLaunch: jest.fn(),
+    loginWithGithub: vi.fn().mockResolvedValue('code'),
+    getAccessToken: vi.fn().mockResolvedValue('token'),
+    updateAutoLaunch: vi.fn(),
   };
 });
 

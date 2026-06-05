@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Repository } from '@/hooks/useSearchRepository';
@@ -15,7 +16,7 @@ const repositories: Repository[] = [
   },
 ];
 
-jest.mock('../../components/SearchRepository', () => ({
+vi.mock('../../components/SearchRepository', () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   SearchRepository: (props: any) => {
     return (
