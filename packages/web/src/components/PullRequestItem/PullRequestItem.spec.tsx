@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { instance, mock, when } from 'ts-mockito';
 import { PullRequestItem } from '.';

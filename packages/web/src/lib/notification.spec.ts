@@ -1,3 +1,4 @@
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { createPullRequest } from '../../test/mocks/factory/pullRequest';
 import { createUser } from '../../test/mocks/factory/user';
 import { PullRequest, pullRequestStatus } from '../models';
@@ -6,10 +7,10 @@ import { notifyPullRequests } from './notification';
 describe('lib/notification', () => {
   const NotificationOriginal = window.Notification;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let NotificationMock: jest.MockedFunction<any>;
+  let NotificationMock: any;
 
   beforeEach(() => {
-    NotificationMock = jest.fn();
+    NotificationMock = vi.fn();
     NotificationMock.permission = 'granted';
     window.Notification = NotificationMock;
   });

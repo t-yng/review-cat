@@ -11,7 +11,7 @@
     "prepare": "husky",
     "lint:all": "pnpm --filter web lint:all && pnpm --filter main lint:all",
     "format:all": "pnpm --filter web format:all && pnpm --filter main format:all",
-    "test": "pnpm --filter web test && pnpm --filter main test && pnpm test:e2e",
+    "test": "pnpm --filter web test && pnpm --filter main test",
     "test:e2e": "pnpm --filter e2e test",
     "test:coverage": "pnpm --filter web test --coverage && pnpm --filter main test --coverage",
     "type-check": "pnpm --filter web type-check && pnpm --filter main type-check",
@@ -21,23 +21,20 @@
   "devDependencies": {
     "@review-cat/eslint-config-custom": "workspace:*",
     "@review-cat/tsconfig": "workspace:*",
-    "@swc-node/jest": "^1.9.1",
     "@swc/helpers": "^0.5.0",
-    "@swc/jest": "^0.2.39",
-    "@types/jest": "^30.0.0",
     "@types/node": "^22.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
     "cpx": "^1.5.0",
     "dotenv": "^16.0.3",
     "eslint": "^9.0.0",
     "husky": "^9.1.7",
-    "jest": "^30.0.0",
-    "jest-environment-jsdom": "^30.0.0",
     "lint-staged": "^17.0.0",
     "prettier": "^3.0.0",
     "rimraf": "^6.0.0",
     "ts-mockito": "^2.6.1",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "vitest": "^2.0.0"
   }
 }

@@ -15,7 +15,7 @@
     "lint:all": "pnpm lint \"**/*.{js,ts,tsx}\" --cache",
     "format": "prettier --write",
     "format:all": "pnpm format \"**/*.{js,ts,tsx,json}\"",
-    "test": "jest",
+    "test": "vitest run",
     "type-check": "tsc --noEmit",
     "lint-staged": "lint-staged -p false"
   },

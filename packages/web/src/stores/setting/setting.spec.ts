@@ -1,3 +1,4 @@
+import { vi, describe, it, expect, beforeEach, type Mocked } from 'vitest';
 import { act } from '@testing-library/react';
 import { customRenderHook } from '@test/helpers/render';
 import { useRecoilState } from 'recoil';
@@ -5,12 +6,12 @@ import { Settings } from '@/models';
 import { storage } from '@/lib/storage';
 import { settingState } from './setting';
 
-jest.mock('@/lib/storage');
-const mockStorage = storage as jest.Mocked<typeof storage>;
+vi.mock('@/lib/storage');
+const mockStorage = storage as Mocked<typeof storage>;
 
 describe('stores/setting', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('When updating settings, the updated settings are saved to storage', () => {

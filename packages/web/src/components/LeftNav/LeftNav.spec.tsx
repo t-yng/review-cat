@@ -1,11 +1,20 @@
 import { screen } from '@testing-library/react';
+import {
+  vi,
+  describe,
+  it,
+  expect,
+  beforeEach,
+  afterEach,
+  type MockedFunction,
+} from 'vitest';
 import { usePullRequests } from '@/stores';
 import { PullRequest, pullRequestStatus } from '@/models';
 import { LeftNav } from '.';
 import { customRender } from '@test/helpers/render';
 
-jest.mock('@/stores/pullRequest/usePullRequests');
-const usePullRequestsMock = usePullRequests as jest.MockedFunction<
+vi.mock('@/stores/pullRequest/usePullRequests');
+const usePullRequestsMock = usePullRequests as MockedFunction<
   typeof usePullRequests
 >;
 

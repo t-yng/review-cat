@@ -1,15 +1,16 @@
+import { vi, describe, it, expect, beforeEach, type Mocked } from 'vitest';
 import { act } from '@testing-library/react';
 import { customRenderHook } from '@test/helpers/render';
 import { storage } from '@/lib/storage';
 import { useSetting } from './useSetting';
 import { Settings } from '@/models';
 
-jest.mock('@/lib/storage');
-const mockStorage = storage as jest.Mocked<typeof storage>;
+vi.mock('@/lib/storage');
+const mockStorage = storage as Mocked<typeof storage>;
 
 describe('useSetting', () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   const renderUseSetting = () => {
@@ -78,7 +79,7 @@ describe('useSetting', () => {
 
     it('Updates auto-launch setting', () => {
       window.ipc = {
-        updateAutoLaunch: jest.fn(),
+        updateAutoLaunch: vi.fn(),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any;
       const { result } = renderUseSetting();

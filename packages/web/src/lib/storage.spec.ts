@@ -1,3 +1,4 @@
+import { vi, describe, it, expect, afterAll } from 'vitest';
 import { Settings } from '../models';
 import { storage } from './storage';
 
@@ -5,7 +6,7 @@ describe('lib/storage', () => {
   const originalLocalStorage = window.localStorage;
 
   const mockLocalStorageGetItem = (key: string, value: string | null) => {
-    const mockGetItem = jest.fn().mockImplementation((storageKey) => {
+    const mockGetItem = vi.fn().mockImplementation((storageKey) => {
       if (storageKey === key) {
         return value;
       } else {
@@ -21,7 +22,7 @@ describe('lib/storage', () => {
   };
 
   const mockLocalStorageSetItem = () => {
-    const mockSetItem = jest.fn();
+    const mockSetItem = vi.fn();
 
     Object.defineProperty(window, 'localStorage', {
       get: () => ({

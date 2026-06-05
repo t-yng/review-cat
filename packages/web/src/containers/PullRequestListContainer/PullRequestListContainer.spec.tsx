@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+import { vi, describe, it, expect, type MockedFunction } from 'vitest';
 import { PullRequestStatus, pullRequestStatus } from '@/models';
 import { PullRequestListContainer } from './PullRequestListContainer';
 import { useSetting } from '@/stores';
@@ -9,14 +10,14 @@ import {
 } from '@test/mocks/factory';
 import { customRender } from '@test/helpers/render';
 
-jest.mock('@/stores/setting/useSetting', () => {
+vi.mock('@/stores/setting/useSetting', () => {
   return {
-    useSetting: jest.fn(),
+    useSetting: vi.fn(),
   };
 });
-const useSettingMock = useSetting as jest.MockedFunction<typeof useSetting>;
+const useSettingMock = useSetting as MockedFunction<typeof useSetting>;
 
-jest.mock('@/stores/pullRequest/usePullRequests', () => {
+vi.mock('@/stores/pullRequest/usePullRequests', () => {
   return {
     usePullRequests() {
       const pullRequests = [

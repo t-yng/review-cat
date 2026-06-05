@@ -1,10 +1,11 @@
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { BrowserWindow, WebContents } from 'electron';
 import { auth } from '.';
 import { oAuthOptions } from '../constants/auth';
 
 describe('auth', () => {
   describe('loginWithGithub', () => {
-    const loadUrlSpy = jest.spyOn(new BrowserWindow(), 'loadURL');
+    const loadUrlSpy = vi.spyOn(new BrowserWindow(), 'loadURL');
 
     beforeEach(() => {
       loadUrlSpy.mockReset();
@@ -20,8 +21,7 @@ describe('auth', () => {
 
     it('Can retrieve the code from the redirect URL after authentication', async () => {
       const code = '123456';
-      jest
-        .spyOn<WebContents, 'on'>(new BrowserWindow().webContents, 'on')
+      vi.spyOn<WebContents, 'on'>(new BrowserWindow().webContents, 'on')
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .mockImplementation((event: any, callback: any): any => {
           if (event === 'will-redirect') {

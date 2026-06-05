@@ -1,3 +1,4 @@
+import { vi, describe, it, expect } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserMenu } from './';
@@ -13,7 +14,7 @@ describe('UserMenu', () => {
         avatarUrl: 'https://example.com/images/avatar.jpeg',
         name: 'test',
       },
-      onClickSignOut: jest.fn(),
+      onClickSignOut: vi.fn(),
     };
 
     const userMenuProps = {
@@ -44,7 +45,7 @@ describe('UserMenu', () => {
   });
 
   it('Executes onClickSignOut when sign out is clicked', async () => {
-    const handleClickSignOutMock = jest.fn();
+    const handleClickSignOutMock = vi.fn();
 
     renderUserMenu({ onClickSignOut: handleClickSignOutMock });
 

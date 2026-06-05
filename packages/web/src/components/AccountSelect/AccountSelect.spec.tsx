@@ -1,3 +1,4 @@
+import { vi, describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AccountSelect, AccountSelectProps } from './AccountSelect';
@@ -5,7 +6,7 @@ import { AccountSelect, AccountSelectProps } from './AccountSelect';
 const renderAccountSelect = (_props?: Partial<AccountSelectProps>) => {
   const props: AccountSelectProps = {
     accounts: ['test1', 'test2'],
-    onSelect: jest.fn(),
+    onSelect: vi.fn(),
     ..._props,
   };
 
@@ -36,7 +37,7 @@ describe('AccountSelect', () => {
 
     it('Changes the selected account when an account is selected from the list', async () => {
       const accounts = ['test1', 'test2'];
-      const onSelectMock = jest.fn();
+      const onSelectMock = vi.fn();
       renderAccountSelect({ accounts, onSelect: onSelectMock });
 
       await user.click(screen.getByRole('button'));
