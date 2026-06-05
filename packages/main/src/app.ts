@@ -1,14 +1,16 @@
-import { config } from 'dotenv';
 import path from 'path';
-import { app, BrowserWindowConstructorOptions, ipcMain, shell } from 'electron';
-import { menubar } from 'menubar';
+import {
+  app,
+  BrowserWindow,
+  BrowserWindowConstructorOptions,
+  ipcMain,
+  Menu,
+  shell,
+  Tray,
+} from 'electron';
 import { auth } from './lib';
 import { oAuthOptions } from './constants/auth';
 import axios from 'axios';
-
-if (process.env.NODE_ENV === 'development') {
-  config({ path: path.join(__dirname, '../.env') });
-}
 
 if (process.env.NODE_ENV === 'test') {
   axios.defaults.proxy = {
@@ -23,15 +25,15 @@ const trayIcon = path.join(__dirname, 'assets', 'images', 'tray-icon.png');
 
 // `file://${require.resolve('web/dist/index.html')}`;
 // `file://${path.resolve(__dirname, './index.html')}`
-const html = `file://${require.resolve('web/dist/index.html')}`;
-const indexUrl = isProduction ? html : 'http://localhost:3000/';
+const indexUrl = isProduction
+  ? `file://${require.resolve('web/dist/index.html')}`
+  : 'http://localhost:3000/';
 
 const browserWindowOpts: BrowserWindowConstructorOptions = {
-  width: 500,
-  height: 400,
+  width: 580,
+  height: 640,
   minWidth: 500,
   minHeight: 400,
-  resizable: false,
   webPreferences: {
     nodeIntegration: false,
     contextIsolation: true,
@@ -39,22 +41,44 @@ const browserWindowOpts: BrowserWindowConstructorOptions = {
   },
 };
 
-const menubarApp = menubar({
-  icon: trayIcon,
-  index: indexUrl,
-  browserWindow: browserWindowOpts,
-  preloadWindow: true,
-});
+app.whenReady().then(() => {
+  const mainWindow = new BrowserWindow(browserWindowOpts);
+  mainWindow.loadURL(indexUrl);
 
-const hideDockIcon = () => {
-  // menubar's showDockIcon:false does not work properly, so dock icon is hidden manually
-  // @see: https://github.com/maxogden/menubar/issues/306
-  if (app.dock && app.dock.hide) {
-    app.dock.hide();
-  }
-};
+  // When navigating to external links, open in the default browser without showing a new window
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    // NOTE: To prevent the window from closing when opening external links, do not focus the browser
+    //       However, note that Chrome has a bug where focus is applied
+    // @see: vhttps://github.com/electron/electron/issues/12492
+    if (url.startsWith('https:')) {
+      shell.openExternal(url, { activate: false });
+    }
+    return { action: 'deny' };
+  });
 
-menubarApp.on('ready', () => {
+  let isQuitting = false;
+
+  mainWindow.on('close', (event) => {
+    if (!isQuitting) {
+      event.preventDefault();
+      mainWindow.hide();
+    }
+  });
+
+  const tray = new Tray(trayIcon);
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Open ReviewCat', click: () => mainWindow.show() },
+    { type: 'separator' },
+    {
+      label: 'Quit',
+      click: () => {
+        isQuitting = true;
+        app.quit();
+      },
+    },
+  ]);
+  tray.setContextMenu(contextMenu);
+
   ipcMain.handle('loginWithGithub', async () => {
     return auth.loginWithGithub(oAuthOptions);
   });
@@ -68,23 +92,8 @@ menubarApp.on('ready', () => {
       openAtLogin: isAutoLaunched,
     });
   });
-});
-
-menubarApp.on('after-create-window', () => {
-  // When navigating to external links, open in the default browser without showing a new window
-  menubarApp.window?.webContents.setWindowOpenHandler(({ url }) => {
-    // NOTE: To prevent the window from closing when opening external links, do not focus the browser
-    //       However, note that Chrome has a bug where focus is applied
-    // @see: vhttps://github.com/electron/electron/issues/12492
-    if (url.startsWith('https:')) {
-      shell.openExternal(url, { activate: false });
-    }
-    return { action: 'deny' };
-  });
-
-  hideDockIcon();
 
   if (!isProduction) {
-    menubarApp.showWindow();
+    mainWindow.show();
   }
 });
