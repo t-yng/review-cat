@@ -1,9 +1,8 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserMenu } from './';
 import { UserMenuProps } from '..';
-import { MemoryRouter } from 'react-router-dom';
+import { customRender } from '@test/helpers/render';
 
 describe('UserMenu', () => {
   const user = userEvent.setup();
@@ -22,11 +21,7 @@ describe('UserMenu', () => {
       ...props,
     };
 
-    return render(
-      <MemoryRouter>
-        <UserMenu {...userMenuProps} />
-      </MemoryRouter>
-    );
+    return customRender(<UserMenu {...userMenuProps} />);
   };
 
   it('Displays the username', () => {
@@ -56,6 +51,6 @@ describe('UserMenu', () => {
     const signOutButton = screen.getByText('Sign out');
     await user.click(signOutButton);
 
-    expect(handleClickSignOutMock).toBeCalled();
+    expect(handleClickSignOutMock).toHaveBeenCalled();
   });
 });

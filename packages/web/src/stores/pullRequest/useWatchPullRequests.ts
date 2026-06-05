@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useQuery } from '@apollo/client';
-import { PullRequest, User } from '@/models';
+import { PullRequest } from '@/models';
 import { useSetting, useAuth } from '@/stores';
 import { buildSearchPullRequestsQuery } from '@/lib';
 import { notifyPullRequests } from '@/lib/notification';

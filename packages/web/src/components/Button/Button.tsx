@@ -1,4 +1,4 @@
-import React, { FC, HTMLAttributes } from 'react';
+import { FC, HTMLAttributes } from 'react';
 import classNames from 'classnames';
 import { rootStyle } from './style.css';
 import { themeFocusVisibleOutline } from '../../theme.css';

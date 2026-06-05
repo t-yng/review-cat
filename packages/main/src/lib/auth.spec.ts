@@ -21,8 +21,9 @@ describe('auth', () => {
     it('Can retrieve the code from the redirect URL after authentication', async () => {
       const code = '123456';
       jest
-        .spyOn<WebContents, any>(new BrowserWindow().webContents, 'on')
-        .mockImplementation((event, callback: any) => {
+        .spyOn<WebContents, 'on'>(new BrowserWindow().webContents, 'on')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .mockImplementation((event: any, callback: any): any => {
           if (event === 'will-redirect') {
             const event = new Event('will-redirect');
             callback(event, `https://github.com/?code=${code}`);

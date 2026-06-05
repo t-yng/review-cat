@@ -1,4 +1,4 @@
-import React, { memo, FC } from 'react';
+import { memo, FC } from 'react';
 import classNames from 'classnames';
 import { CheckCircleFillIcon, PlusCircleIcon } from '@primer/octicons-react';
 import {

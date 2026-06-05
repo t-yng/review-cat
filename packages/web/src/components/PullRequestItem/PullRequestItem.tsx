@@ -1,9 +1,4 @@
-import React from 'react';
-import {
-  PullRequest,
-  PullRequestStatus,
-  pullRequestStatus,
-} from '../../models';
+import { PullRequest, PullRequestStatus } from '../../models';
 import { GitHubAvatar } from '../GitHubAvatar';
 import { styles } from './styles.css';
 
@@ -11,7 +6,7 @@ interface Props {
   pullRequest: PullRequest;
 }
 
-export const PullRequestItem: React.FC<Props> = ({ pullRequest }) => {
+export const PullRequestItem = ({ pullRequest }: Props) => {
   const { author, url, title, status } = pullRequest;
 
   const statusLabel: { [key in PullRequestStatus]: string } = {

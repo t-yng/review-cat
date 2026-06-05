@@ -90,7 +90,7 @@ describe('useSetting', () => {
       });
 
       expect(result.current.setting.autoLaunched).toBe(!updateValue);
-      expect(window.ipc.updateAutoLaunch).toBeCalledWith(!updateValue);
+      expect(window.ipc.updateAutoLaunch).toHaveBeenCalledWith(!updateValue);
     });
 
     it('Adds repository to monitor for PRs', () => {

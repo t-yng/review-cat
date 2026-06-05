@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import path from 'path';
-import { app, ipcMain, shell } from 'electron';
+import { app, BrowserWindowConstructorOptions, ipcMain, shell } from 'electron';
 import { menubar } from 'menubar';
 import { auth } from './lib';
 import { oAuthOptions } from './constants/auth';
@@ -26,7 +26,7 @@ const trayIcon = path.join(__dirname, 'assets', 'images', 'tray-icon.png');
 const html = `file://${require.resolve('web/dist/index.html')}`;
 const indexUrl = isProduction ? html : 'http://localhost:3000/';
 
-const browserWindowOpts: Electron.BrowserWindowConstructorOptions = {
+const browserWindowOpts: BrowserWindowConstructorOptions = {
   width: 500,
   height: 400,
   minWidth: 500,

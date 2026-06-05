@@ -1,4 +1,4 @@
-import { render, screen, queryByRole } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import {
   SelectRepositoryList,
   SelectRepositoryListProps,
@@ -60,7 +60,7 @@ describe('SelectRepositoryList', () => {
       const addRepositoryButton = screen.getByRole('button', {
         name: 'Add repository to settings',
       });
-      const icon = queryByRole(addRepositoryButton, 'img', { hidden: true });
+      const icon = addRepositoryButton.querySelector('svg');
 
       expect(icon).toBeInTheDocument();
     });
@@ -84,7 +84,9 @@ describe('SelectRepositoryList', () => {
       });
       await user.click(addRepositoryButton);
 
-      expect(addRepositoryMock).toBeCalledWith(repositories[0].nameWithOwner);
+      expect(addRepositoryMock).toHaveBeenCalledWith(
+        repositories[0].nameWithOwner
+      );
     });
   });
 
@@ -104,7 +106,7 @@ describe('SelectRepositoryList', () => {
       const removeRepositoryButton = screen.getByRole('button', {
         name: 'Remove repository from settings',
       });
-      const icon = queryByRole(removeRepositoryButton, 'img', { hidden: true });
+      const icon = removeRepositoryButton.querySelector('svg');
 
       expect(icon).toBeInTheDocument();
     });
@@ -128,7 +130,7 @@ describe('SelectRepositoryList', () => {
       });
       await user.click(removeRepositoryButton);
 
-      expect(removeRepositoryMock).toBeCalledWith(
+      expect(removeRepositoryMock).toHaveBeenCalledWith(
         repositories[0].nameWithOwner
       );
     });
