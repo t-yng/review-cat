@@ -33,7 +33,7 @@ describe('lib/notification', () => {
       const newPullRequests = [...beforePullRequests, newPullRequest];
       notifyPullRequests(loginUser, newPullRequests, beforePullRequests);
 
-      expect(NotificationMock).toBeCalledWith(
+      expect(NotificationMock).toHaveBeenCalledWith(
         expect.any(String),
         expect.objectContaining({
           body: `${newPullRequest.title}\n${newPullRequest.url}`,
@@ -51,7 +51,7 @@ describe('lib/notification', () => {
       ];
       notifyPullRequests(loginUser, newPullRequests, beforePullRequests);
 
-      expect(NotificationMock).toBeCalledWith(
+      expect(NotificationMock).toHaveBeenCalledWith(
         expect.any(String),
         expect.objectContaining({
           body: expect.any(String),
@@ -69,7 +69,7 @@ describe('lib/notification', () => {
       ];
       notifyPullRequests(loginUser, newPullRequests, beforePullRequests);
 
-      expect(NotificationMock).not.toBeCalled();
+      expect(NotificationMock).not.toHaveBeenCalled();
     });
   });
 
@@ -88,7 +88,7 @@ describe('lib/notification', () => {
       ];
       notifyPullRequests(loginUser, newPullRequests, beforePullRequests);
 
-      expect(NotificationMock).toBeCalled();
+      expect(NotificationMock).toHaveBeenCalled();
     });
 
     it('Do not send desktop notification if the status remains "reviewed" before and after update', () => {
@@ -100,7 +100,7 @@ describe('lib/notification', () => {
       ];
       notifyPullRequests(loginUser, newPullRequests, beforePullRequests);
 
-      expect(NotificationMock).not.toBeCalled();
+      expect(NotificationMock).not.toHaveBeenCalled();
     });
   });
 });

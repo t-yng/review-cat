@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import { FC, memo } from 'react';
 import { SignOutIcon, GearIcon } from '@primer/octicons-react';
 import { Link } from 'react-router-dom';
 import { User } from '../../models';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dialog } from '@headlessui/react';
 import { XIcon } from '@primer/octicons-react';
 import { SelectRepositoryContainer } from '../../containers/SelectRepositoryContainer';
@@ -14,22 +13,17 @@ type SelectRepositoryModalProps = {
   onClose: () => void;
 };
 
-export const SelectRepositoryModal = React.memo<SelectRepositoryModalProps>(
-  (props) => {
-    return (
-      <Dialog
-        open={props.isOpen}
-        onClose={props.onClose}
-        className={dialogStyle}
-      >
-        <div className={contentStyle}>
-          <button onClick={props.onClose} className={closeButtonStyle}>
-            <XIcon />
-          </button>
-          <SelectRepositoryContainer />
-        </div>
-        <Dialog.Overlay className={overlayStyle} />
-      </Dialog>
-    );
-  }
+export const SelectRepositoryModal = ({
+  isOpen,
+  onClose,
+}: SelectRepositoryModalProps) => (
+  <Dialog open={isOpen} onClose={onClose} className={dialogStyle}>
+    <div className={contentStyle}>
+      <button onClick={onClose} className={closeButtonStyle}>
+        <XIcon />
+      </button>
+      <SelectRepositoryContainer />
+    </div>
+    <div aria-hidden="true" className={overlayStyle} />
+  </Dialog>
 );

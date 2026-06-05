@@ -1,9 +1,4 @@
-import React from 'react';
-import {
-  PullRequest,
-  PullRequestStatus,
-  pullRequestStatus,
-} from '../../models';
+import { PullRequest, PullRequestStatus } from '../../models';
 import { GitHubAvatar } from '../GitHubAvatar';
 import { styles } from './styles.css';
 

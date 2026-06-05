@@ -54,7 +54,7 @@ describe('SettingsContainer', () => {
       );
       await user.click(checkbox);
 
-      expect(updateNotifyReviewRequestedMock).toBeCalledWith(
+      expect(updateNotifyReviewRequestedMock).toHaveBeenCalledWith(
         !defaultSettings.notifyReviewRequested
       );
     });
@@ -88,7 +88,7 @@ describe('SettingsContainer', () => {
         const checkbox = screen.getByLabelText(label);
         await user.click(checkbox);
 
-        expect(updateShowsPRMock).toBeCalledWith(expected);
+        expect(updateShowsPRMock).toHaveBeenCalledWith(expected);
       }
     );
   });
@@ -100,7 +100,7 @@ describe('SettingsContainer', () => {
       const checkbox = screen.getByLabelText('Launch automatically at login');
       await user.click(checkbox);
 
-      expect(updateAutoLaunchMock).toBeCalledWith(
+      expect(updateAutoLaunchMock).toHaveBeenCalledWith(
         !defaultSettings.autoLaunched
       );
     });
@@ -129,7 +129,7 @@ describe('SettingsContainer', () => {
       })[0];
       await user.click(deleteIcon);
 
-      expect(removeSubscribedRepositoryMock).toBeCalledWith('test/testA');
+      expect(removeSubscribedRepositoryMock).toHaveBeenCalledWith('test/testA');
     });
   });
 });

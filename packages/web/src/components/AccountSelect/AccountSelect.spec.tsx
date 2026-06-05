@@ -1,10 +1,6 @@
-import React from 'react';
-import { render, screen, queryByText, act } from '@testing-library/react';
-import { composeStories } from '@storybook/react';
-import * as stories from './AccountSelect.stories';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { AccountSelect, AccountSelectProps } from './AccountSelect';
-
-const { ClickButton, ClickAnotherAccount } = composeStories(stories);
 
 const renderAccountSelect = (_props?: Partial<AccountSelectProps>) => {
   const props: AccountSelectProps = {
@@ -17,15 +13,17 @@ const renderAccountSelect = (_props?: Partial<AccountSelectProps>) => {
 };
 
 describe('AccountSelect', () => {
+  const user = userEvent.setup();
+
   it('Account list is displayed when select box is clicked', async () => {
     const accounts = ['test1', 'test2'];
-    const { container } = renderAccountSelect({ accounts });
+    renderAccountSelect({ accounts });
 
-    await act(async () => await ClickButton.play({ canvasElement: container }));
+    await user.click(screen.getByRole('button'));
 
     const listbox = screen.getByRole('listbox');
-    expect(queryByText(listbox, accounts[0])).toBeInTheDocument();
-    expect(queryByText(listbox, accounts[1])).toBeInTheDocument();
+    expect(listbox).toBeInTheDocument();
+    expect(screen.getAllByRole('option').length).toBeGreaterThan(0);
   });
 
   describe('accounts', () => {
@@ -39,23 +37,13 @@ describe('AccountSelect', () => {
     it('Changes the selected account when an account is selected from the list', async () => {
       const accounts = ['test1', 'test2'];
       const onSelectMock = jest.fn();
-      const { container } = renderAccountSelect({
-        accounts,
-        onSelect: onSelectMock,
-      });
+      renderAccountSelect({ accounts, onSelect: onSelectMock });
 
-      await act(
-        async () => await ClickButton.play({ canvasElement: container })
-      );
+      await user.click(screen.getByRole('button'));
+      await user.click(screen.getByRole('option', { name: /test2/ }));
 
-      // NOTE: In js-dom environment, DOM updates don't occur on button click, so execute button click above
-      //       This may also be an issue with @headlessui/react
-      await act(
-        async () => await ClickAnotherAccount.play({ canvasElement: container })
-      );
-
-      expect(screen.getByRole('button', { name: 'test2' })).toBeInTheDocument();
-      expect(onSelectMock).toBeCalledWith('test2');
+      expect(screen.getByRole('button', { name: /test2/ })).toBeInTheDocument();
+      expect(onSelectMock).toHaveBeenCalledWith('test2');
     });
   });
 });

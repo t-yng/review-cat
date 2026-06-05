@@ -29,6 +29,6 @@ describe('stores/setting', () => {
       result.current[1](updated);
     });
 
-    expect(mockStorage.setSettings).toBeCalledWith(updated);
+    expect(mockStorage.setSettings).toHaveBeenCalledWith(updated);
   });
 });

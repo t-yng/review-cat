@@ -16,7 +16,7 @@ describe('RepositorySearchBox', () => {
       await act(async () => await user.type(input, text));
       fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
 
-      expect(onSearchMock).toBeCalledWith(text);
+      expect(onSearchMock).toHaveBeenCalledWith(text);
     });
   });
 });

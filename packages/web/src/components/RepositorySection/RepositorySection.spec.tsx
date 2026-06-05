@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { instance, mock, when } from 'ts-mockito';
 import { RepositorySection } from '.';

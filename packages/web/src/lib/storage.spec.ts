@@ -9,7 +9,7 @@ describe('lib/storage', () => {
       if (storageKey === key) {
         return value;
       } else {
-        null;
+        return null;
       }
     });
 
@@ -55,7 +55,7 @@ describe('lib/storage', () => {
         const mockSetItem = mockLocalStorageSetItem();
 
         storage.setGithubAccessToken(token);
-        expect(mockSetItem).toBeCalledWith('gh_atk', token);
+        expect(mockSetItem).toHaveBeenCalledWith('gh_atk', token);
       });
     });
   });
@@ -90,7 +90,7 @@ describe('lib/storage', () => {
         const mockSetItem = mockLocalStorageSetItem();
 
         storage.setSettings(settings);
-        expect(mockSetItem).toBeCalledWith(
+        expect(mockSetItem).toHaveBeenCalledWith(
           'settings',
           JSON.stringify(settings) // NOTE: stringify does not guarantee order, so tests may fail.
         );

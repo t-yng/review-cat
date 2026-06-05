@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserMenu } from './';
@@ -56,6 +55,6 @@ describe('UserMenu', () => {
     const signOutButton = screen.getByText('Sign out');
     await user.click(signOutButton);
 
-    expect(handleClickSignOutMock).toBeCalled();
+    expect(handleClickSignOutMock).toHaveBeenCalled();
   });
 });

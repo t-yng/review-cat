@@ -1,4 +1,4 @@
-import React, { FC, memo, useState, useEffect } from 'react';
+import { FC, memo, useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { ChevronDownIcon, CheckIcon } from '@primer/octicons-react';
 import {
@@ -10,7 +10,12 @@ import {
   checkIconStyle,
   activeListBoxItemStyle,
 } from './style.css';
-import { Listbox } from '@headlessui/react';
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption,
+} from '@headlessui/react';
 import { themeFocusVisibleOutline } from '../../theme.css';
 
 export type AccountSelectProps = {
@@ -36,20 +41,20 @@ export const AccountSelect: FC<AccountSelectProps> = memo(
     return (
       <div className={rootStyle}>
         <Listbox value={selectedAccount} onChange={handleSelect}>
-          <Listbox.Button
+          <ListboxButton
             className={classNames(selectButtonStyle, themeFocusVisibleOutline)}
           >
             <span>{selectedAccount}</span>
             <ChevronDownIcon className={chevronDownIconStyle} />
-          </Listbox.Button>
-          <Listbox.Options className={listBoxStyle}>
+          </ListboxButton>
+          <ListboxOptions className={listBoxStyle}>
             {accounts.map((account) => (
-              <Listbox.Option
+              <ListboxOption
                 key={account}
                 value={account}
-                className={({ active }) =>
+                className={({ focus }) =>
                   classNames(listBoxItemStyle, {
-                    [activeListBoxItemStyle]: active,
+                    [activeListBoxItemStyle]: focus,
                   })
                 }
               >
@@ -61,9 +66,9 @@ export const AccountSelect: FC<AccountSelectProps> = memo(
                     {account}
                   </>
                 )}
-              </Listbox.Option>
+              </ListboxOption>
             ))}
-          </Listbox.Options>
+          </ListboxOptions>
         </Listbox>
       </div>
     );

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, KeyboardEvent, memo, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, memo, useState } from 'react';
 import { SearchIcon } from '@primer/octicons-react';
 import { iconStyle, inputStyle, rootStyle } from './style.css';
 
