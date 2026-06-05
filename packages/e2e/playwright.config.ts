@@ -7,4 +7,9 @@ export default defineConfig({
   testDir: './playwright',
   snapshotPathTemplate: '{testDir}/__screenshots__/{arg}{ext}',
   reporter: 'html',
+  expect: {
+    toHaveScreenshot: {
+      scale: 'device',
+    },
+  },
 });

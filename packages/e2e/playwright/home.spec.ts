@@ -139,15 +139,11 @@ test.describe('Home screen', () => {
     await expect(
       mainWindow.getByText('Waiting for review', { exact: true })
     ).toBeVisible();
-    await expect(
-      mainWindow.getByText('Reviewed pull request')
-    ).toBeVisible();
+    await expect(mainWindow.getByText('Reviewed pull request')).toBeVisible();
     await expect(
       mainWindow.getByText('Reviewed', { exact: true })
     ).toBeVisible();
-    await expect(
-      mainWindow.getByText('Approved pull request')
-    ).toBeVisible();
+    await expect(mainWindow.getByText('Approved pull request')).toBeVisible();
     await expect(
       mainWindow.getByText('Approved', { exact: true })
     ).toBeVisible();
@@ -280,15 +276,11 @@ test.describe('Home screen', () => {
     await expect(
       mainWindow.getByText('Waiting for review', { exact: true })
     ).toBeVisible();
-    await expect(
-      mainWindow.getByText('Reviewed pull request')
-    ).toBeVisible();
+    await expect(mainWindow.getByText('Reviewed pull request')).toBeVisible();
     await expect(
       mainWindow.getByText('Reviewed', { exact: true })
     ).toBeVisible();
-    await expect(
-      mainWindow.getByText('Approved pull request')
-    ).toBeVisible();
+    await expect(mainWindow.getByText('Approved pull request')).toBeVisible();
     await expect(
       mainWindow.getByText('Approved', { exact: true })
     ).toBeVisible();
