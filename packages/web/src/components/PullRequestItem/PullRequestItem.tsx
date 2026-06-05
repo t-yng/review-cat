@@ -6,7 +6,7 @@ interface Props {
   pullRequest: PullRequest;
 }
 
-export const PullRequestItem: React.FC<Props> = ({ pullRequest }) => {
+export const PullRequestItem = ({ pullRequest }: Props) => {
   const { author, url, title, status } = pullRequest;
 
   const statusLabel: { [key in PullRequestStatus]: string } = {
