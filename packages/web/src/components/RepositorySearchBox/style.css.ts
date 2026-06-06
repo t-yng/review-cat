@@ -10,6 +10,11 @@ export const rootStyle = style({
   display: 'flex',
   alignItems: 'center',
   fontSize: '1.2rem',
+  selectors: {
+    '&:focus-within': {
+      outline: '2px solid rgba(0, 110, 255, 0.8)',
+    },
+  },
 });
 
 export const iconStyle = style({
@@ -20,5 +25,8 @@ export const inputStyle = style({
   paddingLeft: space(1),
   '::placeholder': {
     color: themeVars.color.gray300,
+  },
+  ':focus': {
+    outline: 'none',
   },
 });
