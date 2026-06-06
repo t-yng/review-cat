@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, ElectronApplication, Page } from '@playwright/test';
 import { launchElectronApp } from './helpers/electron';
 import { loginWithGitHub } from './helpers/login';
 import { waitForRenderedImages } from './helpers/wait';
@@ -8,24 +8,34 @@ import { server } from './mock/server';
 import { loginUser } from './mock/user';
 
 test.describe('Home screen', () => {
+  let electronApp: ElectronApplication;
+  let mainWindow: Page;
+
   test.beforeAll(() => {
     server.listen();
+  });
+
+  test.beforeEach(async () => {
+    electronApp = await launchElectronApp();
+    mainWindow = await electronApp.firstWindow();
   });
 
   test.afterAll(() => {
     server.close();
   });
 
-  test('Displays list of pull requests where the logged-in user is a reviewer', async ({}, testInfo) => {
-    const electronApp = await launchElectronApp();
-    const mainWindow = await electronApp.firstWindow();
+  test.afterEach(async () => {
+    await electronApp.evaluate(({ app }) => app.exit(0));
+  });
 
+  test('Displays list of pull requests where the logged-in user is a reviewer', async ({}, testInfo) => {
     // Mock the GraphQL request to fetch the pull request list
     const anotherUser = {
       login: 'test',
       avatarUrl:
         'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=test',
     };
+
     mockGitHubGraphQL({
       page: mainWindow,
       operation: 'SearchPullRequests',
@@ -152,9 +162,6 @@ test.describe('Home screen', () => {
   });
 
   test('Displays list of pull requests created by the logged-in user', async ({}, testInfo) => {
-    const electronApp = await launchElectronApp();
-    const mainWindow = await electronApp.firstWindow();
-
     // Mock the GraphQL request to fetch the pull request list
     const anotherAuthor = {
       login: 'test',
