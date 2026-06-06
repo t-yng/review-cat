@@ -1,36 +1,47 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { BrowserWindow, WebContents } from 'electron';
+import { shell } from 'electron';
 import { auth } from '.';
 import { oAuthOptions } from '../constants/auth';
 
 describe('auth', () => {
   describe('loginWithGithub', () => {
-    const loadUrlSpy = vi.spyOn(new BrowserWindow(), 'loadURL');
-
     beforeEach(() => {
-      loadUrlSpy.mockReset();
+      vi.restoreAllMocks();
     });
 
-    it('Displays the GitHub OAuth authentication screen', () => {
+    it('Opens GitHub OAuth URL in the default browser', () => {
+      const openExternalSpy = vi
+        .spyOn(shell, 'openExternal')
+        .mockResolvedValue(undefined);
+
       auth.loginWithGithub(oAuthOptions);
-      expect(loadUrlSpy).toHaveBeenCalled();
-      expect(loadUrlSpy).toHaveBeenCalledWith(
+
+      expect(openExternalSpy).toHaveBeenCalledWith(
         `https://github.com/login/oauth/authorize?client_id=${oAuthOptions.clientId}&scope=${oAuthOptions.scopes}`
       );
     });
+  });
 
-    it('Can retrieve the code from the redirect URL after authentication', async () => {
+  describe('handleOAuthCallback', () => {
+    beforeEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('Resolves the pending promise with the code from the callback URL', async () => {
       const code = '123456';
-      vi.spyOn<WebContents, 'on'>(new BrowserWindow().webContents, 'on')
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .mockImplementation((event: any, callback: any): any => {
-          if (event === 'will-redirect') {
-            const event = new Event('will-redirect');
-            callback(event, `https://github.com/?code=${code}`);
-          }
-        });
-      const result = await auth.loginWithGithub(oAuthOptions);
-      expect(result).toBe(code);
+      const promise = auth.loginWithGithub(oAuthOptions);
+
+      auth.handleOAuthCallback(`reviewcat://auth/callback?code=${code}`);
+
+      await expect(promise).resolves.toBe(code);
+    });
+
+    it('Rejects the pending promise with an error from the callback URL', async () => {
+      const promise = auth.loginWithGithub(oAuthOptions);
+
+      auth.handleOAuthCallback('reviewcat://auth/callback?error=access_denied');
+
+      await expect(promise).rejects.toThrow('access_denied');
     });
   });
 });

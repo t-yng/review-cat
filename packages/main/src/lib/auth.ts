@@ -1,13 +1,16 @@
-import { BrowserWindow } from 'electron';
+import { shell } from 'electron';
 import { oAuthAccessToken } from '../api/github';
 import { OAuthOptions } from '../constants/auth';
 
-const handleGithubOAuthUrl = async (
+let pendingResolve: ((code: string) => void) | null = null;
+let pendingReject: ((err: Error) => void) | null = null;
+
+const parseOAuthUrl = (
   url: string
-): Promise<{
+): {
   code: string | null;
   error: string | null;
-}> => {
+} => {
   const searchParams = new URL(url).searchParams;
   const code = searchParams.get('code');
   const error = searchParams.get('error');
@@ -18,47 +21,29 @@ const handleGithubOAuthUrl = async (
   };
 };
 
-export const loginWithGithub = async (
+export const loginWithGithub = (
   oAuthOptions: OAuthOptions
 ): Promise<string> => {
-  const oAuthWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    show: false,
-  });
-
-  const promise = new Promise<string>((resolve, reject) => {
-    const handleCallback = async (url: string) => {
-      const { code, error } = await handleGithubOAuthUrl(url);
-
-      if (code) {
-        resolve(code);
-      } else if (error) {
-        reject(new Error(error));
-      }
-
-      if (code || error) {
-        oAuthWindow.destroy();
-      }
-    };
-
-    oAuthWindow.webContents.on('will-navigate', function (event, url) {
-      handleCallback(url);
-    });
-
-    oAuthWindow.webContents.on('will-redirect', function (event, url) {
-      handleCallback(url);
-    });
-  });
-
-  const session = oAuthWindow.webContents.session;
-  session.clearStorageData();
-
   const oAuthUrl = `https://github.com/login/oauth/authorize?client_id=${oAuthOptions.clientId}&scope=${oAuthOptions.scopes}`;
-  oAuthWindow.loadURL(oAuthUrl);
-  oAuthWindow.show();
+  shell.openExternal(oAuthUrl);
 
-  return promise;
+  return new Promise<string>((resolve, reject) => {
+    pendingResolve = resolve;
+    pendingReject = reject;
+  });
+};
+
+export const handleOAuthCallback = (url: string): void => {
+  const { code, error } = parseOAuthUrl(url);
+
+  if (code && pendingResolve) {
+    pendingResolve(code);
+  } else if (error && pendingReject) {
+    pendingReject(new Error(error));
+  }
+
+  pendingResolve = null;
+  pendingReject = null;
 };
 
 export const getGithubOAuthToken = async (
