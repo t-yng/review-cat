@@ -27,14 +27,10 @@ test.describe('Login', () => {
   });
 
   test('Can log in with GitHub', async () => {
-    // Launch the app
-    const electronApp = await launchElectronApp();
-
     // GitHub login
     await loginWithGitHub(electronApp, server);
 
     // Confirm that login succeeded and page navigation occurred
-    const mainWindow = await electronApp.firstWindow();
     await expect(
       mainWindow.getByRole('img', { name: loginUser.login })
     ).toBeVisible();

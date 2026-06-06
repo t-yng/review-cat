@@ -31,7 +31,7 @@ describe('auth', () => {
       const code = '123456';
       const promise = auth.loginWithGithub(oAuthOptions);
 
-      auth.handleOAuthCallback(`reviewcat://auth/callback?code=${code}`);
+      auth.handleOAuthCallback(`review-cat://auth/callback?code=${code}`);
 
       await expect(promise).resolves.toBe(code);
     });
@@ -39,7 +39,9 @@ describe('auth', () => {
     it('Rejects the pending promise with an error from the callback URL', async () => {
       const promise = auth.loginWithGithub(oAuthOptions);
 
-      auth.handleOAuthCallback('reviewcat://auth/callback?error=access_denied');
+      auth.handleOAuthCallback(
+        'review-cat://auth/callback?error=access_denied'
+      );
 
       await expect(promise).rejects.toThrow('access_denied');
     });
