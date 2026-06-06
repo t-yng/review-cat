@@ -18,3 +18,7 @@ const browserWindowMock = {
 export const BrowserWindow = vi.fn().mockImplementation(() => {
   return browserWindowMock;
 });
+
+export const shell = {
+  openExternal: vi.fn().mockResolvedValue(undefined),
+};

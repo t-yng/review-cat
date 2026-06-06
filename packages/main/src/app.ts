@@ -20,6 +20,7 @@ if (process.env.NODE_ENV === 'test') {
   };
 }
 
+const CUSTOM_PROTOCOL = 'review-cat';
 const isProduction = process?.env?.NODE_ENV === 'production';
 const trayIcon = path.join(__dirname, 'assets', 'images', 'tray-icon.png');
 
@@ -40,6 +41,38 @@ const browserWindowOpts: BrowserWindowConstructorOptions = {
     preload: path.join(__dirname, 'preload.js'),
   },
 };
+
+// Register custom protocol for OAuth callback
+if (process.defaultApp) {
+  if (process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient(CUSTOM_PROTOCOL, process.execPath, [
+      path.resolve(process.argv[1]),
+    ]);
+  }
+} else {
+  app.setAsDefaultProtocolClient(CUSTOM_PROTOCOL);
+}
+
+// macOS: handle OAuth callback via open-url event
+app.on('open-url', (event, url) => {
+  event.preventDefault();
+  auth.handleOAuthCallback(url);
+});
+
+// Windows: enforce single instance and handle OAuth callback via second-instance event
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (_event, commandLine) => {
+    const url = commandLine.find((arg) =>
+      arg.startsWith(`${CUSTOM_PROTOCOL}://`)
+    );
+    if (url) {
+      auth.handleOAuthCallback(url);
+    }
+  });
+}
 
 app.whenReady().then(() => {
   const mainWindow = new BrowserWindow(browserWindowOpts);
