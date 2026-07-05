@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
+import { Routes, Route, HashRouter, Navigate } from 'react-router-dom';
 import { useSetting } from '@/stores';
 import { LoginPage, PullRequestListPage, SelectRepositoryPage } from '@/pages';
 import { SettingsPage } from '@/pages/SettingsPage';
@@ -8,7 +8,7 @@ export const AppRoute = () => {
   const { setting } = useSetting();
 
   return (
-    <BrowserRouter
+    <HashRouter
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
     >
       <Routes>
@@ -42,6 +42,6 @@ export const AppRoute = () => {
           }
         />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
